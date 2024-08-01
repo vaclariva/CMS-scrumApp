@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html class="h-full" data-theme="true" data-theme-mode="light" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="UTF-8">
