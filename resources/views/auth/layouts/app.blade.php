@@ -37,7 +37,7 @@
             }
         </script>
         <style>
-            .branded-bg { background-image: url('{{ asset("metronic/dist/assets/media/images/2600x1600/1.png") }}'); }
+            .branded-bg { background-image: url('{{ asset("metronic/dist/assets/media/images/2600x1600/login.png") }}'); }
             .dark .branded-bg { background-image: url('{{ asset("metronic/dist/assets/media/images/2600x1600/1-dark.png") }}'); }
         </style>
         

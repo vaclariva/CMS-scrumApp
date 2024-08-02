@@ -10,6 +10,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/member', [App\Http\Controllers\MemberController::class, 'index'])->name('member');
+Route::get('/student', [App\Http\Controllers\StudentController::class, 'index'])->name('student');
 
-Route::get('/add-member', [App\Http\Controllers\AddMemberController::class, 'index'])->name('add-member');
+Route::get('/add-student', [App\Http\Controllers\AddStudentController::class, 'index'])->name('add-student');

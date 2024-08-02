@@ -18,7 +18,7 @@
                 <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                     <div class="menu-item pt-2.25 pb-px">
                         <span class="menu-heading uppercase text-2sm font-semibold text-gray-500 pl-[10px] pr-[10px]">
-                            Dashboards
+                            Dashboard
                         </span>
                     </div>
                     <a href="/home" class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px]" tabindex="0">
@@ -31,15 +31,39 @@
                     </a>
                     <div class="menu-item pt-2.25 pb-px">
                         <span class="menu-heading uppercase text-2sm font-semibold text-gray-500 pl-[10px] pr-[10px]">
-                            User
+                            Student
                         </span>
                     </div>
-                    <a href="/member" class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px]" tabindex="0">
+                    <a href="/student" class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px]" tabindex="0">
                         <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
                             <i class="ki-filled ki-user-square text-lg text-info"></i>
                         </span>
                         <span class="menu-title text-sm font-semibold text-gray-700 menu-item-active:text-primary menu-link-hover:!text-primary">
-                            Members
+                            Students
+                        </span>
+                    </a>
+                    <a href="/#" class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px]" tabindex="0">
+                        <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
+                            <i class="ki-filled ki-bank text-lg text-info"></i>
+                        </span>
+                        <span class="menu-title text-sm font-semibold text-gray-700 menu-item-active:text-primary menu-link-hover:!text-primary">
+                            Class
+                        </span>
+                    </a>
+                    <a href="/#" class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px]" tabindex="0">
+                        <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
+                            <i class="ki-filled ki-medal-star text-lg text-info"></i>
+                        </span>
+                        <span class="menu-title text-sm font-semibold text-gray-700 menu-item-active:text-primary menu-link-hover:!text-primary">
+                            Prestation
+                        </span>
+                    </a>
+                    <a href="/#" class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px]" tabindex="0">
+                        <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
+                            <i class="ki-filled ki-questionnaire-tablet text-lg text-info"></i>
+                        </span>
+                        <span class="menu-title text-sm font-semibold text-gray-700 menu-item-active:text-primary menu-link-hover:!text-primary">
+                            Absence
                         </span>
                     </a>
                     <div class="menu-item here menu-item-accordion show" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
