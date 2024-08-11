@@ -11,8 +11,9 @@
                 </div>
             </div>
             <div class="flex items-center gap-2.5">
-                <a class="btn btn-sm btn-light" href="html/demo1/public-profile/profiles/default.html">
-                    View Profile
+                <a class="btn btn-sm btn-primary rounded-full" href="html/demo1/public-profile/profiles/default.html">
+                <i class="ki-duotone ki-plus-circle"></i>
+                    Tambah Pengguna
                 </a>
             </div>
         </div>
@@ -28,8 +29,14 @@
                <div class="relative">
                 <i class="ki-outline ki-magnifier leading-none text-md text-gray-500 absolute top-1/2 left-0 -translate-y-1/2 ml-3">
                 </i>
-                <input class="input input-sm pl-8" placeholder="Search Members" type="text"/>
+                <input class="input input-sm pl-8 rounded-full" placeholder="Search Members" type="text"/>
                </div>
+               <div class="relative">
+                    <a class="btn btn-sm btn-light rounded-full" href="html/demo1/public-profile/profiles/default.html">
+                    <i class="ki-duotone ki-filter text-primary"></i>
+                        Filters
+                    </a>
+                </div>
               </div>
              </div>
              <div class="card-body">
@@ -39,12 +46,11 @@
                  <thead>
                   <tr>
                    <th class="w-[60px]">
-                    <input class="checkbox checkbox-sm" data-datatable-check="true" type="checkbox"/>
                    </th>
                    <th class="min-w-[175px]">
                     <span class="sort asc">
                      <span class="sort-label">
-                      Member
+                      Nama
                      </span>
                      <span class="sort-icon">
                      </span>
@@ -53,7 +59,7 @@
                    <th class="min-w-[150px]">
                     <span class="sort">
                      <span class="sort-label">
-                      Location
+                      Email
                      </span>
                      <span class="sort-icon">
                      </span>
@@ -62,13 +68,16 @@
                    <th class="min-w-[125px]">
                     <span class="sort">
                      <span class="sort-label">
-                      Status
+                      Peran
                      </span>
                      <span class="sort-icon">
                      </span>
                     </span>
                    </th>
-                   <th class="w-[80px]">
+                   <th>
+                    j
+                   </th>
+                   <th class="w-[60px]">
                    </th>
                   </tr>
                  </thead>

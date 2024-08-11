@@ -4,12 +4,11 @@
         @csrf
         <div class="text-center mb-2.5">
             <h3 class="text-lg font-semibold text-gray-900 leading-none mb-2.5">
-                Reset Password
+                Lupa Kata Sandi
             </h3>
             <div class="flex items-center justify-center font-medium">
                 <span class="text-2sm text-gray-600 me-1.5">
-                    Masukkan alamat email untuk
-                    <br />mengatur ulang password.
+                    Masukkan email untuk reset kata sandi
                 </span>
             </div>
         </div>
@@ -31,7 +30,7 @@
                 name="email" 
                 id="email" 
                 class="input" 
-                placeholder="email@email.com" 
+                placeholder="Masukkan Email" 
                 value="{{ old('email') }}"
             />
             @error('email')
@@ -40,17 +39,14 @@
                 </span>
             @enderror
         </div>
-        <button type="submit" class="btn btn-primary flex justify-center grow">
-            Continue
-        </button>
 
-        <div class="flex items-center justify-center font-medium">
-            <span class="text-2sm text-gray-600 me-1.5">
-                Sudah ingat?
-            </span>
-            <a class="text-2sm link" href="{{ url('/login') }}">
-                Login
-            </a>
+        <div class="self-stretch justify-start items-start gap-2.5 inline-flex">
+            <button type="button" class="btn btn-secondary flex justify-center grow rounded-full" onclick="window.location.href='{{ url('/login') }}'">
+                Batal
+            </button>
+            <button type="submit" class="btn btn-primary flex justify-center grow rounded-full">
+                Kirim
+            </button>
         </div>
     </form>
 @endsection

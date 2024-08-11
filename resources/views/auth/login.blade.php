@@ -4,16 +4,8 @@
         @csrf
         <div class="text-center mb-2.5">
             <h3 class="text-lg font-semibold text-gray-900 leading-none mb-2.5">
-                Sign in
+                Masuk
             </h3>
-            <div class="flex items-center justify-center font-medium">
-                <span class="text-2sm text-gray-600 me-1.5">
-                    Belum punya akun?
-                </span>
-                <a class="text-2sm link" href="#">
-                    Hubungi administrator!
-                </a>
-            </div>
         </div>
 
         @if (session('status'))
@@ -33,7 +25,7 @@
                 name="email" 
                 id="email" 
                 class="input" 
-                placeholder="email@email.com" 
+                placeholder="Masukkan Email" 
                 value="{{ old('email') }}"
             />
             @error('email')
@@ -45,11 +37,11 @@
         <div class="flex flex-col gap-1">
             <div class="flex items-center justify-between gap-1">
                 <label class="form-label text-gray-900">
-                    Password
+                    Kata Sandi
                 </label>
                 @if (Route::has('password.request'))
                     <a class="text-2sm link shrink-0" href="{{ route('password.request') }}">
-                        Forgot Password?
+                        Lupa Kata Sandi?
                     </a>
                 @endif
             </div>
@@ -58,7 +50,7 @@
                     type="password" 
                     name="password" 
                     id="password" 
-                    placeholder="Enter Password" 
+                    placeholder="Masukkan Kata Sandi" 
                     value=""
                 />
                 <span class="btn btn-icon" data-toggle-password-trigger="true">
@@ -71,7 +63,7 @@
                     {{ $message }}
                 </span>
             @enderror
-        </div>
+        </div> 
         <label class="checkbox-group">
             <input 
                 type="checkbox" 
@@ -81,12 +73,27 @@
                 value="1" {{ old('remember') ? 'checked' : '' }}
             />
             <span class="checkbox-label">
-                Remember me
+                Ingat Saya
             </span>
         </label>
-        <button class="btn btn-primary flex justify-center grow">
-            Sign In
+        <button class="rounded-full btn btn-primary flex justify-center grow">
+            Masuk
         </button>
+        <div class="flex items-center justify-center font-medium">
+            <span class="text-2sm text-gray-600 me-1.5">
+                Butuh Bantuan?
+            </span>
+            <a class="text-2sm link" href="#">
+                Hubungi Kami
+            </a>
+        </div>
+       
+   <!-- Pastikan token dan email digantikan dengan nilai yang sesuai -->
+<!--<a href="{{ route('password.reset', ['token' => 'example-token', 'email' => 'user@example.com']) }}" class="btn btn-primary">
+    Reset Password
+</a>-->
+
+        
     </form>
 
 
