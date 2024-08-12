@@ -33,7 +33,7 @@ return [
     ],
     'boolean' => 'The :attribute field must be true or false.',
     'can' => 'The :attribute field contains an unauthorized value.',
-    'confirmed' => 'The :attribute field confirmation does not match.',
+    'confirmed' => 'konfirmasi :attribute tidak cocok.',
     'contains' => 'The :attribute field is missing a required value.',
     'current_password' => 'The password is incorrect.',
     'date' => 'The :attribute field must be a valid date.',
@@ -105,7 +105,7 @@ return [
         'array' => 'The :attribute field must have at least :min items.',
         'file' => 'The :attribute field must be at least :min kilobytes.',
         'numeric' => 'The :attribute field must be at least :min.',
-        'string' => 'The :attribute field must be at least :min characters.',
+        'string' => ':attribute minimal terdiri dari :min karakter.',
     ],
     'min_digits' => 'The :attribute field must have at least :min digits.',
     'missing' => 'The :attribute field must be missing.',
@@ -119,8 +119,8 @@ return [
     'numeric' => 'The :attribute field must be a number.',
     'password' => [
         'letters' => 'The :attribute field must contain at least one letter.',
-        'mixed' => 'The :attribute field must contain at least one uppercase and one lowercase letter.',
-        'numbers' => 'The :attribute field must contain at least one number.',
+        'mixed' => ':attribute terdiri dari kombinasi huruf besar dan huruf kecil.',
+        'numbers' => ':attribute terdiri dari kombinasi huruf dan angka',
         'symbols' => 'The :attribute field must contain at least one symbol.',
         'uncompromised' => 'The given :attribute has appeared in a data leak. Please choose a different :attribute.',
     ],
@@ -190,8 +190,8 @@ return [
     */
 
     'attributes' => [
-        'password' => 'kata sandi',
-        'email' => 'alamat email',
+        'password' => 'Kata sandi',
+        'email' => 'Alamat email',
         ],
 
 ];

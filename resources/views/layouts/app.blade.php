@@ -1,4 +1,4 @@
- <!doctype html>
+<!doctype html>
 <html class="h-full" data-theme="true" data-theme-mode="light" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="UTF-8">
@@ -13,6 +13,8 @@
         <link href="{{ asset('metronic/dist/assets/vendors/apexcharts/apexcharts.css') }}" rel="stylesheet"/>
         <link href="{{ asset('metronic/dist/assets/vendors/keenicons/styles.bundle.css') }}" rel="stylesheet"/>
         <link href="{{ asset('metronic/dist/assets/css/styles.css') }}" rel="stylesheet"/>
+        <link rel="stylesheet" href="path/to/metronic.css">
+        <script src="path/to/metronic.js"></script>
         @yield('blockhead')
     </head>
     <body class="flex h-full demo1 sidebar-fixed header-fixed bg-[#fefefe] dark:bg-coal-500">

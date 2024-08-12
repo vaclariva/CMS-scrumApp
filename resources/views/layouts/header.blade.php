@@ -21,7 +21,7 @@
                         <div class="menu-item active">
                             <a href="/home" class="menu-link text-nowrap text-sm text-gray-700 font-medium menu-item-hover:text-primary menu-item-active:text-gray-900 menu-item-active:font-semibold" href="html/demo1.html">
                                 <span class="menu-title text-nowrap">
-                                    Home
+                                    Sistem
                                 </span>
                             </a>
                         </div>
