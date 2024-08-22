@@ -26,5 +26,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'meyclariva@gmail.com',
             'password' => Hash::make('iva12345'),
         ]);
+
+        $this->call([
+            SeedProject::class, 
+        ]);
     }
 }

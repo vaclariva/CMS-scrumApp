@@ -176,7 +176,12 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'email' => [
+            'unique' => 'Alamat email sudah digunakan.',
+            ]
     ],
+
+    
 
     /*
     |--------------------------------------------------------------------------
