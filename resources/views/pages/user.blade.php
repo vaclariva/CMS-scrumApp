@@ -11,10 +11,10 @@
 
 @section('content')
 
-    <div class="container-fixed">
+    <div class="container mx-auto px-4 lg:px-8">
         <div class="flex flex-wrap items-center lg:items-end justify-between gap-5 pb-7.5">
             <div class="flex flex-col justify-center gap-2">
-                <h1 class="text-xl font-semibold leading-none text-gray-900">
+                <h1 class="text-xl font-semibold leading-none text-gray-900 mt-5">
                     Pengguna
                 </h1>
                 <div class="flex items-center gap-2 text-sm font-medium text-gray-600">
@@ -31,23 +31,25 @@
         </div>
     </div>
 
-    <div class="container-fixed">
+    <div class="container mx-auto px-4 lg:px-8 mb-10">
         <div class="grid">
             <div class="card card-grid min-w-full">
                 <div class="card-header py-5 flex-wrap">
                     <h3 class="card-title">
-                    Menampilkan ... dari {{ $totalUser }} Pengguna
-                    </h3>
+                        Menampilkan <span id="currentTotalUser">{{ $totalUser }}</span> dari {{ $totalUser }} Pengguna
+                    </h3>                    
                         <div class="flex gap-6">
                             <div class="relative">
-                                <i class="ki-outline ki-magnifier leading-none text-md text-gray-500 absolute top-1/2 left-0 -translate-y-1/2 ml-3">
-                                </i>
-                                    <input class="input input-sm pl-8 rounded-full" placeholder="Search Members" type="text"/>
+                                <div class="search">
+                                    <i class="ki-outline ki-magnifier leading-none text-md text-gray-500 absolute top-1/2 left-0 -translate-y-1/2 ml-3">
+                                    </i>
+                                        <input class="input input-sm pl-8 rounded-full" placeholder="Cari" type="search" id="search" name="search"/>
+                                </div>
                             </div>
-                            <button class="btn btn-sm btn-outline btn-primary rounded-full">
+                            <!--<button class="btn btn-sm btn-outline btn-primary rounded-full">
                                 <i class="ki-duotone ki-filter text-primary"></i>
                                 Filters
-                            </button>
+                            </button>-->
                         </div>
                     </div>
 
@@ -102,32 +104,42 @@
                                         @foreach ($users as $user)
                                             <tr>
                                                 <td class="text-center">
-                                                    {{$loop->iteration}}
-                                                </span>
+                                                    {{ $loop->iteration }}
                                                 </td>
                                                 <td>
-                                                    @include('components.modal-edit-user', ['route' => route('user.update', $user->id), 'user' => $user   ])
-                                                    <a class="text-primary" data-modal-toggle="#modal_{{ $user->id }}">
-                                                        {{$user->name}}
-                                                    </a>
-                                                </td>                    
-                                                <td>
-                                                    {{$user->email}}
+                                                    <div class="flex justify-start items-center gap-3">
+                                                        <div class="menu-toggle btn btn-icon rounded-full">
+                                                            @if($user->image_path)
+                                                                <img src="{{ asset($user->image_path) }}" alt="User Image" class="w-10 h-10 rounded-full object-cover">
+                                                            @else
+                                                                <img src="{{ asset('metronic/dist/assets/media/avatars/blank.png') }}" alt="Default Image" class="w-10 h-10 rounded-full object-cover">
+                                                            @endif
+                                                        </div>
+                                                        <div>
+                                                            @include('components.modal-edit-user')
+                                                            <a class="text-primary cursor-pointer" data-modal-toggle="#modal_user_{{ $user->id }}">
+                                                                {{ $user->name }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    {{$user->role}}
+                                                    {{ $user->email }}
                                                 </td>
                                                 <td>
-                                                    @include('components.confirm-delete', ['route' => route('user.destroy', $user->id)])
-                                                
+                                                    {{ $user->role }}
+                                                </td>
+                                                <td>
+                                                    @include('components.confirm-delete-user')
                                                     <button type="button" class="btn btn-sm btn-icon btn-clear btn-light" 
-                                                            data-modal-toggle="#delete_{{ $user->id }}"
+                                                            data-modal-toggle="#delete_user{{ $user->id }}" 
                                                             data-url="{{ route('user.destroy', $user->id) }}">
                                                         <i class="ki-outline ki-trash"></i>
                                                     </button>
                                                 </td>                   
                                             </tr>
                                         @endforeach
+
                                     </tbody>
                                 </table>
                             </div>
@@ -186,24 +198,6 @@
                 });
             });
 
-            // $("#image-upload").on('change', function(){
-            //     console.log('change');
-            //     console.log($(this).val());
-            // });
-
-            // const imageInputEl = document.querySelector('#parent-upload');
-            // const options = {
-            //     hiddenClass: 'hidden'
-            // };
-
-            // const imageInput = new KTImageInput(imageInputEl, options);
-            // imageInput.on('changed', () => {
-            //     console.log('changed event');
-            //     console.log(imageInput.isChanged());
-            //     console.log(imageInput.getElement());
-            //     console.log(imageInput.getPreviewUrl());
-            // });
-         
             $("#parent-upload").on('click', function(){
                 $("#image-upload").trigger('click');
                 })
@@ -214,5 +208,48 @@
                 reader.onload = e => $('.image-input-preview').css('background-image', `url(${e.target.result})`);
                 reader.readAsDataURL(this.files[0]);
             });
+
+            function removeImagePreview(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const imageInput = event.currentTarget.closest('.image-input');
+
+            if (imageInput) {
+                const imagePreview = imageInput.querySelector('.image-input-preview');
+
+                if (imagePreview) {
+                    imagePreview.style.backgroundImage = "url('metronic/dist/assets/media/avatars/blank.png')";
+                } else {
+                    console.error('Image preview element not found');
+                }
+            } else {
+                console.error('Image input element not found');
+            }
+        }
+    </script>
+    
+    <script type="text/javascript">
+$('#search').on('keyup', function() {
+    var searchValue = $(this).val();
+    let datatable = KTDataTable.getInstance(document.getElementById('datatable_1')); 
+    datatable.search(searchValue);
+
+    // Event listener untuk ketika datatable selesai diperbarui (pencarian, filter, dsb.)
+    datatable.on('datatable-on-layout-updated', function() {
+        // Menghitung jumlah baris setelah pencarian, dan mengabaikan baris dengan teks "No records found"
+        var rowCount = $('#datatable_1 tbody tr').filter(function() {
+            return !$(this).find('td').text().includes('No records found');
+        }).length;
+
+        $('#currentTotalUser').text(rowCount + ' pengguna');
+
+        // Jika tidak ada hasil, tampilkan pesan khusus
+        if (rowCount === 0) {
+            $('#datatable_1 tbody').html('<tr><td colspan="5" class="text-center">Tidak ada pengguna yang ditemukan.</td></tr>');
+        }
+    });
+});
+
     </script>
 @endsection

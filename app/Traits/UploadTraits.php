@@ -23,7 +23,8 @@ trait UploadTraits
 
         $extension = $image->getClientOriginalExtension();
         $image_name = $image->hashName();
-        $filePath = Carbon::now()->format('Y/m/d/');
+        // $filePath = Carbon::now()->format('Y/m/d/');
+        $filePath = 'users/photo/';
         Storage::disk('public')->putFileAs($filePath, $image, $image_name);
 
         info('File uploaded to: ' . $filePath . $image_name);

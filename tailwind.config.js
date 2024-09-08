@@ -16,6 +16,7 @@ export default {
             },
             colors: {
                 'custom-red': '#F8285A',
+                'custom-light': '#ffffff',
             },
         },
     },

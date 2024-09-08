@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Traits\UploadTraits;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -24,6 +25,15 @@ class UserController extends Controller
     {
         $users = User::all();
         $totalUser = User::count();
+
+        //foreach($users as $user){
+
+          //  $productUser = $user->products()->get();
+           // info($productUser);
+       // }
+
+        info(auth()->user());
+
         return view('pages.user', compact('users', 'totalUser'));
 
     }
@@ -97,27 +107,34 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
         try {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'role' => 'required|string|max:255',
+            info($request);
+            $validatedData = $request->validate([
+                'name' => 'nullable|string|max:255',
+                'role' => 'nullable|string|max:255',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ]);
 
-            $user = User::findOrFail($id);
+            $user->update(Arr::except($validatedData, ['image']));
             
             if ($request->hasFile('image')) {
                 $this->deleteFile($user->image);
-                $user->image = $this->uploadFile($request->file('image'));
+                $user->update([
+                    'image' => $this->uploadFile($request->file('image')),
+                ]);
+
+            } elseif ($request->avatar_remove) {
+                $user->update([
+                    'image' => $this->deleteFile($user->getRawOriginal('image'))
+                ]);
             }
 
-            $user->update($request->all());
-            info("coba");
             return redirect()->route('user')->with('success', 'Berhasil diperbarui.');
 
             } catch (\Exception $e) {
+                Log::error($e->getMessage());
             return redirect()->route('user')->with('error', 'Gagal diperbarui.');
         }
     }
@@ -141,5 +158,12 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('user')->with('error', 'Gagal menghapus.');
         }
+    }
+
+    public function deleteImage(User $user)
+    {
+        $user->deleteImage();
+
+        return redirect()->back()->with('success', 'Gambar berhasil dihapus.');
     }
 }

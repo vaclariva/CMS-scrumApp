@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->string('name')->nullable();
             $table->string('label')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->datetime('start_date')->nullable();
+            $table->datetime('end_date')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
