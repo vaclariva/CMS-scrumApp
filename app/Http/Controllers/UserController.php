@@ -73,6 +73,8 @@ class UserController extends Controller
                 ]);
             }
 
+            $user->sendCreatePasswordNotification();
+
             return response()->json(['success' => 'Berhasil disimpan.']);
 
         } catch (ValidationException $e) {

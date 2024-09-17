@@ -9,9 +9,12 @@
             </button>
         </div>
         <div class="modal-body">
-            <form action="{{ $route }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-
+        
+                <input type="hidden" id="input_start_date" name="start_date">
+                <input type="hidden" id="input_end_date" name="end_date">
+        
                 <div class="form-group p-2">
                     <label class="text-sm" for="name"><strong>Nama</strong></label>
                     <div class="flex items-center gap-2">
@@ -25,7 +28,7 @@
                                 </div>
                             </div>
                         </div>
-                    <input class="input" name="name" placeholder="Masukkan Nama Produk" type="text" value="" required/>
+                        <input class="input" name="name" placeholder="Masukkan Nama Produk" type="text" value="" required/>
                     </div>
                 </div>
 
@@ -33,35 +36,34 @@
                     <label class="text-sm" for="label"><strong>Label</strong></label>
                     <div class="flex gap-">
                         <label class="form-label flex items-center gap-2.5 text-nowrap">
-                            <input class="radio" name="label" type="radio" value="Internal"/>
+                            <input class="radio" name="label" type="radio" value="internal" required/>
                             Internal
-                            <input class="radio" name="label" type="radio" value="Eksternal"/>
+                            <input class="radio" name="label" type="radio" value="eksternal" required/>
                             External
                         </label>
                     </div>
                 </div>
-
+        
                 <div class="form-group p-2">
                     <label class="text-sm" for="start_date"><strong>Tanggal Mulai</strong></label>
                     <div class="input-group">
                         <span class="btn btn-icon btn-icon-lg btn-input">
                             <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                         </span>
-                        <input class="input" id="formatted_date" name="start_date" type="datetime-local" value="" required/>
+                        <input class="input" id="start_date" name="start_date_display" type="text" value="" required/>
                     </div>
-                    <p class="formatted-date" id="formatted_date"></p>
                 </div>
-
+        
                 <div class="form-group p-2">
                     <label class="text-sm" for="end_date"><strong>Tanggal Berakhir</strong></label>
                     <div class="input-group">
                         <span class="btn btn-icon btn-icon-lg btn-input">
                             <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                         </span>
-                        <input class="input" name="end_date" type="datetime-local" value="" required/>
+                        <input class="input" id="end_date" name="end_date_display" type="text" value="" required/>
                     </div>
                 </div>
-
+        
                 <div class="form-group p-2">
                     <label class="text-sm font-bold" for="user_id"><strong>Produk Owner</strong></label>
                     <div class="relative w-full">
@@ -72,15 +74,14 @@
                             </option>
                             @endforeach
                         </select>
-                      
                     </div>
                 </div>                                         
- 
+        
                 <input type="hidden" id="icon1" name="icon" value="" />
                 
                 <div class="modal-footer">
                     <div class="flex gap-4 justify-end p-5">
-                        <button class="btn btn-light rounded-full" data-modal-dismiss="true">
+                        <button class="btn btn-light rounded-full" data-modal-dismiss="true" type="button">
                             Batal
                         </button>
                         <button class="btn btn-primary rounded-full" type="submit"> 
@@ -136,4 +137,28 @@
 });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr("#start_date", {
+            enableTime: true,
+            dateFormat: "d F Y, H:i",  
+            time_24hr: true,
+            locale: 'id',
+            onChange: function(selectedDates, dateStr, instance) {
+                const formattedDate = instance.formatDate(selectedDates[0], "Y-m-d H:i:s"); 
+                document.getElementById('input_start_date').value = formattedDate; 
+            }
+        });
 
+        flatpickr("#end_date", {
+            enableTime: true,
+            dateFormat: "d F Y, H:i",
+            time_24hr: true,
+            locale: 'id',
+            onChange: function(selectedDates, dateStr, instance) {
+                const formattedDate = instance.formatDate(selectedDates[0], "Y-m-d H:i:s"); 
+                document.getElementById('input_end_date').value = formattedDate; 
+            }
+        });
+    });
+    </script>

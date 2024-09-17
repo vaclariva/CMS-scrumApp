@@ -38,36 +38,45 @@ class ProductController extends Controller
     {
         $request->validate([
             'icon' => 'required|string',
-            'name'=> 'required',
-            'label'=> 'required',
-            'start_date'=> 'required|date',
-            'end_date'=> 'required|date|after_or_equal:start_date',
-            'user_id'=> 'required|exists:users,id',
+            'name' => 'required|string',
+            'label' => 'required|string',
+            'start_date' => 'required',
+            'end_date' => 'required|after_or_equal:start_date',
+            'user_id' => 'required|exists:users,id',
         ]);
 
-        try{
+        try {
             DB::beginTransaction();
-            Product::create($request->all());
+
+            Product::create([
+                'icon' => $request->icon,  
+                'name' => $request->name, 
+                'label' => $request->label,
+                'start_date' => $request->start_date, 
+                'end_date' => $request->end_date, 
+                'user_id' => $request->user_id, 
+            ]);
 
             DB::commit();
             return redirect()->route('product')->with('success', 'Produk berhasil ditambahkan');
-        }catch(\Exception $e) {
-            info($e);
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('product')->with('error', 'Gagal menghapus data. Silakan coba lagi.');
+            return redirect()->route('product')->with('error', 'Gagal menambahkan data. Silakan coba lagi.');
         }
     }
+
 
     /**
      * Display the specified resource.
      */
     
-     public function show($id)
+     public function show($productId)
     {
-        session()->put('last_page', url()->current());
+        $product = Product::findOrFail($productId);
+        $productOwner = $product->user()->first();   
+        $vision_boards = $product->vision_board; 
 
-        $product = Product::findOrFail($id);
-        return view('products.show', compact('product'));
+        return view('pages.detail-product', compact('productOwner', 'vision_boards', 'product'));
     }
 
 
@@ -90,7 +99,7 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-
+       
         $request->validate([
             'icon' => 'required',
             'name' => 'required',
@@ -105,9 +114,14 @@ class ProductController extends Controller
 
             $product = Product::findOrFail($id);
 
-            Log::info('Product found for update: ', $product->toArray());
-
-            $product->update($request->only(['name', 'label', 'start_date', 'end_date', 'user_id', 'icon']));
+            $product->update([
+            'icon' => $request->icon,
+            'name' => $request->name,
+            'label' => $request->label,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'user_id' => $request->user_id,
+        ]);
 
             DB::commit();
             return redirect()->route('product')->with('success', 'Produk berhasil diperbarui');

@@ -13,6 +13,9 @@
 
                 <input type="hidden" name="id" id="id"/>
                 <input type="hidden" id="icon" name="icon" value="" />
+                
+                <input type="hidden" id="formatted_start_date" name="start_date" value="{{ $product->start_date }}" />
+                <input type="hidden" id="formatted_end_date" name="end_date" value="{{ $product->end_date }}" /> 
 
                 <div class="form-group p-2">
                     <label class="text-sm" for="name"><strong>Nama</strong></label>
@@ -27,7 +30,7 @@
                                 </div>
                             </div>
                         </div>                        
-                    <input class="input" name="name" id="name" placeholder="Masukkan Nama Produk" type="text" required/>
+                    <input class="input" name="name" id="name" placeholder="Masukkan Nama Produk" type="text" value="{{$product->name}}" required/>
                     </div>
                 </div>
 
@@ -35,13 +38,19 @@
                     <label class="text-sm" for="label"><strong>Label</strong></label>
                     <div class="flex gap-2">
                         <label class="form-label flex items-center gap-2.5 text-nowrap">
-                            <input class="radio" name="label" id="internal_label" type="radio" value="internal"/>
+                            <input class="radio" name="label" id="internal_label" type="radio" value="Internal"
+                            {{ $product->label == 'Internal' ? 'checked' : '' }} />
                             Internal
-                            <input class="radio" name="label" id="eksternal_label" type="radio" value="eksternal"/>
-                            Eksternal 
+                        </label>
+                
+                        <label class="form-label flex items-center gap-2.5 text-nowrap">
+                            <input class="radio" name="label" id="eksternal_label" type="radio" value="Eksternal"
+                            {{ $product->label == 'Eksternal' ? 'checked' : '' }} />
+                            Eksternal
                         </label>
                     </div>
                 </div>
+                
 
                 <div class="form-group p-2">
                     <label class="text-sm" for="start_date"><strong>Tanggal Mulai</strong></label>
@@ -49,7 +58,7 @@
                         <span class="btn btn-icon btn-icon-lg btn-input">
                             <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                         </span>
-                        <input class="input" name="start_date" id="start_date" type="datetime-local" value="" required/>
+                        <input class="input" id="start_date" name="start_date_display" type="text" value="{{$product->start_date}}" required/>
                     </div>
                 </div>
 
@@ -59,7 +68,7 @@
                         <span class="btn btn-icon btn-icon-lg btn-input">
                             <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                         </span>
-                        <input class="input" name="end_date" id="end_date" type="datetime-local" value="" required/>
+                        <input class="input" id="end_date" name="end_date_display" type="text" value="{{$product->end_date}}" required/>
                     </div>
                 </div>
 
@@ -132,5 +141,30 @@
         });
     });
 });
-
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr("#start_date", {
+            enableTime: true,
+            dateFormat: "d F Y, H:i",  
+            time_24hr: true,
+            locale: 'id',
+            onChange: function(selectedDates, dateStr, instance) {
+                const formattedDate = instance.formatDate(selectedDates[0], "Y-m-d H:i:s"); 
+                document.getElementById('formatted_start_date').value = formattedDate; 
+            }
+        });
+
+        flatpickr("#end_date", {
+            enableTime: true,
+            dateFormat: "d F Y, H:i",
+            time_24hr: true,
+            locale: 'id',
+            onChange: function(selectedDates, dateStr, instance) {
+                const formattedDate = instance.formatDate(selectedDates[0], "Y-m-d H:i:s"); 
+                document.getElementById('formatted_end_date').value = formattedDate; 
+            }
+        });
+    });
+    </script>

@@ -21,7 +21,7 @@
                     <div class="relative">
                         <i class="ki-outline ki-magnifier leading-none text-md text-gray-500 absolute top-1/2 left-0 -translate-y-1/2 ml-3">
                         </i>
-                        <input class="input input-sm pl-8 rounded-full" placeholder="Cari" type="text"  id="searchInput"/>
+                        <input class="input input-sm pl-8 rounded-full h-10 px-10 bg-gray-900 border-gray-00" placeholder="Cari" type="text"  id="searchInput"/>
                     </div>
                 </div>
 
@@ -35,8 +35,8 @@
                     
                     @foreach ($products as $product)
                     <div class="flex justify-between">
-                        <div class="menu-item menu-item-accordion" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
-                            <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px]" tabindex="0" onclick="toggleAccordion(this)">
+                        <div class="menu-item menu-item-accordion" data-menu-id="{{ $product->id }}" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                            <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px]" tabindex="0">
                                 <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
                                     <i class="{{ $product->icon }}"></i>
                                 </span>
@@ -44,20 +44,24 @@
                                     {{$product->name}}
                                 </span>
                             </div>
-                            <div class="menu-accordion gap-0.5 pl-[10px] relative before:absolute before:left-[20px] before:top-0 before:bottom-0 before:border-l before:border-gray-200" style="display: none;">
-                                <div class="menu-item">
-                                    <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]" href="{{ route('detail-product', $product->id) }}" tabindex="0">
+                        
+                            <div class="menu-accordion gap-0.5 pl-[10px] relative before:absolute before:left-[20px] before:top-0 before:bottom-0 before:border-l before:border-gray-200 hidden">
+                                <div class="menu-item" id="menuProduct">
+                                    <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]"
+                                        href="{{ route('products.show', $product->id) }}" tabindex="0">
                                         <span class="menu-bullet flex w-[6px] relative before:absolute before:top-0 before:size-[6px] before:rounded-full before:-translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-primary menu-item-hover:before:bg-primary"></span>
-                                        <span class="menu-title text-2sm font-normal text-gray-500 menu-item-active:text-primary menu-item-active:font-semibold menu-link-hover:!text-primary" style="width: 120px;">
+                        
+                                        <span class="menu-title text-2sm font-bold text-gray-500 menu-item-active:text-primary menu-item-active:font-semibold">
                                             Product
                                         </span>
-                                    </span>
                                     </a>
                                 </div>
-                                <div class="menu-item">
-                                    <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]" href="{{ route('detail-product', $product->id) }}" tabindex="0">
+                                <div class="menu-item"  id="menuSprint">
+                                    <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]"
+                                        href="#" tabindex="0">
                                         <span class="menu-bullet flex w-[6px] relative before:absolute before:top-0 before:size-[6px] before:rounded-full before:-translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-primary menu-item-hover:before:bg-primary"></span>
-                                        <span class="menu-title text-2sm font-normal text-gray-500 menu-item-active:text-primary menu-item-active:font-semibold menu-link-hover:!text-primary">
+                        
+                                        <span class="menu-title text-2sm font-bold text-gray-500 menu-item-active:text-primary menu-item-active:font-semibold">
                                             Sprint
                                         </span>
                                     </a>
@@ -65,7 +69,7 @@
                             </div>
                         </div>
                         
-                        <div class="dropdown relative" data-dropdown="true" data-dropdown-trigger="click">
+                        <div class="dropdown relative" data-dropdown="true" data-dropdown-placement="bottom-end" data-dropdown-trigger="click">
                             <button class="dropdown-toggle btn  hover:text-gray-50" >
                                 <i class="ki-filled ki-dots-horizontal hover:text-gray-50"></i>
                             </button>
@@ -74,7 +78,7 @@
                                     <div class="menu-item">
                                         <a class="menu-link" id="edit_menu_item" onclick="openEditModal({id: {{ $product->id }}, name: '{{ $product->name }}', label: '{{ $product->label }}', start_date: '{{ $product->start_date }}', end_date: '{{ $product->end_date }}', user_id: '{{ $product->user_id }}', icon: '{{ $product->icon }}', url_update: '{{ route('product.update', $product->id) }}'})">
                                             <span class="menu-icon">
-                                                <i class="ki-filled ki-notepad-edit"></i>
+                                                <i class="ki-duotone ki-notepad-edit"></i>
                                             </span>
                                             <span class="menu-title">
                                                 Edit
@@ -84,7 +88,7 @@
                                     <div class="menu-item">
                                         <div class="flex items-center pl-5 menu-link">
                                             <span class="menu-icon">
-                                                <i class="ki-filled ki-copy"></i>
+                                                <i class="ki-duotone ki-copy"></i>
                                                 </i>
                                             </span>
                                             <form action="{{ route('product.duplicate', $product->id) }}" method="POST">
@@ -96,7 +100,7 @@
                                     <div class="menu-item">
                                         <a class="menu-link" id="delete_product" onclick="openDeleteModal({  id: '{{ $product->id }}', name: '{{ $product->name }}', url_delete: '{{ route('product.destroy', $product->id) }}'})">
                                             <span class="menu-icon">
-                                                <i class="ki-filled ki-trash"></i>
+                                                <i class="ki-duotone ki-trash"></i>
                                                 </i>
                                             </span>
                                             <span class="menu-title">
@@ -166,6 +170,32 @@
 @include('components.modal-edit-product')
 @include('components.confirm-delete-product')
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuProduct = document.getElementById('menuProduct');
+        const menuSprint = document.getElementById('menuSprint');
+        const menuItems = [menuProduct, menuSprint];
+
+        function toggleActiveClass(event) {
+            menuItems.forEach(item => item.classList.remove('active'));
+
+            event.currentTarget.classList.add('active');
+
+            sessionStorage.setItem('activeMenu', event.currentTarget.id);
+        }
+
+        menuItems.forEach(item => item.addEventListener('click', toggleActiveClass));
+
+        const activeMenuId = sessionStorage.getItem('activeMenu');
+        if (activeMenuId) {
+            const activeMenuItem = document.getElementById(activeMenuId);
+            if (activeMenuItem) {
+                activeMenuItem.classList.add('active');
+            }
+        }
+    });
+</script>
 
 <script>
     document.getElementById('searchInput').addEventListener('input', function() {

@@ -69,15 +69,6 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <script>
-            flatpickr("#datepicker", {
-                enableTime: true,
-                dateFormat: "d F Y, H:i",
-                time_24hr: true,
-                locale: 'id',
-            });
-        </script>
-
-        <script>
             toastr.options = {
               "closeButton": true,
               "escapeHtml": false,
@@ -134,16 +125,21 @@
             });
         </script>
 
+
         <script>
             function formatDateTimeForInput(dateString) {
                 var date = new Date(dateString);
-                var year = date.getFullYear();
-                var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                
                 var day = ('0' + date.getDate()).slice(-2);
+                var monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                var month = monthNames[date.getMonth()]; 
+                var year = date.getFullYear();
+                
                 var hour = ('0' + date.getHours()).slice(-2);
                 var minute = ('0' + date.getMinutes()).slice(-2);
-                return `${year}-${month}-${day}T${hour}:${minute}`;
-            }
+
+                return `${day} ${month} ${year}, ${hour}:${minute}`;
+            } 
 
             function openEditModal(data) {
                 console.log('Data:', data);

@@ -5,6 +5,7 @@
         <title>{{ config('app.name', 'App') }} - @yield('title')</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <link href="{{ asset('metronic/dist/assets/media/app/apple-touch-icon.png') }}" rel="apple-touch-icon" sizes="180x180"/>
         <link href="{{ asset('metronic/dist/assets/media/app/favicon-32x32.png') }}" rel="icon" sizes="32x32" type="image/png"/>
         <link href="{{ asset('metronic/dist/assets/media/app/favicon-16x16.png') }}" rel="icon" sizes="16x16" type="image/png"/>
@@ -18,9 +19,11 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
         @yield('blockhead')
     </head>
-    <body class="flex h-full demo1 sidebar-fixed header-fixed bg-[#fefefe] dark:bg-coal-500">
+    <body class="flex h-full demo1 sidebar-fixed header-fixed bg-white dark:bg-coal-500">
         <script>
             const defaultThemeMode = 'light';
             let themeMode;
@@ -47,7 +50,7 @@
             
             <div class="wrapper flex grow flex-col">
                 @include('layouts.header-product')
-                <main class="grow content pt-5" id="content" role="content">
+                <main class="grow content pt-5 bg-gray-100" id="content" role="content">
                     <div class="container-fixed" id="content_container"></div>
                     @yield('content')
                 </main>
@@ -59,7 +62,8 @@
         
         
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="{{ asset('metronic/dist/assets/js/core.bundle.js') }}"></script>
         <script src="{{ asset('metronic/dist/assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
@@ -67,7 +71,7 @@
         <script src="{{ asset('metronic/dist/assets/js/layouts/demo1.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
         <script>
             toastr.options = {
@@ -129,15 +133,19 @@
         </script>
 
         <script>
-            function formatDateTimeForInput(dateString) {
+               function formatDateTimeForInput(dateString) {
                 var date = new Date(dateString);
-                var year = date.getFullYear();
-                var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                
                 var day = ('0' + date.getDate()).slice(-2);
+                var monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                var month = monthNames[date.getMonth()]; 
+                var year = date.getFullYear();
+                
                 var hour = ('0' + date.getHours()).slice(-2);
                 var minute = ('0' + date.getMinutes()).slice(-2);
-                return `${year}-${month}-${day}T${hour}:${minute}`;
-            }
+
+                return `${day} ${month} ${year}, ${hour}:${minute}`;
+            } 
 
             function openEditModal(data) {
                 console.log('Data:', data);

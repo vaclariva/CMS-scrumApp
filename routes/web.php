@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         
-    Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
+    Route::get('/user', [UserController::class, 'index'])->name('user');
     Route::post('/search', [UserController::class, 'search'])->name('search');
     Route::post('/user', [UserController::class, 'store'])->name('user.store');
     Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/add-product', [ProductController::class, 'index'])->name('product');
     Route::post('/add-product', [ProductController::class, 'store'])->name('product.store');
-    Route::get('products/{id}', [ProductController::class, 'show'])->name('product.show');
+    Route::get('products/{productId}', [ProductController::class, 'show'])->name('products.show');
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
     Route::post('/product/{product}/duplicate', [ProductController::class, 'duplicate'])->name('product.duplicate');
@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/make-password', function () {return view('auth.make-password');})->name('make-password');
 
 Route::get('/success-send-email', function () {return view('auth.success-send-email');});
 

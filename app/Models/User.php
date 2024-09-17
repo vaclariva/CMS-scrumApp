@@ -11,6 +11,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
+use App\Notifications\Auth\CreatePasswordNotification;
+use Illuminate\Support\Facades\Password;
 
 class User extends Authenticatable
 {
@@ -86,6 +88,13 @@ class User extends Authenticatable
             Storage::disk('public')->delete($this->image);
         }
         $this->update(['image' => null]);
+    }
+
+    public function sendCreatePasswordNotification(): void
+    {
+        $url = route('password.reset', ['token' => Password::createToken($this), 'email' => $this->email]);
+
+        $this->notify(new CreatePasswordNotification($url, $this));
     }
 }
 

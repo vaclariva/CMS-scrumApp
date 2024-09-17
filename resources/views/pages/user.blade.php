@@ -11,7 +11,7 @@
 
 @section('content')
 
-    <div class="container mx-auto px-4 lg:px-8">
+    <div class="container mx-auto lg:px-8">
         <div class="flex flex-wrap items-center lg:items-end justify-between gap-5 pb-7.5">
             <div class="flex flex-col justify-center gap-2">
                 <h1 class="text-xl font-semibold leading-none text-gray-900 mt-5">
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="container mx-auto px-4 lg:px-8 mb-10">
+    <div class="container mx-auto lg:px-8 mb-10">
         <div class="grid">
             <div class="card card-grid min-w-full">
                 <div class="card-header py-5 flex-wrap">
@@ -110,7 +110,7 @@
                                                     <div class="flex justify-start items-center gap-3">
                                                         <div class="menu-toggle btn btn-icon rounded-full">
                                                             @if($user->image_path)
-                                                                <img src="{{ asset($user->image_path) }}" alt="User Image" class="w-10 h-10 rounded-full object-cover">
+                                                            <img src="{{ asset($user->image_path) }}" alt="User Image" class="w-10 h-10 rounded-full object-cover">
                                                             @else
                                                                 <img src="{{ asset('metronic/dist/assets/media/avatars/blank.png') }}" alt="Default Image" class="w-10 h-10 rounded-full object-cover">
                                                             @endif
@@ -230,26 +230,27 @@
     </script>
     
     <script type="text/javascript">
-$('#search').on('keyup', function() {
-    var searchValue = $(this).val();
-    let datatable = KTDataTable.getInstance(document.getElementById('datatable_1')); 
-    datatable.search(searchValue);
-
-    // Event listener untuk ketika datatable selesai diperbarui (pencarian, filter, dsb.)
-    datatable.on('datatable-on-layout-updated', function() {
-        // Menghitung jumlah baris setelah pencarian, dan mengabaikan baris dengan teks "No records found"
-        var rowCount = $('#datatable_1 tbody tr').filter(function() {
-            return !$(this).find('td').text().includes('No records found');
-        }).length;
-
-        $('#currentTotalUser').text(rowCount + ' pengguna');
-
-        // Jika tidak ada hasil, tampilkan pesan khusus
-        if (rowCount === 0) {
-            $('#datatable_1 tbody').html('<tr><td colspan="5" class="text-center">Tidak ada pengguna yang ditemukan.</td></tr>');
-        }
-    });
-});
-
-    </script>
+        $('#search').on('keyup', function() {
+            var searchValue = $(this).val();
+            let datatable = KTDataTable.getInstance(document.getElementById('datatable_1')); 
+            datatable.search(searchValue);
+        
+            // Event listener untuk ketika datatable selesai diperbarui (pencarian, filter, dsb.)
+            datatable.on('datatable-on-layout-updated', function() {
+                // Menghitung jumlah baris setelah pencarian, dan mengabaikan baris dengan teks "No records found"
+                var rowCount = $('#datatable_1 tbody tr').filter(function() {
+                    return !$(this).find('td').text().includes('No records found');
+                }).length;
+        
+                $('#currentTotalUser').text(rowCount + ' pengguna');
+        
+                // Jika tidak ada hasil, tampilkan pesan khusus
+                if (rowCount === 0) {
+                    $('#datatable_1 tbody').html('<tr><td colspan="5" class="text-center">Tidak ada pengguna yang ditemukan.</td></tr>');
+                }
+            });
+        });
+        
+            </script>
+        
 @endsection

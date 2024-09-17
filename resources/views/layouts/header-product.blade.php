@@ -1,5 +1,5 @@
-<header class="header header-product fixed top-0 z-10 left-0 right-0 flex items-stretch shrink-0 bg-[#fefefe] dark:bg-coal-500 border-b border-red-700 dark:border-coal-100" id="header">
-    <div class="container mx-auto px-4 lg:px-8 flex justify-between items-stretch lg:gap-4" id="header_container">
+<header class="header header-product fixed top-0 z-10 left-0 right-0 flex items-stretch shrink-0 bg-white dark:bg-coal-500 border-b border-red-700 dark:border-coal-100" id="header">
+    <div class="container mx-auto lg:px-8 flex justify-between items-stretch lg:gap-4" id="header_container">
         <div class="flex gap-1 lg:hidden items-center -ml-1">
             <a class="shrink-0" href="html/demo1.html">
                 <img class="max-h-[25px] w-full" src="{{ asset('metronic/dist/assets/media/app/mini-logo.svg') }}"/>
@@ -13,8 +13,6 @@
             </button>
             </div>
         </div>
-
-       
        
         <div class="flex items-stretch" id="megamenu_container">
             <div class="flex items-stretch" data-reparent="true" data-reparent-mode="prepend|lg:prepend" data-reparent-target="body|lg:#megamenu_container">
@@ -23,6 +21,7 @@
                         <div class="menu-item active">
                             <div class="items-center">
                                 <div class="flex items-center gap-2.5">
+                                    <i class="{{ $product->icon }} mt-5"></i>
                                     <h3 class="text-xl font-semibold text-gray-900 leading-none mt-5 pr-5">
                                         {{ $product->name }}
                                     </h3>

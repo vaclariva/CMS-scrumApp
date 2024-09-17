@@ -10,8 +10,6 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $table = 'product';
-
     protected $fillable =[
       'icon',
       'name',
@@ -32,5 +30,10 @@ class Product extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function vision_board()
+    {
+        return $this->hasMany(VisionBoard::class);
     }
 }

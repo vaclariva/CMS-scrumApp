@@ -1,5 +1,5 @@
 <header class="header fixed top-0 z-10 left-0 right-0 flex items-stretch shrink-0 bg-[#fefefe] dark:bg-coal-500 border-b border-gray-300 dark:border-coal-100" id="header">
-    <div class="container mx-auto px-4 lg:px-8 flex justify-between items-stretch lg:gap-4" id="header_container">
+    <div class="container mx-auto lg:px-8 flex justify-between items-stretch lg:gap-4" id="header_container">
         <div class="flex gap-1 lg:hidden items-center -ml-1">
             <a class="shrink-0" href="html/demo1.html">
                 <img class="max-h-[25px] w-full" src="{{ asset('metronic/dist/assets/media/app/mini-logo.svg') }}"/>
