@@ -112,7 +112,7 @@ table td[colspan="5"] {
 }
 
 .card-body-vision.show {
-    max-height: 500px; 
+    max-height: 10000px; 
     padding: 1rem; 
 }
 
@@ -130,10 +130,11 @@ table td[colspan="5"] {
     gap: 4rem;
 }
 
-/* ------------VISION BOARDS-------------- */
+/* ------------CARDS-------------- */
 .board-title{
     font-weight: 800;
 }
 .board-sub{
-    padding: 1.5rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
 }
