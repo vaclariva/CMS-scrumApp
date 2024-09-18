@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\VisionBoard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VisionBoardController extends Controller
 {
@@ -13,13 +14,10 @@ class VisionBoardController extends Controller
      */
     public function index($productId)
     {
-        // Temukan product berdasarkan productId
         $product = Product::findOrFail($productId);
         
-        // Ambil semua vision_boards yang berhubungan dengan produk tersebut
-        $vision_boards = $product->vision_board; // Harus tanpa kurung karena relasi hasMany
+        $vision_boards = $product->vision_board; 
 
-        // Kirimkan ke view
         return view('pages.detail-product', compact('vision_boards', 'product'));
     }
 
@@ -34,34 +32,51 @@ class VisionBoardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $productId)
+    public function store(Request $request, $product_id)
     {
-        // Validasi input
+        //dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
-            // Tambahkan validasi lain jika diperlukan
+            'vision' => 'required|string',
+            'target_group' => 'required|string',
+            'needs' => 'required|string',
+            'product' => 'required|string',
+            'business_goals' => 'required|string',
+            'competitors' => 'required|string',
         ]);
 
-        // Temukan produk berdasarkan ID
-        $product = Product::findOrFail($productId);
+        DB::beginTransaction();
 
-        // Buat dan simpan vision board baru yang terkait dengan produk
-        $vision_board = new VisionBoard([
-            'name' => $request->input('name'),
-            // Kolom lain yang diperlukan
-        ]);
+        try {
+            VisionBoard::create([
+                'name' => $request->input('name'),
+                'vision' => $request->input('vision'),
+                'target_group' => $request->input('target_group'),
+                'needs' => $request->input('needs'),
+                'product' => $request->input('product'),
+                'business_goals' => $request->input('business_goals'),
+                'competitors' => $request->input('competitors'),
+                'product_id' => $product_id,  
+            ]);
 
-        $product->vision_board()->save($vision_board); // Simpan vision_board melalui relasi product
+            DB::commit();
 
-        return redirect()->route('vision_boards.index', $productId)->with('success', 'Vision Board added successfully');
+            return redirect()->route('pages.detail-product', $product_id)
+                            ->with('success', 'Vision Board berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Failed to create Vision Board. Please try again.']);
+        }
     }
+
+
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        //c
     }
 
     /**

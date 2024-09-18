@@ -6,9 +6,17 @@
     <div class="flex-1 p-6 bg-white shadow-lg border-r border-gray-300">
         <div class="flex justify-between bg-white ml-4 py-5 px-10 lg:px-8">
             <h1 class="text-xl font-semibold pl-2 mt-1">Vision Board</h1>
-            <a class="btn btn-lg btn-primary rounded-full hover:text-sky-700" data-modal-toggle="#modal_6_1">
-                <span class="svg-icon svg-icon-primary svg-icon-2x">
-                </span>
+            @include('components.modal-create-vision-boards', ['product_id' => $product->id])
+            <a class="btn btn-lg btn-primary rounded-full hover:text-sky-700" data-modal-toggle="#modal_draggable">
+                <span class="svg-icon svg-icon-primary svg-icon-2x"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
+                    <title>Stockholm-icons / Navigation / Plus</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs/>
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect fill="#FFFFFF" x="4" y="11" width="16" height="2" rx="1"/>
+                        <rect fill="#FFFFFF" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
+                    </g>
+                </svg></span>
                 Buat Baru
             </a>
         </div>
@@ -21,8 +29,15 @@
             <h1 class="text-xl font-semibold px-2 mt-1">Backlog</h1>
             <div class="flex gap-2">
                 <a class="btn btn-lg btn-primary rounded-full hover:text-sky-700" data-modal-toggle="#modal_6_1">
-                    <span class="svg-icon svg-icon-primary svg-icon-2x">
-                    </span>
+                    <span class="svg-icon svg-icon-primary svg-icon-2x"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
+                        <title>Stockholm-icons / Navigation / Plus</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs/>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect fill="#FFFFFF" x="4" y="11" width="16" height="2" rx="1"/>
+                            <rect fill="#FFFFFF" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
+                        </g>
+                    </svg></span>
                     Buat Baru
                 </a>
                 <div class="btn-tabs rounded-full">
@@ -38,7 +53,7 @@
     </div>
 </div>
 
-<div class="grid grid-cols-2 gap-6 mt-5 mr-5 ml-5">
+<div class="grid grid-cols-2 gap-10 mt-5 mr-5 ml-5">
     <div class="vision-board-section space-y-5">
         @foreach ($vision_boards as $item)
             <div class="vision-board">
@@ -116,15 +131,15 @@
         @endforeach
     </div>
 
-    <div class="backlog-section space-y-5">
-            <div class="backlog">
-                <div class="card">
-                    <div class="card-body-backlog">
-                        <p>backlog</p>
-                    </div>
+    <!--<div class="backlog-section space-y-5">
+        <div class="backlog">
+            <div class="card">
+                <div class="card-body-backlog">
+                    <p>backlog</p>
                 </div>
             </div>
-    </div>
+        </div>
+    </div>-->
 </div>
 
 @endsection

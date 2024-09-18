@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DetailProductController;
+use App\Http\Controllers\VisionBoardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -37,9 +38,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/detail-products/{product}', [DetailProductController::class, 'index'])->name('detail-product');
 
+    Route::post('/detail-product/{product_id}', [VisionBoardController::class, 'store'])->name('vision-board.store');
+
     Route::get('/icons', function () {
     $icons = Storage::get('icons.json');
     return response()->json(json_decode($icons, true));
+
 });
 });
 

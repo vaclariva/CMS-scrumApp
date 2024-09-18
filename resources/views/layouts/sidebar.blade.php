@@ -17,13 +17,18 @@
         <div class="scrollable-y-hover grow shrink-0 flex pl-2 lg:pl-5 pr-1 lg:pr-3" data-scrollable="true" data-scrollable-dependencies="#sidebar_header" data-scrollable-height="auto" data-scrollable-offset="0px" data-scrollable-wrappers="#sidebar_content" id="sidebar_scrollable">
             <div class="menu flex flex-col grow gap-0.5" data-menu="true" data-menu-accordion-expand-all="false" id="sidebar_menu">
                 
-                <div class="flex justify-center gap-6">
+                <div class="flex justify-center gap-10">
                     <div class="relative">
-                        <i class="ki-outline ki-magnifier leading-none text-md text-gray-500 absolute top-1/2 left-0 -translate-y-1/2 ml-3">
-                        </i>
-                        <input class="input input-sm pl-8 rounded-full h-10 px-10 bg-gray-900 border-gray-00" placeholder="Cari" type="text"  id="searchInput"/>
+                        <i class="ki-outline ki-magnifier leading-none text-md text-gray-500 absolute top-1/2 left-0 -translate-y-1/2 ml-3"></i>
+                        <input 
+                            class="input input-sm pl-10 rounded-full h-10 px-10 bg-gray-800 border-none text-gray-500 placeholder-gray-500 text-md" 
+                            placeholder="Cari" 
+                            type="text"  
+                            id="searchInput"
+                            style="background-color:#212135; color: #a1a3a8" 
+                        />                    
                     </div>
-                </div>
+                </div>                
 
                 <div class="menu-item" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                     <div class="menu-item pt-2.25 pb-px">
@@ -70,8 +75,8 @@
                         </div>
                         
                         <div class="dropdown relative" data-dropdown="true" data-dropdown-placement="bottom-end" data-dropdown-trigger="click">
-                            <button class="dropdown-toggle btn  hover:text-gray-50" >
-                                <i class="ki-filled ki-dots-horizontal hover:text-gray-50"></i>
+                            <button class="dropdown-toggle menu-sidebar btn " >
+                                <i class="ki-filled ki-dots-horizontal text-gray-900 "></i>
                             </button>
                             <div class="dropdown-content absolute left-0 mt-2 w-full max-w-56 py-2 bg-white shadow-lg z-10">
                                 <div class="menu menu-default flex flex-col w-full">

@@ -13,6 +13,7 @@ class VisionBoard extends Model
     protected $table = 'vision_boards';
 
     protected $fillable =[
+      'name',
       'vision',
       'target_group',
       'needs',
