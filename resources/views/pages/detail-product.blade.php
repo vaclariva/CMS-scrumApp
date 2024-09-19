@@ -6,21 +6,29 @@
     <div class="flex-1 p-6 bg-white shadow-lg border-r border-gray-300">
         <div class="flex justify-between bg-white ml-4 py-5 px-10 lg:px-8">
             <h1 class="text-xl font-semibold pl-2 mt-1">Vision Board</h1>
-            @include('components.modal-create-vision-boards', ['product_id' => $product->id])
-            <a class="btn btn-lg btn-primary rounded-full hover:text-sky-700" data-modal-toggle="#modal_draggable">
-                <span class="svg-icon svg-icon-primary svg-icon-2x"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
-                    <title>Stockholm-icons / Navigation / Plus</title>
-                    <desc>Created with Sketch.</desc>
-                    <defs/>
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <rect fill="#FFFFFF" x="4" y="11" width="16" height="2" rx="1"/>
-                        <rect fill="#FFFFFF" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
-                    </g>
-                </svg></span>
+            <a class="btn btn-lg btn-primary rounded-full hover:text-sky-700" id="createVisionBoardBtn">
+                <span class="svg-icon svg-icon-primary svg-icon-2x">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
+                        <title>Stockholm-icons / Navigation / Plus</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs/>
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect fill="#FFFFFF" x="4" y="11" width="16" height="2" rx="1"/>
+                            <rect fill="#FFFFFF" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
+                        </g>
+                    </svg>
+                </span>
                 Buat Baru
             </a>
         </div>
     </div>
+    
+    <form id="hiddenForm" style="display: none;" method="POST" action="{{ route('vision-board.store') }}">
+        @csrf
+        <input type="hidden" id="productIdField" name="product_id">
+        <input type="hidden" name="name" value="Untitled">
+        <button type="submit" id="hiddenSubmitButton">Kirim</button>
+    </form>    
 
     <div class="w-px bg-gray-700 mx-4 h-full"></div>
 
@@ -61,7 +69,8 @@
                     <div class="card-header">
                         <h3 class="card-title">{{ $item->name }}</h3>
                         <div class="flex gap-2 items-center">
-                            <a class="menu-link" id="edit_menu_item">
+                            @include('components.modal.modal-edit-vision-boards')
+                            <a class="menu-link" data-modal-toggle="#modal_draggable">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-notepad-edit text-xl"></i>
                                 </span>
@@ -155,3 +164,18 @@
         });
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var productId = @json($product->id);
+
+        document.getElementById('createVisionBoardBtn').addEventListener('click', function() {
+            document.getElementById('productIdField').value = productId;
+
+            var form = document.getElementById('hiddenForm');
+ 
+            form.submit();
+        });
+    });
+</script>
+

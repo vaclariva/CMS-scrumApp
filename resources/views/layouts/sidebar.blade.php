@@ -172,8 +172,8 @@
 </div>
 
 
-@include('components.modal-edit-product')
-@include('components.confirm-delete-product')
+@include('components.modal.modal-edit-product')
+@include('components.modal.confirm-delete-product')
 
 
 <script>

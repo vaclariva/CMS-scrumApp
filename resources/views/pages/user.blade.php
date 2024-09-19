@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-2.5 text-lg">
-                @include('components.modal-create-user')
+                @include('components.modal.modal-create-user')
                 <a class="btn btn-sm btn-primary rounded-full hover:text-sky-700" data-modal-toggle="#modal_6_1">
                 <i class="ki-duotone ki-plus-circle"></i>
                     Tambah Pengguna
@@ -116,7 +116,7 @@
                                                             @endif
                                                         </div>
                                                         <div>
-                                                            @include('components.modal-edit-user')
+                                                            @include('components.modal.modal-edit-user')
                                                             <a class="text-primary cursor-pointer" data-modal-toggle="#modal_user_{{ $user->id }}">
                                                                 {{ $user->name }}
                                                             </a>
@@ -130,7 +130,7 @@
                                                     {{ $user->role }}
                                                 </td>
                                                 <td>
-                                                    @include('components.confirm-delete-user')
+                                                    @include('components.modal.confirm-delete-user')
                                                     <button type="button" class="btn btn-sm btn-icon btn-clear btn-light" 
                                                             data-modal-toggle="#delete_user{{ $user->id }}" 
                                                             data-url="{{ route('user.destroy', $user->id) }}">

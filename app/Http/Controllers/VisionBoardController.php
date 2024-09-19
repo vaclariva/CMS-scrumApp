@@ -15,8 +15,7 @@ class VisionBoardController extends Controller
     public function index($productId)
     {
         $product = Product::findOrFail($productId);
-        
-        $vision_boards = $product->vision_board; 
+        $vision_boards = $product->vision_boards; 
 
         return view('pages.detail-product', compact('vision_boards', 'product'));
     }
@@ -32,42 +31,21 @@ class VisionBoardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $product_id)
-    {
-        //dd($request->all());
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'vision' => 'required|string',
-            'target_group' => 'required|string',
-            'needs' => 'required|string',
-            'product' => 'required|string',
-            'business_goals' => 'required|string',
-            'competitors' => 'required|string',
-        ]);
+// VisionBoardController.php
+public function store(Request $request)
+{
+    $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'name' => 'required|string|max:255',
+    ]);
 
-        DB::beginTransaction();
+    VisionBoard::create([
+        'product_id' => $request->product_id,
+        'name' => $request->name,
+    ]);
 
-        try {
-            VisionBoard::create([
-                'name' => $request->input('name'),
-                'vision' => $request->input('vision'),
-                'target_group' => $request->input('target_group'),
-                'needs' => $request->input('needs'),
-                'product' => $request->input('product'),
-                'business_goals' => $request->input('business_goals'),
-                'competitors' => $request->input('competitors'),
-                'product_id' => $product_id,  
-            ]);
-
-            DB::commit();
-
-            return redirect()->route('pages.detail-product', $product_id)
-                            ->with('success', 'Vision Board berhasil ditambahkan.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Failed to create Vision Board. Please try again.']);
-        }
-    }
+    return redirect()->back()->with('success', 'Vision board berhasil ditambahkan');
+}
 
 
 
@@ -92,23 +70,31 @@ class VisionBoardController extends Controller
      */
     public function update(Request $request, $productId, $id)
     {
-        // Validasi input
         $request->validate([
             'name' => 'required|string|max:255',
-            // Validasi lainnya jika diperlukan
+            'vision' => 'nullable|string',
+            'target_group' => 'nullable|string',
+            'needs' => 'nullable|string',
+            'product' => 'nullable|string',
+            'business_goals' => 'nullable|string',
+            'competitors' => 'nullable|string',
         ]);
 
-        // Temukan vision board berdasarkan ID
         $vision_board = VisionBoard::findOrFail($id);
 
-        // Update vision board dengan data baru
         $vision_board->update([
-            'name' => $request->input('name'),
-            // Kolom lain yang ingin diperbarui
+            'name' => $request->name,
+            'vision' => $request->vision,
+            'target_group' => $request->target_group,
+            'needs' => $request->needs,
+            'product' => $request->product,
+            'business_goals' => $request->business_goals,
+            'competitors' => $request->competitors,
         ]);
 
-        return redirect()->route('vision_boards.index', $productId)->with('success', 'Vision Board updated successfully');
+        return redirect()->route('vision-board.update', $productId)->with('success', 'Vision Board berhasil diperbarui');
     }
+
 
 
     /**

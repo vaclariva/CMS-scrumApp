@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         $users = User::all();
-        $products = Product::all();
+        $products = Product::latest()->get();
         info($products);
         return view('pages.add-product', compact('users', 'products'));
     }
@@ -158,7 +158,7 @@ class ProductController extends Controller
         try {
             info($product);
             $newProduct = Product::create([
-                'name' => $product->name, 
+                'name' => $product->name . " Copy", 
                 'icon' => $product->icon,
                 'label' => $product->label,
                 'start_date' => $product->start_date,

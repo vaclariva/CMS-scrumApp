@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id(); 
 
             $table->text('name'); 
-            $table->text('vision'); 
-            $table->text('target_group'); 
-            $table->text('needs'); 
-            $table->text('product'); 
-            $table->text('business_goals'); 
-            $table->text('competitors'); 
+            $table->text('vision')->nullable();
+            $table->text('target_group')->nullable(); 
+            $table->text('needs')->nullable();
+            $table->text('product')->nullable();
+            $table->text('business_goals')->nullable();
+            $table->text('competitors')->nullable();
 
             $table->foreignId('product_id')->constrained('products') ->onDelete('cascade'); 
 

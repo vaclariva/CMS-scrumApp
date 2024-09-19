@@ -4,7 +4,7 @@
     </h1>
 
     <p>
-        Anda telah didaftarkan sebagai {{ $user->role }} pada  Management Produk Owner. 
+        Anda telah didaftarkan sebagai {{ $user->role }} pada  Dharma Trikarya. 
         <br/>Agar dapat login untuk pertama kalinya, silahkan buat password  
         <br/>terlebih dahulu melalui tombol di bawah ini.
     </p>

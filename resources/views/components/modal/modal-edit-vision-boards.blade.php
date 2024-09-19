@@ -14,9 +14,9 @@
             </button>
         </div>
         <div class="modal-body mt-4 max-h-[70vh] overflow-y-auto">
-            <form action="{{ route('vision-board.store', ['product_id' => $product_id]) }}" method="POST">
+            <form action="{{ route('vision-board.store') }}" method="POST">
                 @csrf
-                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-bold mb-2">Title</label>
                     <input id="name" name="name" class="w-full py-2 px-3 text-sm rounded-md shadow-sm" type="text" placeholder="Enter title" required />

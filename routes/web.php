@@ -38,7 +38,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/detail-products/{product}', [DetailProductController::class, 'index'])->name('detail-product');
 
-    Route::post('/detail-product/{product_id}', [VisionBoardController::class, 'store'])->name('vision-board.store');
+    Route::post('/detail-product', [VisionBoardController::class, 'store'])->name('vision-board.store');
+    Route::put('/detail-product/{productId}/vision-board/{id}', [VisionBoardController::class, 'update'])->name('vision-board.update');
 
     Route::get('/icons', function () {
     $icons = Storage::get('icons.json');

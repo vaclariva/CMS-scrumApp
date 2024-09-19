@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        @include('components.modal-create-product', ['route' => route('product.store')])
+        @include('components.modal.modal-create-product', ['route' => route('product.store')])
         
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
