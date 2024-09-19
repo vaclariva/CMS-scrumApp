@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -23,19 +25,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('role')->get();
         $totalUser = User::count();
-
-        //foreach($users as $user){
-
-          //  $productUser = $user->products()->get();
-           // info($productUser);
-       // }
-
         info(auth()->user());
 
         return view('pages.user', compact('users', 'totalUser'));
-
     }
 
     /**
@@ -50,14 +44,18 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
 
-     public function store(Request $request)
+    public function store(Request $request)
     {
+
+        // return response()->json([
+        //     'data' => $request->all()
+        // ], 200);
         try {
             info($request->all());
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email|max:255',
-                'role' => 'required|string|max:255',
+                'role_id' => 'required|string|max:255',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ]);
 
@@ -66,7 +64,7 @@ class UserController extends Controller
             $user = User::create(array_merge(
                 Arr::except($validatedData, ['image'])
             ));
-            
+
             if ($request->hasFile('image')) {
                 $user->update([
                     'image' => $this->uploadFile($request->file('image')),
@@ -76,15 +74,13 @@ class UserController extends Controller
             $user->sendCreatePasswordNotification();
 
             return response()->json(['success' => 'Berhasil disimpan.']);
-
         } catch (ValidationException $e) {
-            $errors = $e->validator->errors()->first('email'); 
+            $errors = $e->validator->errors()->first('email');
             Log::error('Failed to save user: ' . $errors);
-            return response()->json(['error' => $errors], 422);
-
+            return response()->json(['error' => $e], 422);
         } catch (\Exception $e) {
             Log::error('Failed to save user: ' . $e->getMessage());
-            return response()->json(['error' => 'Gagal disimpan'], 500);
+            return response()->json(['error' => $e], 500);
         }
     }
 
@@ -103,7 +99,6 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::findOrFail($id);
-        
     }
 
     /**
@@ -120,13 +115,12 @@ class UserController extends Controller
             ]);
 
             $user->update(Arr::except($validatedData, ['image']));
-            
+
             if ($request->hasFile('image')) {
                 $this->deleteFile($user->image);
                 $user->update([
                     'image' => $this->uploadFile($request->file('image')),
                 ]);
-
             } elseif ($request->avatar_remove) {
                 $user->update([
                     'image' => $this->deleteFile($user->getRawOriginal('image'))
@@ -134,9 +128,8 @@ class UserController extends Controller
             }
 
             return redirect()->route('user')->with('success', 'Berhasil diperbarui.');
-
-            } catch (\Exception $e) {
-                Log::error($e->getMessage());
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return redirect()->route('user')->with('error', 'Gagal diperbarui.');
         }
     }
@@ -156,7 +149,6 @@ class UserController extends Controller
 
             $user->delete();
             return redirect()->route('user')->with('success', 'Berhasil menghapus.');
-
         } catch (\Exception $e) {
             return redirect()->route('user')->with('error', 'Gagal menghapus.');
         }

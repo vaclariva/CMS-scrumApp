@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DetailProductController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VisionBoardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -12,15 +13,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {return view('dashboard');
+Route::get('/dashboard', function () {
+    return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/role', [RoleController::class, 'index'])->name('role.index');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        
+
     Route::get('/user', [UserController::class, 'index'])->name('user');
     Route::post('/search', [UserController::class, 'search'])->name('search');
     Route::post('/user', [UserController::class, 'store'])->name('user.store');
@@ -42,19 +46,23 @@ Route::middleware('auth')->group(function () {
     Route::put('/detail-product/{productId}/vision-board/{id}', [VisionBoardController::class, 'update'])->name('vision-board.update');
 
     Route::get('/icons', function () {
-    $icons = Storage::get('icons.json');
-    return response()->json(json_decode($icons, true));
-
+        $icons = Storage::get('icons.json');
+        return response()->json(json_decode($icons, true));
+    });
 });
+
+require __DIR__ . '/auth.php';
+
+Route::get('/make-password', function () {
+    return view('auth.make-password');
+})->name('make-password');
+
+Route::get('/success-send-email', function () {
+    return view('auth.success-send-email');
 });
 
-require __DIR__.'/auth.php';
-
-Route::get('/make-password', function () {return view('auth.make-password');})->name('make-password');
-
-Route::get('/success-send-email', function () {return view('auth.success-send-email');});
-
-Route::get('/success-reset', function () {return view('auth.success-reset');})->name('success-reset');
+Route::get('/success-reset', function () {
+    return view('auth.success-reset');
+})->name('success-reset');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-

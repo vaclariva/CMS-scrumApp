@@ -4,19 +4,19 @@
     </h1>
 
     <p>
-        Anda telah didaftarkan sebagai {{ $user->role }} pada  Dharma Trikarya. 
-        <br/>Agar dapat login untuk pertama kalinya, silahkan buat password  
-        <br/>terlebih dahulu melalui tombol di bawah ini.
+        Anda telah didaftarkan sebagai {{ $user->role->name }} pada Dharma Trikarya.
+        <br />Agar dapat login untuk pertama kalinya, silahkan buat password
+        <br />terlebih dahulu melalui tombol di bawah ini.
     </p>
-    
+
 
     <center>
         <a type="button" class="tbr_btn mb-6" href="{{ $url }}">Buat Password</a>
     </center>
 
     <p>
-        Apabila tidak mengiginkan menjadi {{ $user->role }} pada sistem kami,
-        <br/>tindakan lebih lanjut yang diperlukan.
+        Apabila tidak menginginkan menjadi {{ $user->role->name }} pada sistem kami,
+        <br />tindakan lebih lanjut yang diperlukan.
     </p>
 
     <div>

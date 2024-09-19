@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
 use App\Notifications\Auth\CreatePasswordNotification;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Password;
 
 class User extends Authenticatable
@@ -26,9 +27,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'role',
+        'role_id',
         'image',
-        'password',
     ];
 
     /**
@@ -67,14 +67,19 @@ class User extends Authenticatable
     protected function imagePath(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->image != null
-            ? (
-                $this->isImagePathExist($this->image)
-                ? Storage::url($this->image)
+            get: fn() => $this->image != null
+                ? (
+                    $this->isImagePathExist($this->image)
+                    ? Storage::url($this->image)
+                    : false
+                )
                 : false
-            )
-            : false
         );
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
     }
 
     public function products(): HasMany
@@ -97,5 +102,3 @@ class User extends Authenticatable
         $this->notify(new CreatePasswordNotification($url, $this));
     }
 }
-
-

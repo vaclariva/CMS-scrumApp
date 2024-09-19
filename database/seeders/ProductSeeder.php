@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,15 +15,15 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::factory(3)->create();
+        // Product::factory(3)->create();
 
         Product::factory()->create([
             //'icon' => 'Projek',
             'name' => 'Projek 1',
             'label' => 'Internal',
-            'start_date' => '2024-05-27', 
-            'end_date' => '2024-05-27',   
-            'user_id' => 1 
+            'start_date' => '2024-05-27',
+            'end_date' => '2024-05-27',
+            'user_id' => 1
         ]);
     }
 }
