@@ -154,3 +154,9 @@ table td[colspan="5"] {
 .menu-sidebar i:hover {
     color: #f9fafb;
 }
+
+.product-list-container {
+    /* Atur tinggi maksimum sesuai kebutuhan */
+    max-height: calc(10 * 2.5rem); /* Mengasumsikan setiap item memiliki tinggi 2.5rem */
+    overflow-y: auto; /* Aktifkan scrollbar vertikal jika diperlukan */
+}

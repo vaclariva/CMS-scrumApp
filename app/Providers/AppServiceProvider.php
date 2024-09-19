@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
             $products = DB::table('tbl_products')->get();
         }
           View ::share([
-            'products'=> Product::get(),
+            'products'=> Product::latest()->get(),
             'users' => User::all(),
         ]);
     }

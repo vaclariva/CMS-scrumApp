@@ -158,7 +158,7 @@ class ProductController extends Controller
         try {
             info($product);
             $newProduct = Product::create([
-                'name' => $product->name . " Copy", 
+                'name' => $product->name . "-copy", 
                 'icon' => $product->icon,
                 'label' => $product->label,
                 'start_date' => $product->start_date,
