@@ -16,14 +16,14 @@
 
                 <div class="form-group p-2">
                     <label class="text-sm" for="image-{{ $user->id }}"><strong>Foto</strong></label>
-                    <input id="image-{{ $user->id }}" name="image" type="file" accept=".png, .jpg, .jpeg" hidden onchange="previewImage(event, {{ $user->id }})"/>
+                    <input id="image-{{ $user->id }}" name="image" type="file" accept=".png, .jpg, .jpeg" hidden onchange="previewImage(event, {{ $user->id }})" />
                     <div class="flex justify-start items-center">
                         <div class="image-input size-16" data-image-input="false" id="parent-edit-{{ $user->id }}" onclick="triggerFileInput({{ $user->id }})">
-                            <input name="avatar_remove" id="remove-{{ $user->id }}" type="hidden"/>
-                            <div class="btn btn-icon btn-icon-xs btn-light shadow-default absolute z-1 size-5 -top-0.5 -right-0.5 rounded-full" 
-                                data-image-input-remove="" 
-                                data-tooltip="#image_input_tooltip-{{ $user->id }}" 
-                                data-tooltip-trigger="hover" 
+                            <input name="avatar_remove" id="remove-{{ $user->id }}" type="hidden" />
+                            <div class="btn btn-icon btn-icon-xs btn-light shadow-default absolute z-1 size-5 -top-0.5 -right-0.5 rounded-full"
+                                data-image-input-remove=""
+                                data-tooltip="#image_input_tooltip-{{ $user->id }}"
+                                data-tooltip-trigger="hover"
                                 onclick="deleteImage(event, {{ $user->id }})">
                                 <i class="ki-outline ki-cross"></i>
                             </div>
@@ -31,7 +31,7 @@
                                 Click to remove or revert
                             </span>
                             <div class="image-input-placeholder rounded-full border-2 border-success image-input-empty:border-gray-300" id="image-preview-{{ $user->id }}" style="background-image: url('{{ $user->image_path ? asset($user->image_path) : 'metronic/dist/assets/media/avatars/blank.png'}}');">
-                                <div class="image-input-preview" style="background-image:url('{{ $user->image_path ? asset($user->image_path) : 'metronic/dist/assets/media/avatars/blank.png'}}')">
+                                <div class="image-input-preview" style="background-image:url('{{ $user->image ? asset('/storage/'.$user->image) : 'metronic/dist/assets/media/avatars/blank.png'}}')">
                                 </div>
                                 <div class="flex items-center justify-center cursor-pointer h-5 left-0 right-0 bottom-0 bg-dark-clarity absolute">
                                     <svg class="fill-light opacity-80" height="12" viewbox="0 0 14 12" width="14" xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +47,7 @@
 
                 <div class="form-group p-2">
                     <label class="text-sm" for="name"><strong>Nama</strong></label>
-                    <input class="input" name="name" placeholder="Masukkan Nama Pengguna" type="text" value="{{ $user->name }}" required/>
+                    <input class="input" name="name" placeholder="Masukkan Nama Pengguna" type="text" value="{{ $user->name }}" required />
                 </div>
 
                 <div class="form-group p-2">
@@ -56,7 +56,7 @@
                         <span class="btn btn-icon btn-icon-lg btn-input">
                             <i class="ki-filled ki-sms"></i>
                         </span>
-                        <input class="input" name="email" placeholder="Masukkan Email Pengguna" type="email" value="{{ $user->email }}" readonly/>
+                        <input class="input" name="email" placeholder="Masukkan Email Pengguna" type="email" value="{{ $user->email }}" readonly />
                     </div>
                 </div>
 
@@ -69,12 +69,12 @@
 
                 <div class="modal-footer">
                     <div class="flex gap-4 justify-end p-5">
-                    <button class="btn btn-light rounded-full" data-modal-dismiss="true" type="button">
-                        Cancel
-                    </button>
-                    <button class="btn btn-primary ms-3 rounded-full" type="submit">
-                        Simpan
-                    </button>
+                        <button class="btn btn-light rounded-full" data-modal-dismiss="true" type="button">
+                            Cancel
+                        </button>
+                        <button class="btn btn-primary ms-3 rounded-full" type="submit">
+                            Simpan
+                        </button>
                     </div>
                 </div>
             </form>
@@ -83,48 +83,47 @@
 </div>
 
 <script>
-function triggerFileInput(userId) {
-    document.getElementById(`image-${userId}`).click();
-} 
-
-function previewImage(event, userId) {
-    const file = event.target.files[0];
-    const previewElement = document.getElementById('image-preview-' + userId);
-
-    if (file) {
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            previewElement.style.backgroundImage = `url('${e.target.result}')`;
-            previewElement.querySelector('.image-input-preview').style.backgroundImage = `url('${e.target.result}')`;
-        };
-
-        reader.readAsDataURL(file);
-        let inputRemove = $(`#remove-${userId}`);
-        inputRemove.val(null);
+    function triggerFileInput(userId) {
+        document.getElementById(`image-${userId}`).click();
     }
-}
 
-function deleteImage(event, userId) {
-    event.preventDefault();
-    event.stopPropagation();
+    function previewImage(event, userId) {
+        const file = event.target.files[0];
+        const previewElement = document.getElementById('image-preview-' + userId);
 
-    let inputRemove = $(`#remove-${userId}`);
-    inputRemove.val(1);
+        if (file) {
+            const reader = new FileReader();
 
-    const imageInput = event.currentTarget.closest('.image-input');
+            reader.onload = function(e) {
+                previewElement.style.backgroundImage = `url('${e.target.result}')`;
+                previewElement.querySelector('.image-input-preview').style.backgroundImage = `url('${e.target.result}')`;
+            };
 
-            if (imageInput) {
-                const imagePreview = imageInput.querySelector('.image-input-preview');
+            reader.readAsDataURL(file);
+            let inputRemove = $(`#remove-${userId}`);
+            inputRemove.val(null);
+        }
+    }
 
-                if (imagePreview) {
-                    imagePreview.style.backgroundImage = "url('metronic/dist/assets/media/avatars/blank.png')";
-                } else {
-                    console.error('Image preview element not found');
-                }
+    function deleteImage(event, userId) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        let inputRemove = $(`#remove-${userId}`);
+        inputRemove.val(1);
+
+        const imageInput = event.currentTarget.closest('.image-input');
+
+        if (imageInput) {
+            const imagePreview = imageInput.querySelector('.image-input-preview');
+
+            if (imagePreview) {
+                imagePreview.style.backgroundImage = "url('metronic/dist/assets/media/avatars/blank.png')";
             } else {
-                console.error('Image input element not found');
+                console.error('Image preview element not found');
             }
-}
-
+        } else {
+            console.error('Image input element not found');
+        }
+    }
 </script>
