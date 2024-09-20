@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\VisionBoard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class VisionBoardController extends Controller
 {
@@ -71,18 +72,23 @@ public function store(Request $request)
     public function update(Request $request, $productId, $id)
     {
         $request->validate([
+            'product_id' => 'required|exists:products,id',
             'name' => 'required|string|max:255',
-            'vision' => 'nullable|string',
-            'target_group' => 'nullable|string',
-            'needs' => 'nullable|string',
-            'product' => 'nullable|string',
-            'business_goals' => 'nullable|string',
-            'competitors' => 'nullable|string',
+            'vision' => 'required|string|max:255',
+            'target_group' => 'required|string|max:255',
+            'needs' => 'required|string|max:255',
+            'product' => 'required|string|max:255',
+            'business_goals' => 'required|string|max:255',
+            'competitors' => 'required|string|max:255',
         ]);
 
-        $vision_board = VisionBoard::findOrFail($id);
+        try {
+            DB::beginTransaction();
 
-        $vision_board->update([
+            $vision_board = VisionBoard::findOrFail($id);
+
+            $vision_board->update([
+            'product_id' => $request->product_id,
             'name' => $request->name,
             'vision' => $request->vision,
             'target_group' => $request->target_group,
@@ -92,7 +98,13 @@ public function store(Request $request)
             'competitors' => $request->competitors,
         ]);
 
-        return redirect()->route('vision-board.update', $productId)->with('success', 'Vision Board berhasil diperbarui');
+            DB::commit();
+            return redirect()->route('detail-product')->with('success', 'Produk berhasil diperbarui');
+        } catch (\Exception $e) {
+            Log::error('Update failed: ' . $e->getMessage());
+            DB::rollBack();
+            return redirect()->route('detail-product')->with('error', 'Gagal memperbarui data. Silakan coba lagi.');
+        }
     }
 
 
