@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -28,7 +27,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-       //
+        //
     }
 
     /**
@@ -49,12 +48,12 @@ class ProductController extends Controller
             DB::beginTransaction();
 
             Product::create([
-                'icon' => $request->icon,  
-                'name' => $request->name, 
+                'icon' => $request->icon,
+                'name' => $request->name,
                 'label' => $request->label,
-                'start_date' => $request->start_date, 
-                'end_date' => $request->end_date, 
-                'user_id' => $request->user_id, 
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'user_id' => $request->user_id,
             ]);
 
             DB::commit();
@@ -69,12 +68,12 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    
-     public function show($productId)
+
+    public function show($productId)
     {
         $product = Product::findOrFail($productId);
-        $productOwner = $product->user()->first();   
-        $vision_boards = $product->vision_board; 
+        $productOwner = $product->user()->first();
+        $vision_boards = $product->vision_board;
 
         return view('pages.detail-product', compact('productOwner', 'vision_boards', 'product'));
     }
@@ -86,24 +85,19 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('components.modal-edit-product', compact('product')); 
+        return view('components.modal-edit-product', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    //public function update(Request $request, string $id)
-    //{
-        //
-    //}
-
     public function update(Request $request, $id)
     {
-       
+
         $request->validate([
-            'icon' => 'required',
-            'name' => 'required',
-            'label' => 'required',
+            'icon' => 'required|string',
+            'name' => 'required|string',
+            'label' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'user_id' => 'required|exists:users,id',
@@ -115,13 +109,13 @@ class ProductController extends Controller
             $product = Product::findOrFail($id);
 
             $product->update([
-            'icon' => $request->icon,
-            'name' => $request->name,
-            'label' => $request->label,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'user_id' => $request->user_id,
-        ]);
+                'icon' => $request->icon,
+                'name' => $request->name,
+                'label' => $request->label,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'user_id' => $request->user_id,
+            ]);
 
             DB::commit();
             return redirect()->route('product')->with('success', 'Produk berhasil diperbarui');
@@ -158,14 +152,14 @@ class ProductController extends Controller
         try {
             info($product);
             $newProduct = Product::create([
-                'name' => $product->name . "-copy", 
+                'name' => $product->name . "-copy",
                 'icon' => $product->icon,
                 'label' => $product->label,
                 'start_date' => $product->start_date,
                 'end_date' => $product->end_date,
                 'user_id' => $product->user_id,
             ]);
-            
+
 
             Log::info('New product created:', $newProduct->toArray());
 
