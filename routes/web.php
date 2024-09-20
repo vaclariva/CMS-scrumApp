@@ -26,7 +26,6 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/user', [UserController::class, 'index'])->name('user');
-    Route::post('/search', [UserController::class, 'search'])->name('search');
     Route::post('/user', [UserController::class, 'store'])->name('user.store');
     Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
@@ -43,7 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/detail-products/{product}', [DetailProductController::class, 'index'])->name('detail-product');
 
     Route::post('/detail-product', [VisionBoardController::class, 'store'])->name('vision-board.store');
-    Route::put('/detail-product/{productId}/vision-board/{id}', [VisionBoardController::class, 'update'])->name('vision-board.update');
+    Route::put('product/{product}/vision_board/{visionBoard}', [VisionBoardController::class, 'update'])->name('vision_board.update');
+    Route::delete('/vision_board/{id}', [VisionBoardController::class, 'destroy'])->name('vision_board.destroy');
 
     Route::get('/icons', function () {
         $icons = Storage::get('icons.json');

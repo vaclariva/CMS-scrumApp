@@ -7,6 +7,7 @@ use App\Models\VisionBoard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
 class VisionBoardController extends Controller
 {
@@ -16,8 +17,9 @@ class VisionBoardController extends Controller
     public function index($productId)
     {
         $product = Product::findOrFail($productId);
+        info($product);
         $vision_boards = $product->vision_boards; 
-
+        
         return view('pages.detail-product', compact('vision_boards', 'product'));
     }
 
@@ -69,37 +71,35 @@ public function store(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $productId, $id)
+    public function update(Request $request, Product $product, VisionBoard $visionBoard)
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'name' => 'required|string|max:255',
-            'vision' => 'required|string|max:255',
-            'target_group' => 'required|string|max:255',
-            'needs' => 'required|string|max:255',
-            'product' => 'required|string|max:255',
-            'business_goals' => 'required|string|max:255',
-            'competitors' => 'required|string|max:255',
+            'vision' => 'nullable|string|max:255', 
+            'target_group' => 'nullable|string|max:255',
+            'needs' => 'nullable|string|max:255',
+            'product' => 'nullable|string|max:255',
+            'business_goals' => 'nullable|string|max:255',
+            'competitors' => 'nullable|string|max:255',
         ]);
 
         try {
             DB::beginTransaction();
-
-            $vision_board = VisionBoard::findOrFail($id);
-
-            $vision_board->update([
-            'product_id' => $request->product_id,
-            'name' => $request->name,
-            'vision' => $request->vision,
-            'target_group' => $request->target_group,
-            'needs' => $request->needs,
-            'product' => $request->product,
-            'business_goals' => $request->business_goals,
-            'competitors' => $request->competitors,
-        ]);
+        
+            $visionBoard->update([
+                'product_id' => $request->product_id,
+                'name' => $request->name,
+                'vision' => $request->vision,
+                'target_group' => $request->target_group,
+                'needs' => $request->needs,
+                'product' => $request->product,
+                'business_goals' => $request->business_goals,
+                'competitors' => $request->competitors,
+            ]);
 
             DB::commit();
-            return redirect()->route('detail-product')->with('success', 'Produk berhasil diperbarui');
+            return redirect()->route('products.show', $product->id)->with('success', 'Produk berhasil diperbarui');
         } catch (\Exception $e) {
             Log::error('Update failed: ' . $e->getMessage());
             DB::rollBack();
@@ -109,17 +109,25 @@ public function store(Request $request)
 
 
 
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($productId, $id)
+    public function destroy($id)
     {
-        // Temukan vision board berdasarkan ID
-        $vision_board = VisionBoard::findOrFail($id);
+        DB::beginTransaction();
 
-        // Hapus vision board
-        $vision_board->delete();
+        try {
+            $visionBoard = VisionBoard::findOrFail($id);
+            $visionBoard->delete();
 
-        return redirect()->route('vision_boards.index', $productId)->with('success', 'Vision Board deleted successfully');
+            DB::commit();
+            return redirect()->route('detail-product')->with('success', 'Vision board deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Delete failed: ' . $e->getMessage());
+
+            return redirect()->route('detail-product')->with('error', 'Failed to delete vision board. Please try again.');
+        }
     }
 }

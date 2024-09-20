@@ -73,9 +73,10 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($productId);
         $productOwner = $product->user()->first();
-        $vision_boards = $product->vision_board;
+        $visionBoards = $product->visionBoards;
+        info($visionBoards);
 
-        return view('pages.detail-product', compact('productOwner', 'vision_boards', 'product'));
+        return view('pages.detail-product', compact('productOwner', 'visionBoards', 'product'));
     }
 
 

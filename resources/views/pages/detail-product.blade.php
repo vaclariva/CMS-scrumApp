@@ -63,14 +63,13 @@
 
 <div class="grid grid-cols-2 gap-10 mt-5 mr-5 ml-5">
     <div class="vision-board-section space-y-5">
-        @foreach ($vision_boards as $item)
+        @foreach ($visionBoards as $item)
             <div class="vision-board">
                 <div class="card mb-3">
                     <div class="card-header">
                         <h3 class="card-title">{{ $item->name }}</h3>
                         <div class="flex gap-2 items-center">
-                            @include('components.modal.modal-edit-vision-boards')
-                            <a class="menu-link" data-modal-toggle="#modal_draggable">
+                            <a class="menu-link" onclick="openEditModalVision({id: {{ $item->id }}, name: '{{ $item->name }}', vision: '{{ $item->vision }}', target_group: '{{ $item->target_group }}', needs: '{{ $item->needs }}', product: '{{ $item->product }}',  business_goals: '{{ $item->business_goals }}', competitors: '{{ $item->competitors }}',url_update: '{{ route('vision_board.update', [$product->id, $item->id]) }}'})">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-notepad-edit text-xl"></i>
                                 </span>
@@ -177,5 +176,23 @@
             form.submit();
         });
     });
+</script>
+
+<script>
+    function openEditModalVision(data) {
+    const form = document.getElementById('updateVisionBoardForm');
+    form.action = data.url_update;
+
+    document.getElementById('name').value = data.name;
+    document.querySelector('textarea[name="vision"]').value = data.vision;
+    document.getElementById('editor1').value = data.target_group;
+    document.getElementById('editor2').value = data.needs;
+    document.getElementById('editor3').value = data.product;
+    document.getElementById('editor4').value = data.business_goals;
+    document.getElementById('editor5').value = data.competitors;
+
+    const modal = document.getElementById('modal_draggable');
+    modal.style.display = 'block'; 
+}
 </script>
 
