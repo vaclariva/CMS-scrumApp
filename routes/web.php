@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DetailProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SprintController;
 use App\Http\Controllers\VisionBoardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -44,9 +45,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/detail-product', [VisionBoardController::class, 'store'])->name('vision-board.store');
     Route::put('product/{product}/vision_board/{visionBoard}', [VisionBoardController::class, 'update'])->name('visionBoard.update');
     Route::delete('/product/{product}/vision_board/{visionBoard}', [VisionBoardController::class, 'destroy'])->name('visionBoard.destroy');
-    Route::post('/product/{product}/vision_board/{visionBoard}/duplicate', [VisionBoardController::class, 'duplicate'])->name('visionBoard.duplicate');
+    Route::post('/product/{product}/vision_board/{id}/duplicate', [VisionBoardController::class, 'duplicate'])->name('visionBoard.duplicate');
     Route::post('/update-item-name', [VisionBoardController::class, 'updateItemName']);
 
+    Route::resource('/sprints', SprintController::class);
 
     Route::get('/icons', function () {
         $icons = Storage::get('icons.json');

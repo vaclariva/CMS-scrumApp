@@ -18,8 +18,17 @@ class ProductController extends Controller
     {
         $users = User::all();
         $products = Product::latest()->get();
+        $count = $products->count();
+        $lastProducts = $products->last();
         info($products);
-        return view('pages.add-product', compact('users', 'products'));
+        if ($count == 0) {
+            return view('pages.add-product', compact('users', 'products'));
+        } else {
+            $product = Product::findOrFail($lastProducts->id);
+            $productOwner = $product->user()->first();
+            $vision_boards = $product->vision_board;
+            return redirect()->route('products.show', $lastProducts->id);
+        }
     }
 
     /**
@@ -140,8 +149,13 @@ class ProductController extends Controller
             $product->delete();
 
             $products = Product::orderBy('id')->get();
-
-            return redirect()->route('product')->with('success', 'Produk berhasil dihapus');
+$count = $products->count();
+            if ($count == 0) {
+                return redirect()->route('product')->with('success', 'Produk berhasil dihapus');
+            } else {
+                $lastProducts = $products->last();
+                return redirect()->route('products.show', $lastProducts->id)->with('success', 'Produk berhasil dihapus');
+            }
         } catch (\Exception $e) {
             Log::error('Error deleting product: ' . $e->getMessage());
             return Redirect::to(route('product'))->with('error', 'Gagal menghapus produk.');

@@ -1,9 +1,10 @@
 @extends('layouts.app')
-
+@section('title')
+Pengguna
+@endsection
 @section('breadcrumb')
 @php
 $breadcrumb = [
-//['title' => 'ui', 'url' => route('product')],
 ['title' => 'Pengguna', 'url' => ''],
 ];
 @endphp
