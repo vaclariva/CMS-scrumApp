@@ -72,62 +72,99 @@ public function store(Request $request)
      * Update the specified resource in storage.
      */
     public function update(Request $request, Product $product, VisionBoard $visionBoard)
-    {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'name' => 'required|string|max:255',
-            'vision' => 'nullable|string|max:255', 
-            'target_group' => 'nullable|string|max:255',
-            'needs' => 'nullable|string|max:255',
-            'product' => 'nullable|string|max:255',
-            'business_goals' => 'nullable|string|max:255',
-            'competitors' => 'nullable|string|max:255',
-        ]);
+{
+    $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'name' => 'required|string|max:255',
+        'vision' => 'nullable|string|max:255',
+        'target_group' => 'nullable|string|max:255',
+        'needs' => 'nullable|string|max:255',
+        'product' => 'nullable|string|max:255',
+        'business_goals' => 'nullable|string|max:255',
+        'competitors' => 'nullable|string|max:255',
+    ]);
 
-        try {
-            DB::beginTransaction();
-        
-            $visionBoard->update([
-                'product_id' => $request->product_id,
-                'name' => $request->name,
-                'vision' => $request->vision,
-                'target_group' => $request->target_group,
-                'needs' => $request->needs,
-                'product' => $request->product,
-                'business_goals' => $request->business_goals,
-                'competitors' => $request->competitors,
-            ]);
+    try {
+        DB::beginTransaction();
 
-            DB::commit();
-            return redirect()->route('products.show', $product->id)->with('success', 'Produk berhasil diperbarui');
-        } catch (\Exception $e) {
-            Log::error('Update failed: ' . $e->getMessage());
-            DB::rollBack();
-            return redirect()->route('detail-product')->with('error', 'Gagal memperbarui data. Silakan coba lagi.');
+        $visionBoard->update($request->all());
+
+        DB::commit();
+
+        // Jika permintaan adalah AJAX, kirim respons JSON
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
         }
+
+        return redirect()->route('products.show', $product->id)->with('success', 'Produk berhasil diperbarui');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Log::error('Update failed: ' . $e->getMessage());
+
+        // Respons error untuk AJAX
+        if ($request->ajax()) {
+            return response()->json(['success' => false], 500);
+        }
+
+        return redirect()->route('detail-product')->with('error', 'Gagal memperbarui data. Silakan coba lagi.');
     }
-
-
-
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Product $product, VisionBoard $visionBoard)
     {
-        DB::beginTransaction();
-
         try {
-            $visionBoard = VisionBoard::findOrFail($id);
+            DB::beginTransaction();
+
             $visionBoard->delete();
 
             DB::commit();
-            return redirect()->route('detail-product')->with('success', 'Vision board deleted successfully.');
+
+            return redirect()->route('products.show', $product->id)
+                            ->with('success', 'Vision Board berhasil dihapus.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Delete failed: ' . $e->getMessage());
+            
+            return redirect()->route('products.show', $product->id)
+                            ->with('error', 'Gagal menghapus Vision Board. Silakan coba lagi.');
+        }
+    } 
 
-            return redirect()->route('detail-product')->with('error', 'Failed to delete vision board. Please try again.');
+    public function duplicate(Product $product, VisionBoard $visionBoard)
+    {
+        try {
+            info($visionBoard);
+            $newVisionBoard = VisionBoard::create([
+                'product_id' => $visionBoard->product_id,
+                'name' => $visionBoard->name . "-copy",
+                'vision' => $visionBoard->vision,
+                'target_group' => $visionBoard->target_group,
+                'needs' => $visionBoard->needs,
+                'product' => $visionBoard->product,
+                'business_goals' => $visionBoard->business_goals,
+                'competitors' => $visionBoard->competitors,
+            ]);
+
+
+            Log::info('New Vision Board created:', $newVisionBoard->toArray());
+
+            return redirect()->route('products.show', $product->id )->with('success', 'Berhasil duplikasi.');
+        } catch (\Exception $e) {
+            Log::error('Error duplicate Vision Board: ' . $e->getMessage());
+            return Redirect::to(route('products.show', $product->id ))->with('error', 'Gagal duplikasi.');
         }
     }
+
+    public function updateItemName(Request $request)
+    {
+        $visionBoard = VisionBoard::find($request->id); // Cari item berdasarkan ID
+        $visionBoard->name = $request->name; // Ubah nama item
+        $visionBoard->save(); // Simpan perubahan ke database
+
+        return response()->json(['success' => true]);
+    }
+
 }

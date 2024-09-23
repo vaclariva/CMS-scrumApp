@@ -176,6 +176,10 @@
     </div>
 </div>
 
+@include('components.modal.modal-edit-product')
+@include('components.modal.confirm-delete-product')
+
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const menuProduct = document.getElementById('menuProduct');

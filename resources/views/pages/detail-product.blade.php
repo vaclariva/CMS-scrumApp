@@ -67,9 +67,11 @@
             <div class="vision-board">
                 <div class="card mb-3">
                     <div class="card-header">
-                        <h3 class="card-title">{{ $item->name }}</h3>
+                        <h3 class="card-title" contenteditable="true" data-id="{{ $item->id }}" id="item-name-{{ $item->id }}">
+                            {{ $item->name }}
+                        </h3>                        
                         <div class="flex gap-2 items-center">
-                            <a class="menu-link" onclick="openEditModalVision({id: {{ $item->id }}, name: '{{ $item->name }}', vision: '{{ $item->vision }}', target_group: '{{ $item->target_group }}', needs: '{{ $item->needs }}', product: '{{ $item->product }}',  business_goals: '{{ $item->business_goals }}', competitors: '{{ $item->competitors }}',url_update: '{{ route('vision_board.update', [$product->id, $item->id]) }}'})">
+                            <a class="menu-link" onclick="openEditModalVision({id: {{ $item->id }}, name: '{{ $item->name }}', vision: '{{ $item->vision }}', target_group: '{{ $item->target_group }}', needs: '{{ $item->needs }}', product: '{{ $item->product }}',  business_goals: '{{ $item->business_goals }}', competitors: '{{ $item->competitors }}',url_update: '{{ route('visionBoard.update', [$product->id, $item->id]) }}'})">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-notepad-edit text-xl"></i>
                                 </span>
@@ -81,30 +83,43 @@
                                 <div class="dropdown-content absolute left-0 mt-2 w-full max-w-56 py-2 bg-white shadow-lg z-10">
                                     <div class="menu menu-default flex flex-col w-full">
                                         <div class="menu-item">
-                                            <div class="flex items-center pl-5 menu-link">
-                                                <span class="menu-icon">
-                                                    <i class="ki-duotone ki-copy"></i>
-                                                </span>
-                                                <form action="#" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="text-xs">Duplikat</button>
-                                                </form>
-                                            </div>
+                                            <form action="{{ route('visionBoard.duplicate', [$product->id, $item->id]) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="text-xs w-full">
+                                                    <div class="flex items-center pl-5 menu-link">
+                                                        <span class="menu-icon">
+                                                            <i class="ki-duotone ki-copy"></i>
+                                                        </span>
+                                                        <span class="menu-title">
+                                                            Duplikat
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            </form>
                                         </div>
                                         <div class="menu-item">
-                                            <a class="menu-link" id="delete_product">
+                                            <a class="menu-link" onclick="openDeleteModalVision({ id: {{ $item->id }}, name: '{{ $item->name }}', url_delete: '{{ route('visionBoard.destroy', [$product->id, $item->id]) }}' })">
                                                 <span class="menu-icon">
                                                     <i class="ki-duotone ki-trash"></i>
                                                 </span>
                                                 <span class="menu-title">Hapus</span>
                                             </a>
-                                        </div>
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-toolbar rotate">
-                                <i class="ki-duotone ki-down fs-1"></i>
-                            </div>
+                            @if(
+                                !$item->vision &&
+                                !$item->target_group &&
+                                !$item->needs &&
+                                !$item->product &&
+                                !$item->business_goals 
+                            )
+                            @else
+                                <div class="card-toolbar rotate">
+                                    <i class="ki-duotone ki-down fs-1"></i>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -152,6 +167,8 @@
 
 @endsection
 
+@include('components.modal.modal-edit-vision-board')
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.card-toolbar').forEach(function(toolbar) {
@@ -180,19 +197,88 @@
 
 <script>
     function openEditModalVision(data) {
-    const form = document.getElementById('updateVisionBoardForm');
-    form.action = data.url_update;
 
-    document.getElementById('name').value = data.name;
-    document.querySelector('textarea[name="vision"]').value = data.vision;
-    document.getElementById('editor1').value = data.target_group;
-    document.getElementById('editor2').value = data.needs;
-    document.getElementById('editor3').value = data.product;
-    document.getElementById('editor4').value = data.business_goals;
-    document.getElementById('editor5').value = data.competitors;
+        $('#updateVisionBoardForm').attr('action', data.url_update);
 
-    const modal = document.getElementById('modal_draggable');
-    modal.style.display = 'block'; 
-}
+        document.getElementById('name').value = data.name || '';
+        document.getElementById('editor_vision').value = data.vision || '';
+        document.getElementById('editor1').value = data.target_group || '';
+        document.getElementById('editor2').value = data.needs || '';
+        document.getElementById('editor3').value = data.product || '';
+        document.getElementById('editor4').value = data.business_goals || '';
+        document.getElementById('editor5').value = data.competitors || '';
+
+        showModal('modal_draggable');
+    }
+
+    document.querySelectorAll('[data-modal-dismiss="true"]').forEach(button => {
+        button.addEventListener('click', closeEditModal);
+    });
+
+    function closeEditModal() {
+        hideModal('modal_draggable'); 
+    }
+
+    function showModal(modalId) {
+        var modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('open');
+            modal.classList.remove('hidden'); 
+            modal.setAttribute('aria-hidden', 'false');
+        } else {
+            console.error('Modal with id ' + modalId + ' not found');
+        }
+    }
+
+    function hideModal(modalId) {
+        var modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('open'); 
+            modal.setAttribute('aria-hidden', 'true');
+        } else {
+            console.error('Modal with id ' + modalId + ' not found');
+        }
+    }
+</script>
+
+<script>
+    function openDeleteModalVision(data) {
+        $('#delete-form').attr('action', data.url_delete);
+        $('#delete_name').text(data.name);
+        
+        console.log('Data:', data);
+        console.log('Form action set to:', $('#delete-form').attr('action'));
+
+        showModal('delete');
+    }
+
+    function closeDeleteModal() {
+        hideModal('delete');
+    }
+
+    function showModal(modalId) {
+        var modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('open');
+            modal.classList.remove('hidden');
+        } else {
+            console.error('Modal with id ' + modalId + ' not found');
+        }
+    }
+
+    function hideModal(modalId) {
+        var modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('open');
+        } else {
+            console.error('Modal with id ' + modalId + ' not found');
+        }
+    }
+
+    document.querySelectorAll('[data-modal-dismiss]').forEach(function(btn) {
+        btn.addEventListener('click', closeDeleteModal);
+    });
 </script>
 

@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->get();
+        $users = User::with('role')->latest()->get();
         $totalUser = User::count();
         info(auth()->user());
 
