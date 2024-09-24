@@ -149,7 +149,7 @@ class ProductController extends Controller
             $product->delete();
 
             $products = Product::orderBy('id')->get();
-$count = $products->count();
+            $count = $products->count();
             if ($count == 0) {
                 return redirect()->route('product')->with('success', 'Produk berhasil dihapus');
             } else {

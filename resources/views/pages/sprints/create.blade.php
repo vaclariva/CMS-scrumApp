@@ -24,6 +24,8 @@ $breadcrumb = [
             <form action="{{route('sprints.store', $id)}}" method="POST">
                 @csrf
                 <input type="hidden" name="product_id" value="{{$id}}">
+                <input type="hidden" id="input_start_date" name="start_date">
+                <input type="hidden" id="input_end_date" name="end_date">
                 <div class="card-body">
                     <div class="w-full py-2">
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
@@ -50,7 +52,7 @@ $breadcrumb = [
                                 <span class="btn btn-icon btn-icon-lg btn-input">
                                     <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                                 </span>
-                                <input class="input" id="start_date" name="start_date" type="text" required />
+                                <input class="input" id="start_date" name="start_date_display" type="text" value="" required />
                             </div>
                         </div>
                     </div>
@@ -63,7 +65,7 @@ $breadcrumb = [
                                 <span class="btn btn-icon btn-icon-lg btn-input">
                                     <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                                 </span>
-                                <input class="input" id="end_date" name="end_date" type="text" required />
+                                <input class="input" id="end_date" name="end_date_display" type="text" value="" required />
                             </div>
                         </div>
                     </div>
@@ -139,6 +141,31 @@ $breadcrumb = [
             .catch(error => {
                 console.error('Error during initialization of the editor', error);
             });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr("#start_date", {
+            enableTime: true,
+            dateFormat: "d F Y, H:i",
+            time_24hr: true,
+            locale: 'id',
+            onChange: function(selectedDates, dateStr, instance) {
+                const formattedDate = instance.formatDate(selectedDates[0], "Y-m-d H:i:s");
+                document.getElementById('input_start_date').value = formattedDate;
+            }
+        });
+
+        flatpickr("#end_date", {
+            enableTime: true,
+            dateFormat: "d F Y, H:i",
+            time_24hr: true,
+            locale: 'id',
+            onChange: function(selectedDates, dateStr, instance) {
+                const formattedDate = instance.formatDate(selectedDates[0], "Y-m-d H:i:s");
+                document.getElementById('input_end_date').value = formattedDate;
+            }
+        });
     });
 </script>
 @endsection

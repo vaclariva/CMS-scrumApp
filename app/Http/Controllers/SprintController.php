@@ -35,7 +35,7 @@ class SprintController extends Controller
             $end_date_formatted = $end_date->format('d F Y H:i');
             $sprint->end_date = $end_date_formatted;
 
-            $sprint->status = $sprint->status == 'inactive' ? "danger" : "success";
+            $sprint->status = $sprint->status == 'active' ? "danger" : "success";
         }
         return view('pages.sprints.index', compact('product', 'sprints'));
     }
@@ -71,22 +71,20 @@ class SprintController extends Controller
             ], 401);
         } else {
             try {
-                $start_date = Carbon::createFromFormat('d F Y, H:i', $request->start_date);
-                $end_date = Carbon::createFromFormat('d F Y, H:i', $request->end_date);
                 $status = $request->status == 'inactive' ? 'inactive' : 'active';
                 $sprint = Sprint::create([
                     'name' => $request->name,
                     'description' => $request->description,
-                    'start_date' => $start_date->format('Y-m-d H:i:s'),
-                    'end_date' => $end_date->format('Y-m-d H:i:s'),
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
                     'status' => $status,
                     'result_review' => $request->result_review,
                     'result_retrospective' => $request->result_retrospective,
                     'product_id' => $id,
                 ]);
-                return redirect()->route('sprints.index', $id)->with(['success', 'Berhasil disimpan.']);
+                return redirect()->route('sprints.index', $id)->with(['success' => 'Berhasil disimpan.']);
             } catch (\Throwable $th) {
-                return redirect()->route('sprints.index', $id)->with(['error', 'Gagal disimpan.']);
+                return redirect()->route('sprints.index', $id)->with(['error' => 'Gagal disimpan.']);
             }
         }
     }
@@ -118,8 +116,16 @@ class SprintController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id, $sprintId)
     {
-        //
+        try {
+            $sprint = Sprint::findOrFail($sprintId);
+            $sprint->delete();
+
+            return redirect()->route('sprints.index', $id)->with(['success' => 'Berhasil dihapus.']);
+        } catch (\Exception $e) {
+            LOG::error('Error Deleting Sprint:' . $e->getMessage());
+            return redirect()->route('sprints.index', $id)->with(['error' => 'Gagal dihapus.']);
+        }
     }
 }

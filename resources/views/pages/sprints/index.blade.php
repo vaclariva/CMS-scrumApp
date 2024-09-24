@@ -40,7 +40,7 @@ $breadcrumb = [
             <div class="card card-grid min-w-full">
                 <div class="card-header py-5 flex-wrap">
                     <h3 class="card-title">
-                        Menampilkan <span id="currentTotalUser">{{ $sprints->count() }}</span> dari {{ $sprints->count() }} Sprint
+                        Menampilkan <span id="currentTotalSprint">{{ $sprints->count() }}</span> dari {{ $sprints->count() }} Sprint
                     </h3>
                     <div class="flex gap-6">
                         <div class="relative">
@@ -162,7 +162,9 @@ $breadcrumb = [
                                             </span>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-icon btn-clear btn-light">
+                                            @include('components.modal.confirm-delete-sprint')
+                                            <button type="button" class="btn btn-sm btn-icon btn-clear btn-light"
+                                                data-modal-toggle="#delete_sprint{{ $sprint->id }}">
                                                 <i class="ki-outline ki-trash"></i>
                                             </button>
                                         </td>

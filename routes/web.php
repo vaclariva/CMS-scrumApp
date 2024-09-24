@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/{id}/sprints', [SprintController::class, 'index'])->name('sprints.index');
     Route::get('/products/{id}/sprints/create', [SprintController::class, 'create'])->name('sprints.create');
     Route::post('/products/{id}/sprints', [SprintController::class, 'store'])->name('sprints.store');
+    Route::delete('/products/{id}/sprints/{sprintId}', [SprintController::class, 'destroy'])->name('sprints.destroy');
 
     Route::get('/icons', function () {
         $icons = Storage::get('icons.json');
