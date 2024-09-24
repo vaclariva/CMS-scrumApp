@@ -292,9 +292,6 @@
     </script>
 
     @yield('blockfoot')
-    <style>
-
-    </style>
 </body>
 
 </html>

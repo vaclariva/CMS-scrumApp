@@ -31,7 +31,7 @@
                                     </span>
                                 </div>
                                 <div class="flex items-center font-medium ">
-                                    <span class="text-2sm text-gray-600 me-1.5 mb-2 mt-0.5">
+                                    <span class="text-2sm text-gray-600 me-1.5 mb-2 mt-0.5 flex items-center">
                                         {{ $product->start_date->translatedFormat('d F Y, H:i') }} - {{ $product->end_date->translatedFormat('d F Y, H:i') }} •
                                         <div class="menu-toggle btn btn-icon rounded-full">
                                             @if($productOwner->image)

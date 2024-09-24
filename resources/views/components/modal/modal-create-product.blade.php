@@ -34,10 +34,12 @@
 
                 <div class="form-group p-2">
                     <label class="text-sm" for="label"><strong>Label</strong></label>
-                    <div class="flex gap-">
+                    <div class="flex">
                         <label class="form-label flex items-center gap-2.5 text-nowrap">
                             <input class="radio" name="label" type="radio" value="internal" required />
                             Internal
+                        </label>
+                        <label class="form-label flex items-center gap-2.5 text-nowrap">
                             <input class="radio" name="label" type="radio" value="eksternal" required />
                             External
                         </label>

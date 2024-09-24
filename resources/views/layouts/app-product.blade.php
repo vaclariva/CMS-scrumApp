@@ -9,7 +9,7 @@
         <link href="{{ asset('metronic/dist/assets/media/app/apple-touch-icon.png') }}" rel="apple-touch-icon" sizes="180x180"/>
         <link href="{{ asset('metronic/dist/assets/media/app/favicon-32x32.png') }}" rel="icon" sizes="32x32" type="image/png"/>
         <link href="{{ asset('metronic/dist/assets/media/app/favicon-16x16.png') }}" rel="icon" sizes="16x16" type="image/png"/>
-        <link href="{{ asset('metronic/dist/assets/media/app/favicon.ico') }}" rel="shortcut icon"/>
+        <link href="{{ asset('metronic/dist/assets/media/app/mini-logo.svg') }}" rel="shortcut icon" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
         <link href="{{ asset('metronic/dist/assets/vendors/apexcharts/apexcharts.css') }}" rel="stylesheet"/>
         <link href="{{ asset('metronic/dist/assets/vendors/keenicons/styles.bundle.css') }}" rel="stylesheet"/>
@@ -22,12 +22,12 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
         <!-- Include CKEditor 5 from CDN -->
         <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+        @yield('blockhead')
         <style>
             .ck-editor {
                 width: 100% !important;
             }
         </style>
-        @yield('blockhead')
     </head>
     
     <body class="flex h-full demo1 sidebar-fixed header-fixed bg-white dark:bg-coal-500">
@@ -139,6 +139,41 @@
              
             });
         </script>
+
+        <script>
+    const textareas = document.querySelectorAll('.textarea');
+
+    textareas.forEach(textarea => {
+        ClassicEditor
+            .create(textarea, {
+                rows: 10,
+                toolbar: [
+                    'undo',
+                    'redo',
+                    'heading',
+                    '|',
+                    'alignment',
+                    '|',
+                    'bold',
+                    'italic',
+                    'underline',
+                    'link',
+                    '|',
+                    'bulletedList',
+                    'numberedList',
+                    '|',
+                    'insertTable',
+                    'blockQuote',
+                ],
+            })
+            .then(editor => {
+                console.log('Editor was initialized', editor);
+            })
+            .catch(error => {
+                console.error('Error during initialization of the editor', error);
+            });
+    });
+</script>
 
         <script>
                function formatDateTimeForInput(dateString) {

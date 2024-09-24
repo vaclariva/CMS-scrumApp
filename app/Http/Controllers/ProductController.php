@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\User;
+use App\Models\VisionBoard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -82,7 +83,8 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($productId);
         $productOwner = $product->user()->first();
-        $visionBoards = $product->visionBoards;
+        $visionBoards = VisionBoard::with('product')->where('product_id', $productId)->get();
+        // dd($visionBoards);
         info($visionBoards);
 
         return view('pages.detail-product', compact('productOwner', 'visionBoards', 'product'));

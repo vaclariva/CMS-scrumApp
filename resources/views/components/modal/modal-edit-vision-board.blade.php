@@ -74,18 +74,14 @@
                         Competitors <span class="text-gray-600"> (Pesaing) </span>
                     </label>
                     <textarea id="editor5" name="competitors" class="textarea" placeholder="Competitors" rows="4" required></textarea>
-                </div>                
-
-                <!--<div class="text-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>-->
+                </div>
             </form>
         </div>
     </div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     const modalInputs = document.querySelectorAll('#updateVisionBoardForm input, #updateVisionBoardForm textarea');
     
     modalInputs.forEach(input => {
@@ -122,5 +118,5 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error during auto-save:', error);
         });
     }
-});
+    });
 </script>

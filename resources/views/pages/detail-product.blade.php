@@ -207,9 +207,9 @@
 </div>
 
 @endsection
-
+@if($visionBoards->count() > 0)
 @include('components.modal.modal-edit-vision-board')
-
+@endif
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.card-toolbar').forEach(function(toolbar) {
