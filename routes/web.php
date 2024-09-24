@@ -48,7 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/product/{product}/vision_board/{id}/duplicate', [VisionBoardController::class, 'duplicate'])->name('visionBoard.duplicate');
     Route::post('/update-item-name', [VisionBoardController::class, 'updateItemName']);
 
-    Route::resource('/sprints', SprintController::class);
+    Route::get('/products/{id}/sprints', [SprintController::class, 'index'])->name('sprints.index');
+    Route::get('/products/{id}/sprints/create', [SprintController::class, 'create'])->name('sprints.create');
+    Route::post('/products/{id}/sprints', [SprintController::class, 'store'])->name('sprints.store');
 
     Route::get('/icons', function () {
         $icons = Storage::get('icons.json');

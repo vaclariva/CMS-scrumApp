@@ -6,23 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Psy\CodeCleaner\ReturnTypePass;
 
 class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable =[
-      'icon',
-      'name',
-      'label',
-      'start_date',
-      'end_date',
-      'user_id',
+    protected $fillable = [
+        'icon',
+        'name',
+        'label',
+        'start_date',
+        'end_date',
+        'user_id',
     ];
 
     protected $casts = [
-       'start_date' =>  'datetime',  
-       'end_date' =>  'datetime'   
+        'start_date' =>  'datetime',
+        'end_date' =>  'datetime'
     ];
 
     /**
@@ -36,5 +37,10 @@ class Product extends Model
     public function visionBoards(): HasMany
     {
         return $this->hasMany(VisionBoard::class);
+    }
+
+    public function sprints(): HasMany
+    {
+        return $this->hasMany(Sprint::class);
     }
 }

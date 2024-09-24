@@ -63,7 +63,7 @@
                                     </div>
                                     <div class="menu-item" id="menuSprint">
                                         <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]"
-                                            href="{{ route('sprints.index')}}" tabindex="0">
+                                            href="{{ route('sprints.index', $product->id)}}" tabindex="0">
                                             <span class="menu-bullet flex w-[6px] relative before:absolute before:top-0 before:size-[6px] before:rounded-full before:-translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-primary menu-item-hover:before:bg-primary"></span>
 
                                             <span class="menu-title text-2sm font-bold text-gray-500 menu-item-active:text-primary menu-item-active:font-semibold">

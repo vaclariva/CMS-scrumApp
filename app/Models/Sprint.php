@@ -23,7 +23,7 @@ class Sprint extends Model
     ];
 
 
-    public function project()
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }

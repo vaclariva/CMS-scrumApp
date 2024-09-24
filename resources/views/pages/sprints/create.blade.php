@@ -21,15 +21,16 @@ $breadcrumb = [
                     Tambah Sprint
                 </h3>
             </div>
-            <form action="{{route('sprints.store')}}" method="post">
+            <form action="{{route('sprints.store', $id)}}" method="POST">
                 @csrf
+                <input type="hidden" name="product_id" value="{{$id}}">
                 <div class="card-body">
                     <div class="w-full py-2">
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label flex items-center gap-1 max-w-48">
                                 Nama
                             </label>
-                            <input class="input" name="name" type="text"/>
+                            <input class="input" name="name" type="text" />
                         </div>
                     </div>
                     <div class="w-full py-2">
@@ -49,7 +50,7 @@ $breadcrumb = [
                                 <span class="btn btn-icon btn-icon-lg btn-input">
                                     <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                                 </span>
-                                <input class="input" id="start_date" name="start_date" type="text" value="" required />
+                                <input class="input" id="start_date" name="start_date" type="text" required />
                             </div>
                         </div>
                     </div>
@@ -62,7 +63,7 @@ $breadcrumb = [
                                 <span class="btn btn-icon btn-icon-lg btn-input">
                                     <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                                 </span>
-                                <input class="input" id="end_date" name="end_date" type="text" value="" required />
+                                <input class="input" id="end_date" name="end_date" type="text" required />
                             </div>
                         </div>
                     </div>
@@ -72,7 +73,7 @@ $breadcrumb = [
                                 Status
                             </label>
                             <label class="form-label flex items-center gap-2.5 text-nowrap">
-                                <input class="checkbox" name="status" type="checkbox" />
+                                <input class="checkbox" name="status" type="checkbox" value="inactive" />
                                 Selesai
                             </label>
                         </div>
