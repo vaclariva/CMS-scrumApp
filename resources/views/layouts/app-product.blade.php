@@ -20,11 +20,16 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.css" />
-
-
+        <!-- Include CKEditor 5 from CDN -->
+        <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+        <style>
+            .ck-editor {
+                width: 100% !important;
+            }
+        </style>
         @yield('blockhead')
     </head>
+    
     <body class="flex h-full demo1 sidebar-fixed header-fixed bg-white dark:bg-coal-500">
         <script>
             const defaultThemeMode = 'light';

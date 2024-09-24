@@ -174,15 +174,36 @@
     </div>
     
 
-    <!--<div class="backlog-section space-y-5">
+    <div class="backlog-section space-y-5">
         <div class="backlog">
             <div class="card">
-                <div class="card-body-backlog">
-                    <p>backlog</p>
+                <div class="card-body">
+                    Centralize your team information with our management tools. Access detailed instructions, expert advice, and technical documentation to maintain an up-to-date team directory.
+                </div>
+                <div class="px-7 pb-4 flex items-center gap-3">
+                    <span class="badge badge-primary badge-pill badge-outline gap-1.5">
+                        <span class="badge badge-dot badge-primary size-1.5">
+                        </span>
+                        New
+                    </span>
+                    <i class="ki-duotone ki-textalign-left"></i>
+                    <div class="flex text-success items-center text-xs">
+                        <i class="ki-duotone ki-check-squared text-success text-lg"></i>
+                        10/10
+                    </div>
+                    <div class="flex items-center text-xs">
+                        <i class="ki-duotone ki-electronic-clock text-lg"></i>
+                        4 Jam
+                    </div>
+                    <div class="flex items-center text-xs">
+                        <i class="ki-duotone ki-electronic-clock text-lg"></i>
+                        4 Jam
+                    </div>
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
+</div>
 </div>
 
 @endsection
