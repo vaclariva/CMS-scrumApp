@@ -26,10 +26,10 @@ class StoreSprintRequest extends FormRequest
             'description' => 'string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|string',
+            'status' => 'string',
             'result_review' => 'string',
             'result_retrospective' => 'string',
-            'product_id' => 'required|exits:products,id',
+            'product_id' => 'required|exists:products,id',
         ];
     }
 }

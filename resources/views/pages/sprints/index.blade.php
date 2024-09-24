@@ -140,7 +140,9 @@ $breadcrumb = [
                                             {{ $loop->iteration }}
                                         </td>
                                         <td>
-                                            {{$sprint->name}}
+                                            <a href="{{route('sprints.show', [$product->id, $sprint->id])}}" class="text-primary cursor-pointer">
+                                                {{$sprint->name}}
+                                            </a>
                                         </td>
                                         <td>
                                             {!! $sprint->description !!}

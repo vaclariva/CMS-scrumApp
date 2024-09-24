@@ -7,11 +7,9 @@ use App\Models\Sprint;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSprintRequest;
-use Illuminate\Support\Facades\Validator;
 
 class SprintController extends Controller
 {
@@ -51,50 +49,35 @@ class SprintController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $id)
+    public function store(StoreSprintRequest $request, $id)
     {
+        try {
+            $status = $request->status == 'inactive' ? 'inactive' : 'active';
 
-        $validation = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'description' => 'string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'string',
-            'result_review' => 'string',
-            'result_retrospective' => 'string',
-        ]);
-
-        dd($request->all());
-        if ($validation->fails()) {
-            return response()->json([
-                'error' => $validation->errors(),
-            ], 401);
-        } else {
-            try {
-                $status = $request->status == 'inactive' ? 'inactive' : 'active';
-                $sprint = Sprint::create([
-                    'name' => $request->name,
-                    'description' => $request->description,
-                    'start_date' => $request->start_date,
-                    'end_date' => $request->end_date,
-                    'status' => $status,
-                    'result_review' => $request->result_review,
-                    'result_retrospective' => $request->result_retrospective,
-                    'product_id' => $id,
-                ]);
-                return redirect()->route('sprints.index', $id)->with(['success' => 'Berhasil disimpan.']);
-            } catch (\Throwable $th) {
-                return redirect()->route('sprints.index', $id)->with(['error' => 'Gagal disimpan.']);
-            }
+            Sprint::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'status' => $status,
+                'result_review' => $request->result_review,
+                'result_retrospective' => $request->result_retrospective,
+                'product_id' => $id,
+            ]);
+            return redirect()->route('sprints.index', $id)->with(['success' => 'Berhasil disimpan.']);
+        } catch (\Throwable $th) {
+            return redirect()->route('sprints.index', $id)->with(['error' => 'Gagal disimpan.']);
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id, $sprintId)
     {
-        return "Halaman Sprint" . $id;
+        $sprint = Sprint::findOrFail($sprintId);
+        $productId = $id;
+        return view('pages.sprints.show', compact('productId', 'sprint'));
     }
 
     /**
