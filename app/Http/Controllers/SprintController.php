@@ -64,6 +64,7 @@ class SprintController extends Controller
             'result_retrospective' => 'string',
         ]);
 
+        dd($request->all());
         if ($validation->fails()) {
             return response()->json([
                 'error' => $validation->errors(),

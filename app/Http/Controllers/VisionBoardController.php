@@ -137,6 +137,8 @@ public function store(Request $request)
     {
         try {
             info($visionBoard);
+            info('Product ID: ' . $visionBoard->product_id);
+
             $newVisionBoard = VisionBoard::create([
                 'product_id' => $visionBoard->product_id,
                 'name' => $visionBoard->name . "-copy",
@@ -157,14 +159,4 @@ public function store(Request $request)
             return Redirect::to(route('products.show', $product->id ))->with('error', 'Gagal duplikasi.');
         }
     }
-
-    public function updateItemName(Request $request)
-    {
-        $visionBoard = VisionBoard::find($request->id); // Cari item berdasarkan ID
-        $visionBoard->name = $request->name; // Ubah nama item
-        $visionBoard->save(); // Simpan perubahan ke database
-
-        return response()->json(['success' => true]);
-    }
-
 }

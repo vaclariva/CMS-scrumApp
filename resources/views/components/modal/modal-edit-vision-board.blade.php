@@ -2,7 +2,7 @@
     <div class="modal-content max-w-[600px] top-[10%]">
         <div class="modal-header flex justify-end items-center gap-3">
             <div class="flex items-center gap-3">
-                <form action="{{ route('visionBoard.duplicate', [$product->id, $item->id]) }}" method="POST" class="mb-1">
+                <form action="{{ route('visionBoard.duplicate', ['product' => $product->id, 'visionBoard' => $item->id]) }}" method="POST" class="mb-1">
                     @csrf
                     <button type="submit" class="text-xs flex items-center">
                         <span class="menu-icon pl-5">
@@ -25,7 +25,7 @@
         <div class="modal-body mt-4 max-h-[70vh] overflow-y-auto">
             <form id="updateVisionBoardForm" action="" method="POST">
                 @csrf
-                <input type="hidden" name="_method" value="PUT"> <!-- Hidden input for PUT method -->
+                <input type="hidden" name="_method" value="PUT">
 
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
 
