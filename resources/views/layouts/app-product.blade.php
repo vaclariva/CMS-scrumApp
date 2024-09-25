@@ -27,6 +27,14 @@
             .ck-editor {
                 width: 100% !important;
             }
+            .toast-success .toast-message,
+            .toast-error .toast-message {
+                margin-left: 0.75rem; 
+            }
+            .toast-success .toast-title,
+            .toast-error .toast-title {
+                margin-left: 0.75rem; 
+            }
         </style>
     </head>
     
@@ -64,9 +72,7 @@
             </div>
         </div>
         
-
         @include('components.modal.modal-create-product', ['route' => route('product.store')])
-        
         
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -79,7 +85,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
 
         <script>
             toastr.options = {
@@ -141,39 +146,39 @@
         </script>
 
         <script>
-    const textareas = document.querySelectorAll('.textarea');
+            const textareas = document.querySelectorAll('.textarea');
 
-    textareas.forEach(textarea => {
-        ClassicEditor
-            .create(textarea, {
-                rows: 10,
-                toolbar: [
-                    'undo',
-                    'redo',
-                    'heading',
-                    '|',
-                    'alignment',
-                    '|',
-                    'bold',
-                    'italic',
-                    'underline',
-                    'link',
-                    '|',
-                    'bulletedList',
-                    'numberedList',
-                    '|',
-                    'insertTable',
-                    'blockQuote',
-                ],
-            })
-            .then(editor => {
-                console.log('Editor was initialized', editor);
-            })
-            .catch(error => {
-                console.error('Error during initialization of the editor', error);
+            textareas.forEach(textarea => {
+                ClassicEditor
+                    .create(textarea, {
+                        rows: 10,
+                        toolbar: [
+                            'undo',
+                            'redo',
+                            'heading',
+                            '|',
+                            'alignment',
+                            '|',
+                            'bold',
+                            'italic',
+                            'underline',
+                            'link',
+                            '|',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'insertTable',
+                            'blockQuote',
+                        ],
+                    })
+                    .then(editor => {
+                        console.log('Editor was initialized', editor);
+                    })
+                    .catch(error => {
+                        console.error('Error during initialization of the editor', error);
+                    });
             });
-    });
-</script>
+        </script>
 
         <script>
                function formatDateTimeForInput(dateString) {
@@ -329,17 +334,7 @@
             });
         </script>
         
-          @yield('blockfoot')
-          <style>
-            .toast-success .toast-message,
-            .toast-error .toast-message {
-                margin-left: 0.75rem; 
-            }
-
-            .toast-success .toast-title,
-            .toast-error .toast-title {
-                margin-left: 0.75rem; 
-            }
-        </style>
+        @yield('blockfoot')
+        
     </body>
 </html>

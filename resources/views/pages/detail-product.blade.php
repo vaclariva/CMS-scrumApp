@@ -7,7 +7,10 @@
 <div class="flex items-start mt-5">
     <div class="flex-1 p-6 bg-white shadow-lg border-r border-gray-300">
         <div class="flex justify-between bg-white ml-4 py-5 px-10 lg:px-8">
-            <h1 class="text-xl font-semibold pl-2 mt-1">Vision Board</h1>
+            <div class="flex items-center gap-2">
+                <h1 class="text-xl font-semibold pl-2 mt-1">Vision Board</h1>
+                <sub class="text-gray-600">{{$visionBoards->count()}} Versi</sub>
+            </div>
             <a class="btn btn-lg btn-primary rounded-full hover:text-sky-700" id="createVisionBoardBtn">
                 <span class="svg-icon svg-icon-primary svg-icon-2x">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
@@ -36,7 +39,10 @@
 
     <div class="flex-1 p-6 bg-white shadow-lg">
         <div class="flex justify-between bg-white ml-5 mr-5 py-5 px-10 lg:px-8">
-            <h1 class="text-xl font-semibold px-2 mt-1">Backlog</h1>
+            <div class="flex items-center gap-2">
+                <h1 class="text-xl font-semibold mt-1">Backlog</h1>
+                <sub class="text-gray-600">0 Card</sub>
+            </div>
             <div class="flex gap-2">
                 <a class="btn btn-lg btn-primary rounded-full hover:text-sky-700" data-modal-toggle="#modal_6_1">
                     <span class="svg-icon svg-icon-primary svg-icon-2x"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
