@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('title')
-Tambah Sprint
+Detail Sprint
 @endsection
 
 @section('breadcrumb')
 @php
 $breadcrumb = [
-['title' => 'Sprint', 'url' => ''],
+    ['title' => 'Detail', 'url' => ''],
 ];
 @endphp
 @endsection
@@ -18,33 +18,35 @@ $breadcrumb = [
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    Tambah Sprint
+                    Detail Sprint
                 </h3>
             </div>
-            <form action="{{route('sprints.store', $id)}}" method="POST">
-                @csrf
+            <div class="card-body">
+                <form id="updateSprint" action="{{ route('sprints.update', [$productId, $sprint->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
 
-                <input type="hidden" name="product_id" value="{{$id}}">
-                <input type="hidden" id="input_start_date" name="start_date">
-                <input type="hidden" id="input_end_date" name="end_date">
+                    <input type="hidden" id="add_start" name="start_date" value="{{ $sprint->start_date }}" />
+                    <input type="hidden" id="add_end" name="end_date" value="{{ $sprint->end_date }}" />
 
-                <div class="card-body">
                     <div class="w-full py-2">
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label flex items-center gap-1 max-w-48">
                                 Nama
                             </label>
-                            <input class="input" name="name" type="text" />
+                            <input class="input" name="name" type="text" value="{{$sprint->name}}" required />
                         </div>
                     </div>
+
                     <div class="w-full py-2">
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label flex items-center gap-1 max-w-48">
                                 Deskripsi
                             </label>
-                            <textarea class="textarea" id="description" name="description"></textarea>
+                            <textarea class="textarea" id="description" name="description">{!! $sprint->description !!}</textarea>
                         </div>
                     </div>
+
                     <div class="w-full py-2">
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label flex items-center gap-1 max-w-48">
@@ -54,10 +56,11 @@ $breadcrumb = [
                                 <span class="btn btn-icon btn-icon-lg btn-input">
                                     <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                                 </span>
-                                <input class="input" id="start_date" name="start_date_display" type="text" value="" required />
+                                <input class="input" id="start" name="start_date_display" type="text" value="{{ \Carbon\Carbon::parse($sprint->start_date)->format('d F Y, H:i') }}" required />
                             </div>
                         </div>
                     </div>
+
                     <div class="w-full py-2">
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label flex items-center gap-1 max-w-48">
@@ -67,83 +70,90 @@ $breadcrumb = [
                                 <span class="btn btn-icon btn-icon-lg btn-input">
                                     <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                                 </span>
-                                <input class="input" id="end_date" name="end_date_display" type="text" value="" required />
+                                <input class="input" id="end" name="end_date_display" type="text" value="{{ \Carbon\Carbon::parse($sprint->end_date)->format('d F Y, H:i') }}" required />
                             </div>
                         </div>
                     </div>
+
                     <div class="w-full py-2">
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label flex items-center gap-1 max-w-48">
                                 Status
                             </label>
                             <label class="form-label flex items-center gap-2.5 text-nowrap">
-                                <input class="checkbox" id="status_checkbox" name="status" type="checkbox" value="inactive" />
+                                <input class="checkbox" id="status" name="status" type="checkbox" value="inactive" {{ $sprint->status == 'inactive' ? 'checked' : '' }} />
                                 Selesai
                             </label>
                         </div>
                     </div>
 
-                    <!-- Hasil Review & Retrospective -->
+                    <!-- Sections to show/hide -->
                     <div id="review_section" class="w-full py-2" style="display: none;">
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label flex items-center gap-1 max-w-48">
                                 Hasil Review
                             </label>
-                            <textarea class="textarea" id="result_review" name="result_review"></textarea>
+                            <textarea class="textarea" id="result_review" name="result_review">{!!$sprint->result_review!!}</textarea>
                         </div>
                     </div>
+
                     <div id="retrospective_section" class="w-full py-2" style="display: none;">
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label flex items-center gap-1 max-w-48">
                                 Hasil Retrospective
                             </label>
-                            <textarea class="textarea" id="result_retrospective" name="result_retrospective"></textarea>
+                            <textarea class="textarea" id="result_retrospective" name="result_retrospective">{!!$sprint->result_retrospective!!}</textarea>
                         </div>
                     </div>
-                </div>
 
-                <div class="card-footer justify-end gap-4">
-                    <a href="#" class="btn btn-light rounded-full">
-                        Batal
-                    </a>
-                    <button class="btn btn-primary rounded-full" type="submit">
-                        Simpan
-                    </button>
-                </div>
-            </form>
+                    <div class="card-footer justify-end gap-4">
+                        <a href="{{route('sprints.index', $productId)}}" class="btn btn-light rounded-full">
+                            Kembali
+                        </a>
+                        <button class="btn btn-primary rounded-full" type="submit">
+                            Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        flatpickr("#start_date", {
-            enableTime: true,
-            dateFormat: "d F Y, H:i",
-            time_24hr: true,
-            locale: 'id',
-            onChange: function(selectedDates, dateStr, instance) {
-                const formattedDate = instance.formatDate(selectedDates[0], "Y-m-d H:i:s");
-                document.getElementById('input_start_date').value = formattedDate;
-            }
-        });
 
-        flatpickr("#end_date", {
-            enableTime: true,
-            dateFormat: "d F Y, H:i",
-            time_24hr: true,
-            locale: 'id',
-            onChange: function(selectedDates, dateStr, instance) {
-                const formattedDate = instance.formatDate(selectedDates[0], "Y-m-d H:i:s");
-                document.getElementById('input_end_date').value = formattedDate;
-            }
-        });
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const startDateInput = document.getElementById('start');
+    const endDateInput = document.getElementById('end');
+    const hiddenStartDate = document.getElementById('add_start');
+    const hiddenEndDate = document.getElementById('add_end');
+
+    flatpickr(startDateInput, {
+        enableTime: true,
+        dateFormat: "d F Y, H:i", 
+        start_date: "Y-m-d H:i:s",
+        defaultDate: startDateInput.value,
+        onChange: function(selectedDates, dateStr, instance) {
+            hiddenStartDate.value = instance.formatDate(selectedDates[0], "Y-m-d H:i:s"); 
+        }
     });
+
+    flatpickr(endDateInput, {
+        enableTime: true,
+        dateFormat: "d F Y, H:i",  
+        end_date: "Y-m-d H:i:s",
+        defaultDate: endDateInput.value,
+        onChange: function(selectedDates, dateStr, instance) {
+            hiddenEndDate.value = instance.formatDate(selectedDates[0], "Y-m-d H:i:s"); 
+        }
+    });
+});
+
 </script>
 @endsection
 
 @push('blockfoot')
-    <script src="{{ asset('assets/js/sprints/result-create.js') }}"></script>
+    <script src="{{ asset('assets/js/sprints/result-update.js') }}"></script>
     <script src="{{ asset('assets/js/sprints/textarea.js') }}"></script>
 @endpush

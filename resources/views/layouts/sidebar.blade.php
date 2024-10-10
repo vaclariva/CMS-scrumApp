@@ -37,7 +37,7 @@
                     </div>
 
 
-                    <div class="product-list-container overflow-y-auto max-h-[calc(10*2.5rem)]">
+                    <div class="product-list-container overflow-y-auto max-h-[calc(7*2.5rem)]">
                         @foreach ($products as $product)
                         <div class="flex justify-between">
                             <div class="menu-item menu-item-accordion" data-menu-id="{{ $product->id }}" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
@@ -81,7 +81,15 @@
                                 <div class="dropdown-content absolute left-0 mt-2 w-full max-w-56 py-2 shadow-lg z-10">
                                     <div class="menu menu-default flex flex-col w-full">
                                         <div class="menu-item">
-                                            <a class="menu-link" id="edit_menu_item" onclick="openEditModal({id: {{ $product->id }}, name: '{{ $product->name }}', label: '{{ $product->label }}', start_date: '{{ $product->start_date }}', end_date: '{{ $product->end_date }}', user_id: '{{ $product->user_id }}', icon: '{{ $product->icon }}', url_update: '{{ route('product.update', $product->id) }}'})">
+                                            <a class="menu-link" id="edit_menu_item" 
+                                            onclick="openEditModal({id: {{ $product->id }}, 
+                                            name: '{{ $product->name }}', 
+                                            label: '{{ $product->label }}', 
+                                            start_date: '{{ $product->start_date }}', 
+                                            end_date: '{{ $product->end_date }}', 
+                                            user_id: '{{ $product->user_id }}', 
+                                            icon: '{{ $product->icon }}', 
+                                            url_update: '{{ route('product.update', $product->id) }}'})">
                                                 <span class="menu-icon">
                                                     <i class="ki-duotone ki-notepad-edit"></i>
                                                 </span>
@@ -94,7 +102,7 @@
                                             <form action="{{ route('product.duplicate', $product->id) }}" method="POST">
                                                 @csrf
                                                 <button type="submit" class="text-xs w-full">
-                                                    <div class="flex items-center pl-5 menu-link">
+                                                    <div class="flex items-center pl-5 hover:!bg-gray-100">
                                                         <span class="menu-icon">
                                                             <i class="ki-duotone ki-copy"></i>
                                                         </span>
@@ -178,10 +186,15 @@
     </div>
 </div>
 
-@include('components.modal.modal-edit-product')
-@include('components.modal.confirm-delete-product')
+@if($products->isNotEmpty())
+    @include('pages.products.partials.modal-edit-product')
+@else
+<span class="text-gray-500 text-sm text-center">Belum Ada Produk</span>
+@endif
+@include('pages.products.partials.confirm-delete-product')
 
 
+@push('block')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const menuProduct = document.getElementById('menuProduct');
@@ -235,3 +248,5 @@
         });
     });
 </script>
+    <script src="{{ asset('assets/js/sidebar/index.js') }}"></script>
+@endpush

@@ -5,7 +5,7 @@
         <title>{{ config('app.name', 'App') }} - @yield('title')</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
         <link href="{{ asset('metronic/dist/assets/media/app/apple-touch-icon.png') }}" rel="apple-touch-icon" sizes="180x180"/>
         <link href="{{ asset('metronic/dist/assets/media/app/favicon-32x32.png') }}" rel="icon" sizes="32x32" type="image/png"/>
         <link href="{{ asset('metronic/dist/assets/media/app/favicon-16x16.png') }}" rel="icon" sizes="16x16" type="image/png"/>
@@ -72,7 +72,7 @@
             </div>
         </div>
         
-        @include('components.modal.modal-create-product', ['route' => route('product.store')])
+        @include('pages.products.partials.modal-create-product', ['route' => route('product.store')])
         
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -146,8 +146,8 @@
         </script>
 
         <script>
-            const textareas = document.querySelectorAll('.textarea');
-
+            const textareas = document.querySelectorAll('.editor');
+            let editors = [];
             textareas.forEach(textarea => {
                 ClassicEditor
                     .create(textarea, {
@@ -172,36 +172,38 @@
                         ],
                     })
                     .then(editor => {
+                        editors.push(editor);
                         console.log('Editor was initialized', editor);
                     })
                     .catch(error => {
                         console.error('Error during initialization of the editor', error);
                     });
             });
+            console.log(editors);
         </script>
 
         <script>
-               function formatDateTimeForInput(dateString) {
+            function formatDateTimeForInput(dateString) {
                 var date = new Date(dateString);
-                
+
                 var day = ('0' + date.getDate()).slice(-2);
                 var monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                var month = monthNames[date.getMonth()]; 
+                var month = monthNames[date.getMonth()];
                 var year = date.getFullYear();
-                
+
                 var hour = ('0' + date.getHours()).slice(-2);
                 var minute = ('0' + date.getMinutes()).slice(-2);
 
                 return `${day} ${month} ${year}, ${hour}:${minute}`;
-            } 
+            }
 
             function openEditModal(data) {
                 console.log('Data:', data);
 
                 $('#updateProductForm').attr('action', data.url_update);
 
-                $('#current-icon').removeClass().addClass(data.icon); 
-                $('#icon').val(data.icon); 
+                $('#current-icon').removeClass().addClass(data.icon);
+                $('#icon').val(data.icon);
 
                 var productIdElement = document.getElementById('id');
                 var productNameElement = document.getElementById('name');
@@ -241,26 +243,26 @@
                     showModal('modal_product');
                 } else {
                     console.error('One or more elements are missing:', {
-                        productIdElement, 
-                        productNameElement, 
-                        internalLabelElement, 
+                        productIdElement,
+                        productNameElement,
+                        internalLabelElement,
                         eksternalLabelElement,
-                        startDateElement, 
-                        endDateElement, 
+                        startDateElement,
+                        endDateElement,
                         userSelectElement
                     });
                 }
             }
 
             function closeEditModal() {
-                hideModal('modal_product'); 
+                hideModal('modal_product');
             }
 
             function showModal(modalId) {
                 var modal = document.getElementById(modalId);
                 if (modal) {
                     modal.classList.add('open');
-                    modal.classList.remove('hidden'); 
+                    modal.classList.remove('hidden');
                 } else {
                     console.error('Modal with id ' + modalId + ' not found');
                 }
@@ -270,7 +272,7 @@
                 var modal = document.getElementById(modalId);
                 if (modal) {
                     modal.classList.add('hidden');
-                    modal.classList.remove('open'); 
+                    modal.classList.remove('open');
                 } else {
                     console.error('Modal with id ' + modalId + ' not found');
                 }
@@ -280,15 +282,15 @@
                 btn.addEventListener('click', closeEditModal);
             });
 
-            document.getElementById('updateProductForm').addEventListener('submit', function (e) {
+            document.getElementById('updateProductForm').addEventListener('submit', function(e) {
                 const iconInput = document.getElementById('icon');
                 const currentIcon = document.getElementById('current-icon');
 
                 if (!iconInput.value && currentIcon.className) {
-                    iconInput.value = currentIcon.className;  
+                    iconInput.value = currentIcon.className;
                 }
 
-                console.log('Submitting form with icon:', iconInput.value); 
+                console.log('Submitting form with icon:', iconInput.value);
             });
         </script>
 
@@ -335,6 +337,6 @@
         </script>
         
         @yield('blockfoot')
-        
+        @stack('block')
     </body>
 </html>

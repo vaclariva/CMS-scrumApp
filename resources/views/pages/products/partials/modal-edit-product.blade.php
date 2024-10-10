@@ -100,71 +100,72 @@
     </div>
 </div>
 
+@push('blockfoot')
+    <script src="{{ asset('assets/js/products/icon.js') }}"></script>
+@endpush
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    fetch('/icons')
-        .then(response => response.json())
-        .then(data => {
-            const iconGrid = document.getElementById('icon-grid-container');
-
-            data.forEach(icon => {
-                const iconElement = document.createElement('span');
-                iconElement.className = icon.class + ' cursor-pointer p-2 hover:bg-gray-200 rounded';
-                iconElement.dataset.class = icon.class; 
-                iconGrid.appendChild(iconElement);
-            });
-
-            document.querySelectorAll('#icon-grid-container span').forEach(icon => {
-                icon.addEventListener('click', function () {
-                    const selectedIcon = document.getElementById('current-icon');
-                    selectedIcon.className = this.dataset.class; 
-                    document.getElementById('icon').value = this.dataset.class; 
-                    document.getElementById('icon-picker-menu').classList.add('hidden');
-                });
-            });
+        const parseIndonesianDate = (dateStr) => {
+            const months = {
+                "Januari": "01",
+                "Februari": "02",
+                "Maret": "03",
+                "April": "04",
+                "Mei": "05",
+                "Juni": "06",
+                "Juli": "07",
+                "Agustus": "08",
+                "September": "09",
+                "Oktober": "10",
+                "November": "11",
+                "Desember": "12"
+            };
+    
+            const [datePart, timePart] = dateStr.split(', ');
+            const [day, monthName, year] = datePart.split(' ');
+            const [hours, minutes] = timePart.split(':');
+    
+            const month = months[monthName];
+    
+            return new Date(`${year}-${month}-${day}T${hours}:${minutes}:00`);
+        };
+    
+        const formatDateForView = (date) => {
+            const options = {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            };
+            return new Date(date).toLocaleDateString('id-ID', options);
+        };
+    
+        const formatDateForDB = (date) => {
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = ('0' + (d.getMonth() + 1)).slice(-2);
+            const day = ('0' + d.getDate()).slice(-2);
+            const hours = ('0' + d.getHours()).slice(-2);
+            const minutes = ('0' + d.getMinutes()).slice(-2);
+            const seconds = ('0' + d.getSeconds()).slice(-2);
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        };
+    
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+    
+        startDateInput.value = formatDateForView(startDateInput.value);
+        endDateInput.value = formatDateForView(endDateInput.value);
+    
+        const updateProductForm = document.getElementById('updateProductForm');
+        updateProductForm.addEventListener('submit', function () {
+            const startDateDB = formatDateForDB(parseIndonesianDate(startDateInput.value));
+            const endDateDB = formatDateForDB(parseIndonesianDate(endDateInput.value));
+    
+            document.getElementById('formatted_start_date').value = startDateDB;
+            document.getElementById('formatted_end_date').value = endDateDB;
         });
-
-    document.getElementById('icon-picker-btn').addEventListener('click', function () {
-        const picker = document.getElementById('icon-picker-menu');
-        picker.classList.toggle('hidden');
     });
-
-    document.getElementById('icon-search-input').addEventListener('input', function () {
-        const query = this.value.toLowerCase();
-        const icons = document.querySelectorAll('#icon-grid-container span');
-        icons.forEach(icon => {
-            if (icon.dataset.class.includes(query)) {
-                icon.classList.remove('hidden');
-            } else {
-                icon.classList.add('hidden');
-            }
-        });
-    });
-});
 </script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        flatpickr("#start_date", {
-            enableTime: true,
-            dateFormat: "d F Y, H:i",  
-            time_24hr: true,
-            locale: 'id',
-            onChange: function(selectedDates, dateStr, instance) {
-                const formattedDate = instance.formatDate(selectedDates[0], "Y-m-d H:i:s"); 
-                document.getElementById('formatted_start_date').value = formattedDate; 
-            }
-        });
-
-        flatpickr("#end_date", {
-            enableTime: true,
-            dateFormat: "d F Y, H:i",
-            time_24hr: true,
-            locale: 'id',
-            onChange: function(selectedDates, dateStr, instance) {
-                const formattedDate = instance.formatDate(selectedDates[0], "Y-m-d H:i:s"); 
-                document.getElementById('formatted_end_date').value = formattedDate; 
-            }
-        });
-    });
-    </script>

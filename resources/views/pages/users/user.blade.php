@@ -24,7 +24,7 @@ $breadcrumb = [
                 </div>
             </div>
             <div class="flex items-center gap-2.5 text-lg">
-                @include('components.modal.modal-create-user')
+                @include('pages.users.partials.modal-create-user')
                 <a class="btn btn-sm btn-primary rounded-full hover:text-sky-700" data-modal-toggle="#modal_6_1" id="modal-add">
                     <i class="ki-duotone ki-plus-circle"></i>
                     Tambah Pengguna
@@ -118,7 +118,7 @@ $breadcrumb = [
                                                     @endif
                                                 </div>
                                                 <div>
-                                                    @include('components.modal.modal-edit-user')
+                                                    @include('pages.users.partials.modal-edit-user')
                                                     <a class="text-primary cursor-pointer" data-modal-toggle="#modal_user_{{ $user->id }}">
                                                         {{ $user->name }}
                                                     </a>
@@ -132,7 +132,7 @@ $breadcrumb = [
                                             {{ $user->role->name }}
                                         </td>
                                         <td>
-                                            @include('components.modal.confirm-delete-user')
+                                            @include('pages.users.partials.confirm-delete-user')
                                             <button type="button" class="btn btn-sm btn-icon btn-clear btn-light"
                                                 data-modal-toggle="#delete_user{{ $user->id }}"
                                                 data-url="{{ route('user.destroy', $user->id) }}">
@@ -167,106 +167,11 @@ $breadcrumb = [
 </div>
 @endsection
 
-@section('blockfoot')
-<script>
-    $(document).ready(function() {
-        $('#user-form').on('submit', function(e) {
-            e.preventDefault();
-
-            var form = $(this);
-            var formData = new FormData(form[0]);
-
-            $.ajax({
-                type: 'POST',
-                url: form.attr('action'),
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if (response.success) {
-                        toastr.success(response.success, 'Berhasil');
-                        location.reload();
-                    }
-                },
-                error: function(xhr) {
-                    var errors = xhr.responseJSON.errors || {};
-
-                    if (errors.email) {
-                        $('#email-error').removeClass('d-none').text(errors.email[0]);
-                    }
-                    toastr.error(xhr.responseJSON.error || 'Terjadi kesalahan', 'Gagal');
-                }
-            });
-        });
-
-        $("#parent-upload").on('click', function() {
-            $("#image-upload").trigger('click');
-        })
-    });
-
-    $("#image-upload").on('change', function(e) {
-        const reader = new FileReader();
-        reader.onload = e => $('.image-input-preview').css('background-image', `url(${e.target.result})`);
-        reader.readAsDataURL(this.files[0]);
-    });
-
-    function removeImagePreview(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const imageInput = event.currentTarget.closest('.image-input');
-
-        if (imageInput) {
-            const imagePreview = imageInput.querySelector('.image-input-preview');
-
-            if (imagePreview) {
-                imagePreview.style.backgroundImage = "url('metronic/dist/assets/media/avatars/blank.png')";
-            } else {
-                console.error('Image preview element not found');
-            }
-        } else {
-            console.error('Image input element not found');
-        }
-    }
-</script>
-
-<script type="text/javascript">
-    // get roles from db
-    $('#modal-add').on('click', function() {
-        $.get("{{route('role.index')}}", function(roles) {
-            const $selectRole = $('#role_id');
-            $selectRole.empty();
-            $.each(roles, function(index, roles) {
-                $selectRole.append(
-                    $('<option>', {
-                        value: roles.id,
-                        text: roles.name
-                    })
-                )
-            })
-        })
-    })
-
-    $('#search').on('keyup', function() {
-        var searchValue = $(this).val();
-        let datatable = KTDataTable.getInstance(document.getElementById('datatable_1'));
-        datatable.search(searchValue);
-
-        // Event listener untuk ketika datatable selesai diperbarui (pencarian, filter, dsb.)
-        datatable.on('datatable-on-layout-updated', function() {
-            // Menghitung jumlah baris setelah pencarian, dan mengabaikan baris dengan teks "No records found"
-            var rowCount = $('#datatable_1 tbody tr').filter(function() {
-                return !$(this).find('td').text().includes('No records found');
-            }).length;
-
-            $('#currentTotalUser').text(rowCount + ' pengguna');
-
-            // Jika tidak ada hasil, tampilkan pesan khusus
-            if (rowCount === 0) {
-                $('#datatable_1 tbody').html('<tr><td colspan="5" class="text-center">Tidak ada pengguna yang ditemukan.</td></tr>');
-            }
-        });
-    });
-</script>
-
-@endsection
+@push('blockfoot')
+    <script>
+        var urlIndex = "{{ route('role.index') }}";
+    </script>
+    <script src="{{ asset('assets/js/users/picture.js') }}"></script>
+    <script src="{{ asset('assets/js/users/role.js') }}"></script>
+    <script src="{{ asset('assets/js/users/search.js') }}"></script>
+@endpush

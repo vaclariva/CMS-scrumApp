@@ -140,7 +140,7 @@ $breadcrumb = [
                                             {{ $loop->iteration }}
                                         </td>
                                         <td>
-                                            <a href="{{route('sprints.show', [$product->id, $sprint->id])}}" class="text-primary cursor-pointer">
+                                            <a href="{{route('sprints.edit', [$product->id, $sprint->id])}}" class="text-primary cursor-pointer">
                                                 {{$sprint->name}}
                                             </a>
                                         </td>
@@ -164,7 +164,7 @@ $breadcrumb = [
                                             </span>
                                         </td>
                                         <td>
-                                            @include('components.modal.confirm-delete-sprint')
+                                            @include('pages.sprints.confirm-delete-sprint')
                                             <button type="button" class="btn btn-sm btn-icon btn-clear btn-light"
                                                 data-modal-toggle="#delete_sprint{{ $sprint->id }}">
                                                 <i class="ki-outline ki-trash"></i>

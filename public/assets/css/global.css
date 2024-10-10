@@ -137,6 +137,8 @@ table td[colspan="5"] {
 .board-sub{
     padding-right: 1.5rem;
     padding-left: 1.5rem;
+    word-break: break-word; 
+    overflow-wrap: break-word;
 }
 .modal-create-vision-board{
     width: 60%;
@@ -147,6 +149,43 @@ table td[colspan="5"] {
     font-weight: 700;
 }
 
+.footer-vision {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #ccc; 
+    padding-top: 10px; 
+}
+
+.btn-link-red {
+    text-decoration-color: red; 
+}
+
+#removeCompetitorsBtn:hover {
+    color: red;
+}
+
+.custom-add {
+    width: 100%; 
+    font-size: 1rem; 
+    border: none; 
+    outline: none;
+    font-weight: 600;
+    resize: none; /* Mencegah perubahan ukuran manual oleh pengguna */
+    overflow: hidden; /* Mencegah scroll */
+    padding: 8px; /* Tambahkan padding jika diinginkan */
+    box-sizing: border-box; /* Menghindari perubahan ukuran karena padding */
+}
+
+
+.custom-input {
+    width: 100%; 
+    font-size: 2rem; 
+    border: none; 
+    outline: none;
+    font-weight: 800;
+}
+
+
 /* ------------DROPDOWN SIDEBAR-------------- */
 .menu-sidebar:hover {
     color: #f9fafb; 
@@ -156,7 +195,49 @@ table td[colspan="5"] {
 }
 
 .product-list-container {
-    /* Atur tinggi maksimum sesuai kebutuhan */
-    max-height: calc(10 * 2.5rem); /* Mengasumsikan setiap item memiliki tinggi 2.5rem */
-    overflow-y: auto; /* Aktifkan scrollbar vertikal jika diperlukan */
+    max-height: calc(7 * 2.5rem); 
+    overflow-y: auto; 
+}
+
+/* ------------BACKLOG-------------- */
+.title-backlog{
+    font-weight: 600;
+}
+
+/* ------------CK EDITOR-------------- */
+.ck-editor {
+    border: 1px solid #ccc !important; 
+    border-radius: 8px;
+    overflow: hidden;  
+}
+
+
+
+/* Drawer */
+.drawer {
+    height: 100vh; /* Mengambil seluruh tinggi viewport */
+    overflow: hidden; /* Jangan scroll seluruh drawer */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Membuat bagian konten bisa di-scroll */
+.scrollable-y {
+    overflow-y: auto; /* Scroll vertikal */
+    flex-grow: 1; /* Membuat elemen ini mengambil ruang yang tersisa */
+    max-height: calc(100vh - 100px); /* Sesuaikan tinggi dengan header/footer */
+}
+
+/* Scrollbar customization (optional) */
+.scrollable-y::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollable-y::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.scrollable-y::-webkit-scrollbar-track {
+    background: transparent;
 }

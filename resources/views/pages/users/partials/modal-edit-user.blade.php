@@ -70,7 +70,7 @@
                 <div class="modal-footer">
                     <div class="flex gap-4 justify-end p-5">
                         <button class="btn btn-light rounded-full" data-modal-dismiss="true" type="button">
-                            Cancel
+                            Batal
                         </button>
                         <button class="btn btn-primary ms-3 rounded-full" type="submit">
                             Simpan

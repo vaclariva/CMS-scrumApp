@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Backlog;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\VisionBoard;
@@ -23,7 +24,7 @@ class ProductController extends Controller
         $lastProducts = $products->last();
         info($products);
         if ($count == 0) {
-            return view('pages.add-product', compact('users', 'products'));
+            return view('pages.add-products.add-product', compact('users', 'products'));
         } else {
             $product = Product::findOrFail($lastProducts->id);
             $productOwner = $product->user()->first();
@@ -45,6 +46,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $request->validate([
             'icon' => 'required|string',
             'name' => 'required|string',
@@ -67,10 +69,11 @@ class ProductController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('product')->with('success', 'Produk berhasil ditambahkan');
+            info('Produk berhasil ditambahkan');
+            return redirect()->back()->with('success', 'Produk berhasil ditambahkan');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('product')->with('error', 'Gagal menambahkan data. Silakan coba lagi.');
+            return redirect()->back()->with('error', 'Produk berhasil di hapus');
         }
     }
 
@@ -84,10 +87,9 @@ class ProductController extends Controller
         $product = Product::findOrFail($productId);
         $productOwner = $product->user()->first();
         $visionBoards = VisionBoard::with('product')->where('product_id', $productId)->get();
-        // dd($visionBoards);
-        info($visionBoards);
+        $backlogs = Backlog::with('product')->where('product_id', $productId)->get();
 
-        return view('pages.detail-product', compact('productOwner', 'visionBoards', 'product'));
+        return view('pages.vision-boards.detail-product', compact('productOwner', 'visionBoards', 'product', 'backlogs'));
     }
 
 
@@ -105,7 +107,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //dd($request->all());
         $request->validate([
             'icon' => 'required|string',
             'name' => 'required|string',
@@ -120,23 +122,26 @@ class ProductController extends Controller
 
             $product = Product::findOrFail($id);
 
+            $startDate = $request->start_date ?? $product->start_date;
+            $endDate = $request->end_date ?? $product->end_date;
+
             $product->update([
                 'icon' => $request->icon,
                 'name' => $request->name,
                 'label' => $request->label,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
+                'start_date' => $startDate,
+                'end_date' => $endDate,
                 'user_id' => $request->user_id,
             ]);
 
             DB::commit();
-            return redirect()->route('product')->with('success', 'Produk berhasil diperbarui');
+            return redirect()->back()->with('success', 'Product berhasil diperbarui');
         } catch (\Exception $e) {
-            Log::error('Update failed: ' . $e->getMessage());
             DB::rollBack();
             return redirect()->route('product')->with('error', 'Gagal memperbarui data. Silakan coba lagi.');
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

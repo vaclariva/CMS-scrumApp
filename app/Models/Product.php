@@ -38,6 +38,10 @@ class Product extends Model
     {
         return $this->hasMany(VisionBoard::class);
     }
+    public function backlogs(): HasMany
+    {
+        return $this->hasMany(Backlog::class);
+    }
 
     public function sprints(): HasMany
     {

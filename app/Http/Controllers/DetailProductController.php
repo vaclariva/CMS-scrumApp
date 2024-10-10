@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\User;
+use App\Models\VisionBoard;
 use Illuminate\Http\Request;
 
 class DetailProductController extends Controller
@@ -14,7 +15,11 @@ class DetailProductController extends Controller
     public function index(Request $request, Product $product)
     {
         $productOwner = $product->user()->first();
-        return view('pages.detail-product', compact('product', 'productOwner'));
+        $vision_boards = $product->vision_boards() // Mengambil vision boards terkait produk
+                        ->orderBy('create_at', 'desc')    // Mengurutkan berdasarkan ID dari yang terbesar
+                        ->get(); 
+
+        return view('pages.vision-boards.detail-product', compact('product', 'productOwner', 'vision_boards'));
     }
 
     /**

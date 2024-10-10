@@ -12,15 +12,14 @@ use Illuminate\Support\Facades\Redirect;
 class VisionBoardController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource. 
      */
-    public function index($productId)
+    public function index($id)
     {
-        $product = Product::findOrFail($productId);
-        info($product);
-        $vision_boards = $product->vision_boards; 
+        $product = Product::findOrFail($id);
+        $vision_boards = VisionBoard::with('product')->where('product_id', $id)->latest()->get();
         
-        return view('pages.detail-product', compact('vision_boards', 'product'));
+        return view('pages.vision-boards.detail-product', compact('vision_boards', 'product'));
     }
 
     /**
@@ -34,21 +33,20 @@ class VisionBoardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-// VisionBoardController.php
-public function store(Request $request)
-{
-    $request->validate([
-        'product_id' => 'required|exists:products,id',
-        'name' => 'required|string|max:255',
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'name' => 'required|string|max:255',
+        ]);
 
-    VisionBoard::create([
-        'product_id' => $request->product_id,
-        'name' => $request->name,
-    ]);
+        VisionBoard::create([
+            'product_id' => $request->product_id,
+            'name' => $request->name,
+        ]);
 
-    return redirect()->back()->with('success', 'Vision board berhasil ditambahkan');
-}
+        return redirect()->back()->with('success', 'Vision board berhasil ditambahkan');
+    }
 
 
 
@@ -72,43 +70,44 @@ public function store(Request $request)
      * Update the specified resource in storage.
      */
     public function update(Request $request, Product $product, VisionBoard $visionBoard)
-{
-    $request->validate([
-        'product_id' => 'required|exists:products,id',
-        'name' => 'required|string|max:255',
-        'vision' => 'nullable|string|max:255',
-        'target_group' => 'nullable|string|max:255',
-        'needs' => 'nullable|string|max:255',
-        'product' => 'nullable|string|max:255',
-        'business_goals' => 'nullable|string|max:255',
-        'competitors' => 'nullable|string|max:255',
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'vision' => 'nullable|string',
+            'target_group' => 'nullable|string',
+            'needs' => 'nullable|string',
+            'product' => 'nullable|string',
+            'business_goals' => 'nullable|string',
+            'competitors' => 'nullable|string',
+        ]);
 
-    try {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        $visionBoard->update($request->all());
+            $visionBoard->update([
+                'name' => $request->input('name'),
+                'vision' => $request->input('vision'),
+                'target_group' => $request->input('target_group'),
+                'needs' => $request->input('needs'),
+                'product' => $request->input('product'),
+                'business_goals' => $request->input('business_goals'),
+                'competitors' => $request->input('competitors'),
+            ]);
 
-        DB::commit();
+            DB::commit();
 
-        // Jika permintaan adalah AJAX, kirim respons JSON
-        if ($request->ajax()) {
-            return response()->json(['success' => true]);
+            return redirect()->route('products.show', $product->id)
+                            ->with('success', 'Vision Board berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error update Vision Board: ' . $e->getMessage());
+
+            return redirect()->route('products.show', $product->id)
+                            ->with('error', 'Gagal memperbarui Vision Board. Silakan coba lagi.');
         }
-
-        return redirect()->route('products.show', $product->id)->with('success', 'Produk berhasil diperbarui');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        Log::error('Update failed: ' . $e->getMessage());
-
-        // Respons error untuk AJAX
-        if ($request->ajax()) {
-            return response()->json(['success' => false], 500);
-        }
-
-        return redirect()->route('detail-product')->with('error', 'Gagal memperbarui data. Silakan coba lagi.');
     }
-}
+
+
 
     /**
      * Remove the specified resource from storage.

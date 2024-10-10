@@ -29,7 +29,7 @@ class UserController extends Controller
         $totalUser = User::count();
         info(auth()->user());
 
-        return view('pages.user', compact('users', 'totalUser'));
+        return view('pages.users.user', compact('users', 'totalUser'));
     }
 
     /**
