@@ -15,9 +15,9 @@ public function index($backlogId)
     {
         $backlog = Backlog::findOrFail($backlogId);
 
-        $checklist = Checklist::where('backlog_id', $backlogId)->get();
+        $checklists = Checklist::where('backlog_id', $backlogId)->get();
 
-        return view('pages.vision-boards.detail-product', compact('backlog', 'checklist'));
+        return view('pages.vision-boards.detail-product', compact('backlog', 'checklists'));
     }
 
     /**
@@ -31,20 +31,39 @@ public function index($backlogId)
     /**
      * Store a newly created resource in storage.
      */
-     public function store(Request $request)
+
+     public function store(Request $request, $backlogId)
     {
-        $request->validate([
-            'backlog_id' => 'required|exists:backlogs,id',
-            'name' => 'required|string|max:255',
+        $checklist = new Checklist();
+        $checklist->backlog_id = $backlogId;
+        $checklist->description = $request->input('description', 'untitled');
+        $checklist->status = 0; 
+        $checklist->save();
+
+        
+        $backlog = Backlog::findOrFail($backlogId); 
+
+        $checklists = $backlog->checklists; 
+
+        $completedChecklists = $backlog->checklists()->where('status', '1')->count();
+        $totalChecklists = $backlog->checklists()->count();
+
+        $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
+
+        return response()->json([
+            'id' => $checklist->id,
+            'description' => $checklist->description,
+            'status' => $checklist->status,
+            'completedChecklists' => $completedChecklists,
+            'totalChecklists' => $totalChecklists,
+            'persentase' => number_format($persentase, 2),
+            'checklists' => $checklists,
+            'message' => 'Checklist berhasil ditambahkan.'
         ]);
 
-        Checklist::create([
-            'backlog_id' => $request->backlog_id,
-            'name' => $request->name,
-        ]);
-
-        return redirect()->back()->with('success', 'Vision board berhasil ditambahkan');
     }
+
+
 
     /**
      * Display the specified resource.
@@ -65,30 +84,64 @@ public function index($backlogId)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $checklistId)
+    public function update(Request $request, Checklist $checklist)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+        $validatedData = $request->validate([
             'status' => 'required|in:0,1',
+            'description' => 'nullable|string',
         ]);
 
-        $checklist = Checklist::findOrFail($checklistId);
+        $checklist->status = $validatedData['status'];
 
-        $checklist->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'status' => $request->status,
+        if (array_key_exists('description', $validatedData) && $validatedData['description'] !== null) {
+            $checklist->description = $validatedData['description'];
+        }
+
+        $checklist->save();
+
+        $backlog = $checklist->backlog;
+        $completedChecklists = $backlog->checklists()->where('status', '1')->count();
+        $totalChecklists = $backlog->checklists()->count();
+
+        $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
+
+        return response()->json([
+            'id' => $checklist->id,
+            'description' => $checklist->description,
+            'status' => $checklist->status,
+            'completedChecklists' => $completedChecklists,
+            'totalChecklists' => $totalChecklists,
+            'persentase' => number_format($persentase),
+            'backlog' => $backlog,
         ]);
-
-        return redirect()->back()->with('success', 'Checklist berhasil diperbarui');
     }
+
+    
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, string $backlogId)
     {
-        //
+        $checklist = Checklist::findOrFail($id); 
+
+        $checklist->delete(); 
+
+        $backlog = $checklist->backlog;
+
+        $checklists = $backlog->checklists()->where('backlog_id', $backlogId)->get();
+        $completedChecklists = $backlog->checklists()->where('status', '1')->count();
+        $totalChecklists = $backlog->checklists()->count();
+
+        $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
+
+        return response()->json([
+            'message' => 'Checklist deleted successfully.',
+            'completedChecklists' => $completedChecklists,
+            'totalChecklists' => $totalChecklists,
+            'checklists' => $checklists,
+            'persentase' => number_format($persentase),
+            'backlog' => $backlog,
+        ]);
     }
 }

@@ -40,9 +40,9 @@
                     <div class="product-list-container overflow-y-auto max-h-[calc(7*2.5rem)]">
                         @foreach ($products as $product)
                         <div class="flex justify-between">
-                            <div class="menu-item menu-item-accordion" data-menu-id="{{ $product->id }}" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
+                            <div id="accordionProduct" class="menu-item menu-item-accordion" data-menu-id="{{ $product->id }}" data-menu-item-toggle="accordion" data-menu-item-trigger="click">
                                 <div class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px]" tabindex="0">
-                                    <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
+                                    <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px] menu-link-hover:!text-primary">
                                         <i class="{{ $product->icon }}"></i>
                                     </span>
                                     <span class="menu-title text-sm font-medium text-gray-800 menu-item-active:text-primary menu-link-hover:!text-primary">
@@ -52,21 +52,25 @@
 
                                 <div class="menu-accordion gap-0.5 pl-[10px] relative before:absolute before:left-[20px] before:top-0 before:bottom-0 before:border-l before:border-gray-200 hidden">
                                     <div class="menu-item" id="menuProduct">
-                                        <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]"
-                                            href="{{ route('products.show', $product->id) }}" tabindex="0">
+                                        <a class="menu-link items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-50 menu-item-active:rounded-full hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-50 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]"
+                                            href="{{ route('products.show', $product->id) }}" tabindex="0"
+                                            data-id="{{ $product->id }}">
+                                            
                                             <span class="menu-bullet flex w-[6px] relative before:absolute before:top-0 before:size-[6px] before:rounded-full before:-translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-primary menu-item-hover:before:bg-primary"></span>
-
-                                            <span class="menu-title text-2sm font-bold text-gray-500 menu-item-active:text-primary menu-item-active:font-semibold">
+                                            
+                                            <span class="menu-title text-2sm font-bold text-gray-500 menu-item-active:text-primary menu-item-active:font-semibold hover:text-primary">
                                                 Product
                                             </span>
                                         </a>
                                     </div>
+                                                
                                     <div class="menu-item" id="menuSprint">
-                                        <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-100 menu-item-active:rounded-lg hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]"
-                                            href="{{ route('sprints.index', $product->id)}}" tabindex="0">
+                                        <a class="menu-link border border-transparent items-center grow menu-item-active:bg-secondary-active dark:menu-item-active:bg-coal-300 dark:menu-item-active:border-gray-50 menu-item-active:rounded-full hover:bg-secondary-active dark:hover:bg-coal-300 dark:hover:border-gray-50 hover:rounded-lg gap-[14px] pl-[10px] pr-[10px] py-[8px]"
+                                            href="{{ route('sprints.index', $product->id)}}" tabindex="0"
+                                            data-id="{{ $product->id }}">
                                             <span class="menu-bullet flex w-[6px] relative before:absolute before:top-0 before:size-[6px] before:rounded-full before:-translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-primary menu-item-hover:before:bg-primary"></span>
 
-                                            <span class="menu-title text-2sm font-bold text-gray-500 menu-item-active:text-primary menu-item-active:font-semibold">
+                                            <span class="menu-title text-2sm font-bold text-gray-500 menu-item-active:text-primary menu-item-active:font-semibold hover:text-primary">
                                                 Sprint
                                             </span>
                                         </a>
@@ -98,31 +102,34 @@
                                                 </span>
                                             </a>
                                         </div>
-                                        <div class="menu-item">
-                                            <form action="{{ route('product.duplicate', $product->id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" class="text-xs w-full">
-                                                    <div class="flex items-center pl-5 hover:!bg-gray-100">
-                                                        <span class="menu-icon">
-                                                            <i class="ki-duotone ki-copy"></i>
-                                                        </span>
-                                                        <span class="menu-title">
-                                                            Duplikat
-                                                        </span>
-                                                    </div>
-                                                </button>
-                                            </form>
-                                        </div>
-                                        <div class="menu-item">
-                                            <a class="menu-link" id="delete_product" onclick="openDeleteModal({  id: '{{ $product->id }}', name: '{{ $product->name }}', url_delete: '{{ route('product.destroy', $product->id) }}'})">
-                                                <span class="menu-icon">
-                                                    <i class="ki-duotone ki-trash"></i>
-                                                </span>
-                                                <span class="menu-title">
-                                                    Hapus
-                                                </span>
-                                            </a>
-                                        </div>
+                                        @if (auth()->check() && auth()->user()->role->name === 'Super Admin')
+                                            <div class="menu-item">
+                                                <form action="{{ route('product.duplicate', $product->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="text-xs w-full">
+                                                        <div class="flex items-center pl-5 hover:!bg-gray-100">
+                                                            <span class="menu-icon">
+                                                                <i class="ki-duotone ki-copy"></i>
+                                                            </span>
+                                                            <span class="menu-title">
+                                                                Duplikat
+                                                            </span>
+                                                        </div>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        
+                                            <div class="menu-item">
+                                                <a class="menu-link" id="delete_product" onclick="openDeleteModal({  id: '{{ $product->id }}', name: '{{ $product->name }}', url_delete: '{{ route('product.destroy', $product->id) }}'})">
+                                                    <span class="menu-icon">
+                                                        <i class="ki-duotone ki-trash"></i>
+                                                    </span>
+                                                    <span class="menu-title">
+                                                        Hapus
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -131,51 +138,58 @@
                     </div>
 
                     @if ($products->isNotEmpty())
-                    <div class="py-5">
-                        <a type="button" class="btn flex justify-center inline-block px-2 py-2 border-2 border-dashed border-gray-400 rounded-full text-gray-400 text-sm" data-modal-toggle="#modal_6_3">
-                            <span class="svg-icon svg-icon-primary svg-icon-2x"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="35px" height="20px" viewBox="0 0 24 24" version="1.1">
-                                    <title>Stockholm-icons / Navigation / Plus</title>
-                                    <desc>Created with Sketch.</desc>
-                                    <defs />
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect fill="#636674" x="4" y="11" width="16" height="2" rx="1" />
-                                        <rect fill="#636674" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1" />
-                                    </g>
-                                </svg></span>Tambah Produk
-                        </a>
-                    </div>
+                        @if (auth()->check() && auth()->user()->role->name === 'Super Admin')
+                        <div class="py-5">
+                            <a type="button" class="btn flex justify-center inline-block px-2 py-2 border-2 border-dashed border-gray-400 rounded-full text-gray-400 text-sm" data-modal-toggle="#modal_6_3">
+                                <span class="svg-icon svg-icon-primary svg-icon-2x"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="35px" height="20px" viewBox="0 0 24 24" version="1.1">
+                                        <title>Stockholm-icons / Navigation / Plus</title>
+                                        <desc>Created with Sketch.</desc>
+                                        <defs />
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect fill="#636674" x="4" y="11" width="16" height="2" rx="1" />
+                                            <rect fill="#636674" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1" />
+                                        </g>
+                                    </svg></span>Tambah Produk
+                            </a>
+                        </div>
+                        @endif
                     @else
                     <span class="text-gray-500 text-sm text-center">Belum Ada Produk</span>
                     @endif
 
-
+                    @if (auth()->check() && auth()->user()->role->name === 'Super Admin')
                     <div class="menu-item pt-2.25 pb-px">
                         <span class="menu-heading uppercase text-2sm font-semibold text-gray-500 pl-[10px] pr-[10px] pt-5 pb-2">
                             Sistem
                         </span>
                     </div>
+                    @endif
 
-                    <div class="menu-item {{request()->is('user') ? 'active' : ''}}">
+                    @if (auth()->check() && auth()->user()->role->name === 'Super Admin')
+                    <div class="menu-item {{ request()->is('user') ? 'active' : '' }}">
                         <a href="/user" class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px] hover:border-gray-500" tabindex="0">
-                            <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
+                            <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px] menu-item-active:text-primary menu-link-hover:!text-primary">
                                 <i class="ki-duotone ki-user text-lg menu-link-hover:text-primary"></i>
                             </span>
                             <span class="menu-title text-sm font-semibold text-gray-700 menu-item-active:text-primary menu-link-hover:!text-primary">
                                 Pengguna
                             </span>
                         </a>
-                    </div>
+                    </div>  
+                    @endif
 
-                    <div class="menu-item {{request()->is('setting') ? 'active' : ''}}">
-                        <a href="/pengaturan" class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px] hover:border-gray-500" tabindex="0">
-                            <span class="menu-icon items-start {{request()->is('setting') ? 'text-primary' : 'text-gray-500'}} w-[20px]">
-                                <i class="ki-duotone ki-setting-2 text-lg menu-link-hover:!text-primary"></i>
-                            </span>
-                            <span class="menu-title text-sm font-semibold text-gray-700 menu-item-active:text-primary menu-link-hover:!text-primary">
-                                Pengaturan
-                            </span>
-                        </a>
-                    </div>
+                    @if (auth()->check() && auth()->user()->role->name === 'Super Admin')
+                        <div class="menu-item {{request()->is('setting') ? 'active' : ''}}">
+                            <a href="/pengaturan" class="menu-link flex items-center grow cursor-pointer border border-transparent gap-[10px] pl-[10px] pr-[10px] py-[6px] hover:border-gray-500" tabindex="0">
+                                <span class="menu-icon items-start {{request()->is('setting') ? 'text-primary' : 'text-gray-500'}} w-[20px]">
+                                    <i class="ki-duotone ki-setting-2 text-lg menu-link-hover:!text-primary"></i>
+                                </span>
+                                <span class="menu-title text-sm font-semibold text-gray-700 menu-item-active:text-primary menu-link-hover:!text-primary">
+                                    Pengaturan
+                                </span>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -186,6 +200,7 @@
     </div>
 </div>
 
+
 @if($products->isNotEmpty())
     @include('pages.products.partials.modal-edit-product')
 @else
@@ -194,59 +209,33 @@
 @include('pages.products.partials.confirm-delete-product')
 
 
-@push('block')
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const menuProduct = document.getElementById('menuProduct');
-        const menuSprint = document.getElementById('menuSprint');
-        const menuItems = [menuProduct, menuSprint];
+@push('blockfoot')
+    <script src="{{ asset('assets/js/sidebar/active.js') }}"></script>
+    <script>
+            document.getElementById('searchInput').addEventListener('input', function() {
+            let filter = this.value.toLowerCase();
+            let products = document.querySelectorAll('.menu-item-accordion');
 
-        function toggleActiveClass(event) {
-            menuItems.forEach(item => item.classList.remove('active'));
+            products.forEach(function(product) {
+                let productName = product.querySelector('.menu-title').textContent.toLowerCase();
+                if (productName.includes(filter)) {
+                    product.parentElement.style.display = '';
+                } else {
+                    product.parentElement.style.display = 'none';
+                }
+            });
+        });
 
-            event.currentTarget.classList.add('active');
-
-            sessionStorage.setItem('activeMenu', event.currentTarget.id);
+        function toggleAccordion(element) {
+            let accordion = element.nextElementSibling;
+            accordion.style.display = (accordion.style.display === "none" || !accordion.style.display) ? "block" : "none";
         }
 
-        menuItems.forEach(item => item.addEventListener('click', toggleActiveClass));
-
-        const activeMenuId = sessionStorage.getItem('activeMenu');
-        if (activeMenuId) {
-            const activeMenuItem = document.getElementById(activeMenuId);
-            if (activeMenuItem) {
-                activeMenuItem.classList.add('active');
-            }
-        }
-    });
-</script>
-
-<script>
-    document.getElementById('searchInput').addEventListener('input', function() {
-        let filter = this.value.toLowerCase();
-        let products = document.querySelectorAll('.menu-item-accordion');
-
-        products.forEach(function(product) {
-            let productName = product.querySelector('.menu-title').textContent.toLowerCase();
-            if (productName.includes(filter)) {
-                product.parentElement.style.display = '';
-            } else {
-                product.parentElement.style.display = 'none';
-            }
+        document.querySelectorAll('[data-dropdown-trigger="click"]').forEach(dropdown => {
+            dropdown.addEventListener('click', function() {
+                let dropdownMenu = this.querySelector('.dropdown-content');
+                dropdownMenu.style.display = (dropdownMenu.style.display === 'none' || !dropdownMenu.style.display) ? 'block' : 'none';
+            });
         });
-    });
-
-    function toggleAccordion(element) {
-        let accordion = element.nextElementSibling;
-        accordion.style.display = (accordion.style.display === "none" || !accordion.style.display) ? "block" : "none";
-    }
-
-    document.querySelectorAll('[data-dropdown-trigger="click"]').forEach(dropdown => {
-        dropdown.addEventListener('click', function() {
-            let dropdownMenu = this.querySelector('.dropdown-content');
-            dropdownMenu.style.display = (dropdownMenu.style.display === 'none' || !dropdownMenu.style.display) ? 'block' : 'none';
-        });
-    });
-</script>
-    <script src="{{ asset('assets/js/sidebar/index.js') }}"></script>
+    </script>
 @endpush

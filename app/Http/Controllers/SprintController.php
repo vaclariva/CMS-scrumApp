@@ -98,39 +98,40 @@ class SprintController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id, $sprintId)
-{
-    //dd($request->all());
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date|after:start_date',
-        'status' => 'required|string',
-        'result_review' => 'nullable|string',
-        'result_retrospective' => 'nullable|string',
-    ]);
-
-    Log::info('Start Date:', [$request->start_date]);
-    Log::info('End Date:', [$request->end_date]);
-
-    try {
-        $sprint = Sprint::findOrFail($sprintId);
-
-        $sprint->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'start_date' => Carbon::parse($request->start_date)->format('Y-m-d H:i:s'), 
-            'end_date' => Carbon::parse($request->end_date)->format('Y-m-d H:i:s'),
-            'status' => $request->status,
-            'result_review' => $request->result_review,
-            'result_retrospective' => $request->result_retrospective,
+    {
+        //dd($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'status' => 'nullable|string',
+            'result_review' => 'nullable|string',
+            'result_retrospective' => 'nullable|string',
         ]);
 
-        return redirect()->route('sprints.index', $id)->with(['success' => 'Berhasil diperbarui.']);
-    } catch (\Throwable $th) {
-        return redirect()->route('sprints.index', $id)->with(['error' => 'Gagal diperbarui.']);
+       // Log::info("Start Date: {$request}");
+
+
+        try {
+            $sprint = Sprint::findOrFail($sprintId);
+
+            $sprint->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'start_date' => Carbon::parse($request->start_date)->format('Y-m-d H:i:s'), 
+                'end_date' => Carbon::parse($request->end_date)->format('Y-m-d H:i:s'),
+                'status' => $request->status ?: 'active',
+                'result_review' => $request->result_review,
+                'result_retrospective' => $request->result_retrospective,
+            ]);
+
+            return redirect()->route('sprints.index', $id)->with(['success' => 'Berhasil diperbarui.']);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return redirect()->route('sprints.index', $id)->with(['error' => 'Gagal diperbarui.']);
+        }
     }
-}
 
 
     /**

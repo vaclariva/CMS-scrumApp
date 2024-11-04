@@ -73,40 +73,40 @@ class VisionBoardController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'vision' => 'nullable|string',
-            'target_group' => 'nullable|string',
-            'needs' => 'nullable|string',
-            'product' => 'nullable|string',
-            'business_goals' => 'nullable|string',
-            'competitors' => 'nullable|string',
+            'vision' => 'nullable|string|max:500',
+            'target_group' => 'nullable|string|max:255',
+            'needs' => 'nullable|string|max:500',
+            'product' => 'nullable|string|max:255',
+            'business_goals' => 'nullable|string|max:500',
+            'competitors' => 'nullable|string|max:500',
         ]);
 
         try {
             DB::beginTransaction();
 
-            $visionBoard->update([
-                'name' => $request->input('name'),
-                'vision' => $request->input('vision'),
-                'target_group' => $request->input('target_group'),
-                'needs' => $request->input('needs'),
-                'product' => $request->input('product'),
-                'business_goals' => $request->input('business_goals'),
-                'competitors' => $request->input('competitors'),
-            ]);
+            $visionBoard->update($request->only([
+                'name', 'vision', 'target_group', 'needs', 'product', 'business_goals', 'competitors'
+            ]));
 
             DB::commit();
 
-            return redirect()->route('products.show', $product->id)
-                            ->with('success', 'Vision Board berhasil diperbarui.');
+            return response()->json([
+                'success' => true,
+                'message' => 'Vision Board berhasil diperbarui.',
+                'data' => $visionBoard  
+            ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Error update Vision Board: ' . $e->getMessage());
+            
+            Log::error('Error update Vision Board for Product ID ' . $product->id . ': ' . $e->getMessage());
 
-            return redirect()->route('products.show', $product->id)
-                            ->with('error', 'Gagal memperbarui Vision Board. Silakan coba lagi.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui Vision Board. Silakan coba lagi.',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
-
 
 
     /**

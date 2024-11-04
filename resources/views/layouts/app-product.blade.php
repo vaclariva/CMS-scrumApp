@@ -337,6 +337,6 @@
         </script>
         
         @yield('blockfoot')
-        @stack('block')
+        @stack('blockfoot')
     </body>
 </html>

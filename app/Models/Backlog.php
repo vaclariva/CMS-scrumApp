@@ -13,9 +13,12 @@ class Backlog extends Model
         'description',
         'priority',
         'hours',
+        'applicant',
         'status',
         'sprint_id',
         'product_id',
+        'created_by', 
+        'user_id',
     ];
 
     public function checklists()
@@ -36,5 +39,9 @@ class Backlog extends Model
     public function incompleteChecklists()
     {
         return $this->checklists()->where('status', 'belum');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

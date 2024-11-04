@@ -69,14 +69,18 @@ class Kernel implements KernelContract
      *
      * @deprecated
      */
-    protected $routeMiddleware = [];
+    protected $routeMiddleware = [
+        'UserAccess' => \App\Http\Middleware\UserAccess::class,
+        ];
 
     /**
      * The application's middleware aliases.
      *
      * @var array<string, class-string|string>
      */
-    protected $middlewareAliases = [];
+    protected $middlewareAliases = [
+        'UserAccess' => \App\Http\Middleware\UserAccess::class
+        ];
 
     /**
      * All of the registered request duration handlers.

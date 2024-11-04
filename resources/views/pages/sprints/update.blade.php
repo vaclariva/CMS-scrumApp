@@ -7,6 +7,7 @@ Detail Sprint
 @section('breadcrumb')
 @php
 $breadcrumb = [
+    ['title' => 'Sprint', 'url' => ''],
     ['title' => 'Detail', 'url' => ''],
 ];
 @endphp

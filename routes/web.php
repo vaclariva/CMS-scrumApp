@@ -16,11 +16,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
     Route::get('/role', [RoleController::class, 'index'])->name('role.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -34,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
 
-    Route::get('/add-product', [ProductController::class, 'index'])->name('product');
+    Route::get('/add-product', [ProductController::class, 'index'])->middleware('auth')->name('product');
     Route::post('/add-product', [ProductController::class, 'store'])->name('product.store');
     Route::get('products/{productId}', [ProductController::class, 'show'])->name('products.show');
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
@@ -50,35 +53,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/product/{product}/vision_board/{visionBoard}/duplicate', [VisionBoardController::class, 'duplicate'])->name('visionBoard.duplicate');
 
     Route::post('product/{productId}/backlog', [BacklogController::class, 'store'])->name('backlog.store');
-    Route::get('product/{productId}/sprint/{sprintId}/backlogs', [BacklogController::class, 'index'])->name('backlogs.index');
-    Route::get('product/{product}/backlogs/{backlog}', [BacklogController::class, 'edit'])->name('backlogs.edit');
-    Route::put('product/{product}/backlogs/{backlog}', [BacklogController::class, 'update'])->name('backlogs.update');
+    Route::put('products/{product}/backlogs/{backlog}', [BacklogController::class, 'update'])->name('backlogs.update');
     Route::delete('/product/{product}/backlog/{backlog}', [BacklogController::class, 'destroy'])->name('backlogs.destroy');
     Route::post('/product/{product}/backlog/{backlog}/duplicate', [BacklogController::class, 'duplicate'])->name('backlogs.duplicate');
-
-    // Menampilkan daftar backlog untuk product tertentu dan sprint tertentu
     Route::get('/products/{productId}/sprints/{sprintId}/backlogs', [BacklogController::class, 'index'])->name('backlogs.index');
-
-    // Menyimpan backlog baru
-    Route::post('/backlogs', [BacklogController::class, 'store'])->name('backlogs.store');
-
-    // Menampilkan detail backlog berdasarkan ID
-    Route::get('/backlogs/{id}', [BacklogController::class, 'show'])->name('backlogs.show');
-
-    // Menampilkan form edit backlog (opsional, jika diperlukan halaman edit)
     Route::get('/products/{product}/backlogs/{backlog}/edit', [BacklogController::class, 'edit'])->name('backlogs.edit');
+    Route::get('/backlogs/{backlog_id}/download', [BacklogController::class, 'download'])->name('backlogs.download');
 
-    // Memperbarui backlog yang ada
-    Route::put('/backlogs/{id}', [BacklogController::class, 'update'])->name('backlogs.update');
-
-    // Menghapus backlog
-    Route::delete('/products/{product}/backlogs/{backlog}', [BacklogController::class, 'destroy'])->name('backlogs.destroy');
-
-    // Menambah atau memperbarui checklist pada backlog tertentu
     Route::post('/backlogs/{backlog_id}/checklists', [BacklogController::class, 'storeOrUpdateChecklist'])->name('backlogs.checklists.storeOrUpdate');
 
-    // Menduplicate backlog beserta checklist-nya
-    Route::post('/products/{product}/backlogs/{backlog}/duplicate', [BacklogController::class, 'duplicate'])->name('backlogs.duplicate');
+    Route::post('/backlogs/{backlog}/checklists', [ChecklistController::class, 'store'])->name('checklists.store');
+    Route::put('/checklists/{checklist}', [ChecklistController::class, 'update'])->name('checklists.update');
+    Route::delete('checklists/{id}/{backlogId}', [ChecklistController::class, 'destroy'])->name('checklists.destroy');
+
 
     Route::get('/products/{id}/sprints', [SprintController::class, 'index'])->name('sprints.index');
     Route::get('/products/{id}/sprints/create', [SprintController::class, 'create'])->name('sprints.create');

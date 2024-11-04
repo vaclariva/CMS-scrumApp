@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Sprint;
 use App\Models\User;
 use App\Models\VisionBoard;
 use Illuminate\Http\Request;
@@ -12,14 +13,18 @@ class DetailProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, Product $product)
+    public function index(Request $request, Product $product, $id)
     {
-        $productOwner = $product->user()->first();
-        $vision_boards = $product->vision_boards() // Mengambil vision boards terkait produk
-                        ->orderBy('create_at', 'desc')    // Mengurutkan berdasarkan ID dari yang terbesar
-                        ->get(); 
 
-        return view('pages.vision-boards.detail-product', compact('product', 'productOwner', 'vision_boards'));
+        $products = Product::when(auth()->user()->role != 'Super Admin', function ($query) {
+        $query->where('user_id', auth()->user()->id);
+        })->latest()->get();
+        $sprints = Sprint::with('product')->where('product_id', $id)->latest()->get();
+        $productOwner = $product->user()->first();
+        $vision_boards = $product->vision_boards()->latest()->get(); 
+
+
+        return view('pages.vision-boards.detail-product', compact('backlogs', 'product', 'productOwner', 'vision_boards', 'sprints'));
     }
 
     /**

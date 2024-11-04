@@ -17,13 +17,16 @@ return new class extends Migration
             $table->text('description')->nullable(); 
             $table->string('priority')->nullable(); 
             $table->integer('hours')->nullable(); 
+            $table->string('applicant')->nullable(); 
             $table->enum('status', ['0', '1'])->default('0');
             $table->unsignedBigInteger('sprint_id')->nullable(); 
             $table->unsignedBigInteger('product_id')->nullable(); 
+            $table->unsignedBigInteger('user_id')->nullable(); 
             $table->timestamps(); 
 
             $table->foreign('sprint_id')->references('id')->on('sprints')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

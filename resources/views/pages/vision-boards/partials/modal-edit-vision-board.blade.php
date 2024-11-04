@@ -1,5 +1,5 @@
-<div class="modal" data-modal="true" id="modal_draggable">
-    <div class="modal-content max-w-[600px] top-[10%]">
+<div class="modal hidden" data-modal="true" id="modal_draggable" >
+    <div class="modal-content max-w-[1200px] top-[10%]">
         <div class="modal-header flex justify-end items-center gap-3">
             <div class="flex items-center gap-3">
                 <form action="{{ route('visionBoard.duplicate', ['product' => $product->id, 'visionBoard' => $item->id]) }}" method="POST" class="mb-1">
@@ -75,20 +75,18 @@
                     <textarea id="editor5" name="competitors" class="editor" placeholder="Competitors" value="{!! $item->competitors !!}" rows="4"></textarea>
                 </div>
 
-                <div class="flex justify-between items-center">
-                    <div class="modal-footer justify-center items-center">
-                        <div class="flex gap-4">
-                            <button type="button" id="removeCompetitorsBtn" class="btn btn-link btn-sm text-danger items-center hidden" onclick="toggleCompetitorsForm(false)" hidden>
-                                Hapus Form Competitors (Pesaing)
-                            </button>
-                            <button type="button" id="addCompetitorsBtn" class="btn btn-link btn-sm items-center " onclick="toggleCompetitorsForm(true)">
-                                Tambah Form Competitors (Pesaing)
-                            </button>
-                        </div>
+                <div class="modal-footer justify-center items-center">
+                    <div class="flex items-center  justify-center">
+                        <button type="button" id="removeCompetitorsBtn" class="btn btn-link btn-sm text-danger items-center hidden" onclick="toggleCompetitorsForm(false)" hidden>
+                            Hapus Form Competitors (Pesaing)
+                        </button>
+                        <button type="button" id="addCompetitorsBtn" class="btn btn-link btn-sm items-center " onclick="toggleCompetitorsForm(true)">
+                            Tambah Form Competitors (Pesaing)
+                        </button>
                     </div>
-                    <div class="modal-footer rounded-3xl justify-end">
-                        <button hidden type="submit" class="btn btn-primary rounded-full">Simpan</button>
-                    </div>
+                </div>
+                <div class="modal-footer rounded-3xl justify-end hidden">
+                    <button type="submit" class="btn btn-primary rounded-full">Simpan</button>
                 </div>
             </form>
         </div>
@@ -112,5 +110,3 @@
         }
     }
 </script>
-
-

@@ -5,11 +5,12 @@ Tambah Sprint
 @endsection
 
 @section('breadcrumb')
-@php
-$breadcrumb = [
-['title' => 'Sprint', 'url' => ''],
-];
-@endphp
+    @php
+        $breadcrumb = [
+            ['title' => 'Sprint', 'url' => ''],
+            ['title' => 'Tambah Sprint', 'url' => ''],
+            ];
+    @endphp
 @endsection
 
 @section('content')
