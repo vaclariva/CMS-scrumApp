@@ -13,16 +13,18 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('dashboard');
 });
 
-
-
-Route::middleware('auth')->group(function () {
+Route::middleware(['middleware' => 
+    'auth',
+    'web',
+    'verified',
+])->group(function () {
 
     Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+        return view('dashboard');
+    })->name('dashboard');
 
     Route::get('/role', [RoleController::class, 'index'])->name('role.index');
 
@@ -30,14 +32,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
+    Route::post('/users/{user}/resend-email', [UserController::class, 'resendEmailRegister'])->name('users.resend-email');
     Route::get('/user', [UserController::class, 'index'])->name('user');
     Route::post('/user', [UserController::class, 'store'])->name('user.store');
     Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
 
-    Route::get('/add-product', [ProductController::class, 'index'])->middleware('auth')->name('product');
+    Route::get('/add-product', [ProductController::class, 'index'])->name('product');
     Route::post('/add-product', [ProductController::class, 'store'])->name('product.store');
     Route::get('products/{productId}', [ProductController::class, 'show'])->name('products.show');
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
@@ -78,6 +80,7 @@ Route::middleware('auth')->group(function () {
         $icons = Storage::get('icons.json');
         return response()->json(json_decode($icons, true));
     });
+    
 });
 
 require __DIR__ . '/auth.php';

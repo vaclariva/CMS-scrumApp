@@ -27,7 +27,6 @@ class UserController extends Controller
     {
         $users = User::with('role')->latest()->get();
         $totalUser = User::count();
-        info(auth()->user());
 
         return view('pages.users.user', compact('users', 'totalUser'));
     }
@@ -51,15 +50,12 @@ class UserController extends Controller
         //     'data' => $request->all()
         // ], 200);
         try {
-            info($request->all());
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email|max:255',
                 'role_id' => 'required|string|max:255',
                 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ]);
-
-            info($validatedData);
 
             $user = User::create(array_merge(
                 Arr::except($validatedData, ['image'])
@@ -107,7 +103,6 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         try {
-            info($request);
             $validatedData = $request->validate([
                 'name' => 'nullable|string|max:255',
                 'role' => 'nullable|string|max:255',
@@ -159,5 +154,31 @@ class UserController extends Controller
         $user->deleteImage();
 
         return redirect()->back()->with('success', 'Gambar berhasil dihapus.');
+    }
+    /**
+     * Resend email create password
+     */
+    public function resendEmailRegister(User $user)
+    {
+        try {
+            
+            if (! $user->is_password_null) {
+                return response()->json([
+                    'message' => 'Gagal, kata sandi sudah di input sebelumnya',
+                ], 403);
+            }
+
+            $user->sendCreatePasswordNotification();
+
+            // return redirect()->back()->with('success', 'Tautan untuk reset kata sandi berhasil terkirim. Minta kepada pengguna baru untuk cek kotak masuk secara berkala.');
+            return response()->json([
+                'message' => 'Tautan untuk reset kata sandi berhasil terkirim. Minta kepada pengguna baru untuk cek kotak masuk secara berkala.',
+                // 'redirect' => route('users.edit', $user->id)
+            ]);
+        } catch (\Throwable $th) {
+            Log::info($th->getMessage());
+
+            abort(500);
+        }
     }
 }

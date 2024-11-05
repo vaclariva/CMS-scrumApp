@@ -57,6 +57,20 @@
                             <i class="ki-filled ki-sms"></i>
                         </span>
                         <input class="input" name="email" placeholder="Masukkan Email Pengguna" type="email" value="{{ $user->email }}" readonly />
+                        @if ($user->is_password_null)
+                        <button
+                            class="btn btn-light md"
+                            type="button"
+                            onclick="resendEmail({el: this, url: '{{ route('users.resend-email', ['user' => $user->id]) }}'})"
+                            data-toggle="tooltip" data-placement="top" title="Mengirim ulang tautan"
+                        >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 13C3.24 13 1 15.23 1 18C1 20.77 3.24 23 6 23C8.76 23 11 20.76 11 18C11 15.24 8.77 13 6 13ZM3.95999 15.96H6C6.38 15.96 6.67999 16.27 6.67999 16.64C6.67999 17.01 6.37 17.32 6 17.32H3.95999C3.57999 17.32 3.28 17.01 3.28 16.64C3.28 16.27 3.57999 15.96 3.95999 15.96ZM8.04001 20.04H3.95001C3.57001 20.04 3.26999 19.73 3.26999 19.36C3.26999 18.99 3.58001 18.68 3.95001 18.68H8.04001C8.42001 18.68 8.72 18.99 8.72 19.36C8.72 19.73 8.42001 20.04 8.04001 20.04Z" fill="#3498DB"/>
+                            <path opacity="0.4" d="M17 3H7C4 3 2 4.5 2 8V11.14C2 11.87 2.75001 12.33 3.42001 12.04C4.52001 11.56 5.76999 11.38 7.07999 11.59C9.69999 12.02 11.84 14.09 12.37 16.69C12.52 17.45 12.54 18.19 12.44 18.9C12.36 19.49 12.84 20.01 13.43 20.01H17C20 20.01 22 18.51 22 15.01V8.00999C22 4.49999 20 3 17 3Z" fill="#3498DB"/>
+                            <path d="M12.0027 11.868C11.1627 11.868 10.3127 11.608 9.66271 11.078L6.53271 8.57802C6.21271 8.31802 6.15271 7.84802 6.41271 7.52802C6.67271 7.20802 7.1427 7.14802 7.4627 7.40802L10.5927 9.90802C11.3527 10.518 12.6427 10.518 13.4027 9.90802L16.5327 7.40802C16.8527 7.14802 17.3327 7.19802 17.5827 7.52802C17.8427 7.84802 17.7927 8.32802 17.4627 8.57802L14.3327 11.078C13.6927 11.608 12.8427 11.868 12.0027 11.868Z" fill="#3498DB"/>
+                        </svg>
+                        </button>    
+                        @endif
                     </div>
                 </div>
 
@@ -126,4 +140,39 @@
             console.error('Image input element not found');
         }
     }
+
+    function resendEmail({ el, url }) {
+        let btnOri = $(el).html();
+        let loader = "<span class='spinner'></span>";
+        
+        $.ajax({
+            url: url,
+            type: "POST",
+            beforeSend: function () {
+                $(el).attr("disabled", true);
+                $(el).html(loader);
+            },
+            success: function (res) {
+                showSuccessToast({ message: res?.message ?? "Success" });
+            },
+            error: function (xhr, status, error) {
+                if (typeof xhr.responseJSON?.errors === "object") {
+                    showErrorToast({
+                        message: xhr.responseJSON?.errors,
+                        isMessageObject: true,
+                    });
+                } else {
+                    showErrorToast({
+                        message: xhr.responseJSON?.message,
+                        isMessageObject: false,
+                    });
+                }
+            },
+            complete: function () {
+                $(el).html(btnOri);
+                $(el).attr("disabled", false);
+            },
+    });
+}
+
 </script>
