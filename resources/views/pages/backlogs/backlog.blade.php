@@ -1,0 +1,140 @@
+<div class="backlog-section space-y-5">
+    <div class="backlog">
+        <!----------------------------PENGELOMPOKAN SESUAI SPRINT--------------------------->
+        @if ($backlogs->isNotEmpty())
+            <div id="groupedBacklogList" class="backlog-content" style="display: none;">
+                <div class="backlog-sprint" id="backlog-sprint">
+                    @if ($groupedBacklogs->isEmpty())
+                        <p class="p-8 text-gray-500">Belum ada backlog</p>
+                    @else
+                        @foreach($groupedBacklogs as $sprintId => $sprintBacklogs)
+                            @php
+                                // Ambil sprint pertama, jika ada
+                                $sprint = $sprintBacklogs->first()->sprint ?? null;
+                            @endphp
+
+                            @if ($sprint && !empty($sprint->name))
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h3 class="text-md font-bold">
+                                            <span class="font-bold">{{ $sprint->name }} </span>
+                                            <span class="text-gray-500">
+                                                ({{ \Carbon\Carbon::parse($sprint->start_date)->format('d F Y, H:i') }} - 
+                                                {{ \Carbon\Carbon::parse($sprint->end_date)->format('d F Y, H:i') }})
+                                            </span>
+                                        </h3>
+                                        <div class="modal-footer rounded-3xl justify-end hidden">
+                                            <button type="submit" class="btn btn-primary rounded-full">Simpan</button>
+                                        </div>                  
+                                        <div class="flex gap-2 items-center">    
+                                            <div class="backlog-toggle rotate" id="toggle">
+                                                <i class="ki-duotone ki-down fs-1"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-body-backlog p-4">
+                                        @foreach($sprintBacklogs as $backlog)
+                                            @php
+                                                // Ambil data checklist untuk setiap backlog
+                                                $checklists = $backlog->checklists()->get(); 
+                                                $jumlahChecklistSelesai = $checklists->where('status', 1)->count();
+                                                $jumlahChecklistTotal = $checklists->count();
+                                                $persentase = $jumlahChecklistTotal > 0 ? ($jumlahChecklistSelesai / $jumlahChecklistTotal) * 100 : 0;
+                                            @endphp
+                                            <div class="backlogContainer">
+                                                @include('pages.backlogs.partials.card-backlog', ['backlog' => $backlog, 'product' => $product])
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
+                </div>
+
+                <!----------------------------LIST BACKLOG BARU--------------------------->
+                @include('pages.backlogs.partials.new-backlog', ['product' => $product])
+
+                <!----------------------------LIST BACKLOG TANPA SPRINT--------------------------->
+                <div class="unsprint-backlogs">
+                    @if ($backlogs->whereNull('sprint_id')->isNotEmpty())
+                        @foreach ($backlogs->whereNull('sprint_id')->sortByDesc('created_at') as $backlog)
+                            @php
+                                // Ambil data checklist untuk backlog yang tidak terkait dengan sprint
+                                $checklists = $backlog->checklists()->get(); 
+                                $jumlahChecklistSelesai = $checklists->where('status', 1)->count();
+                                $jumlahChecklistTotal = $checklists->count();
+                                $persentase = $jumlahChecklistTotal > 0 ? ($jumlahChecklistSelesai / $jumlahChecklistTotal) * 100 : 0;
+                            @endphp
+                            @if (!empty($backlog->name) && !empty($backlog->product_id) && empty($backlog->priority) && empty($backlog->description) && empty($backlog->hours) && empty($backlog->status) && empty($backlog->sprint_id))
+                                @continue
+                            @endif
+                            <div class="backlogContainer">
+                                @include('pages.backlogs.partials.card-backlog', ['backlog' => $backlog, 'product' => $product])
+                            </div>
+                        @endforeach
+                    @else
+                        <p class="text-center text-gray-500">Belum ada backlog yang tidak memiliki sprint.</p>
+                    @endif
+                </div>
+            </div>
+        @endif
+
+        @if ($backlogs->isEmpty())
+        <p class="p-8 text-gray-500">Belum ada backlog</p>
+        @else
+            @foreach ($backlogs as $backlog)
+                <!----------------------------LIST BACKLOG--------------------------->
+                <div id="backlogList" class="backlog-content" style="display: none;">
+
+                    @include('pages.backlogs.partials.new-backlog', ['backlog' => $backlog, 'product' => $product])
+
+                    @foreach ($backlogs as $backlog)
+                        @php
+                            $checklists = $backlog->checklists()->get(); 
+                            $jumlahChecklistSelesai = $checklists->where('status', 1)->count();
+                            $jumlahChecklistTotal = $checklists->count();
+                            $persentase = $jumlahChecklistTotal > 0 ? ($jumlahChecklistSelesai / $jumlahChecklistTotal) * 100 : 0;
+                        @endphp
+                        @if (!empty($backlog->name) && !empty($backlog->product_id) && empty($backlog->priority) && empty($backlog->description) && empty($backlog->hours) && empty($backlog->status) && empty($backlog->sprint_id))
+                            @continue
+                        @endif
+                        <div class="backlogContainer">
+                            @include('pages.backlogs.partials.card-backlog', ['backlog' => $backlog, 'product' => $product])
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
+        @endif
+    </div>
+</div>
+
+@push('blockfoot')
+    <script src="{{ asset('assets/js/backlogs/edit-checklist.js') }}"></script>
+    <script src="{{ asset('assets/js/backlogs/edit-backlog.js') }}"></script>
+    <script>
+        function filterBacklogs(filter, button) {
+            const backlogList = document.getElementById('backlogList');
+            const groupedBacklogList = document.getElementById('groupedBacklogList');
+    
+            if (filter === 'random') {
+                backlogList.style.display = 'block';
+                groupedBacklogList.style.display = 'none';
+            } else if (filter === 'sprint') {
+                backlogList.style.display = 'none';
+                groupedBacklogList.style.display = 'block';
+            }
+    
+            document.querySelectorAll('.btn-icon').forEach(btn => {
+                btn.classList.remove('active');
+            });
+    
+            button.classList.add('active');
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const defaultButton = document.querySelector('.btn-icon.active'); 
+            filterBacklogs(defaultButton.dataset.filter, defaultButton);
+        });
+    </script>
+@endpush

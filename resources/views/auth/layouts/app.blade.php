@@ -8,7 +8,7 @@
         <link href="{{ asset('metronic/dist/assets/media/app/apple-touch-icon.png') }}" rel="apple-touch-icon" sizes="180x180"/>
         <link href="{{ asset('metronic/dist/assets/media/app/favicon-32x32.png') }}" rel="icon" sizes="32x32" type="image/png"/>
         <link href="{{ asset('metronic/dist/assets/media/app/favicon-16x16.png') }}" rel="icon" sizes="16x16" type="image/png"/>
-        <link href="{{ asset('metronic/dist/assets/media/app/favicon.ico') }}" rel="shortcut icon"/>
+        <link href="{{ asset('metronic/dist/assets/media/app/mini-logo.svg') }}" rel="shortcut icon" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
         <link href="{{ asset('metronic/dist/assets/vendors/apexcharts/apexcharts.css') }}" rel="stylesheet"/>
         <link href="{{ asset('metronic/dist/assets/vendors/keenicons/styles.bundle.css') }}" rel="stylesheet"/>
@@ -37,7 +37,10 @@
             }
         </script>
         <style>
-            .branded-bg { background-image: url('{{ asset("metronic/dist/assets/media/images/2600x1600/1.png") }}'); }
+            .branded-bg { background-image: url('{{ asset("metronic/dist/assets/media/images/2600x1600/Right.png") }}'); 
+                background-size: cover;
+                background-position: center;
+             }
             .dark .branded-bg { background-image: url('{{ asset("metronic/dist/assets/media/images/2600x1600/1-dark.png") }}'); }
         </style>
         
@@ -48,19 +51,8 @@
                 </div>
             </div>
 
-            <div class="lg:rounded-xl lg:border lg:border-gray-200 lg:m-5 order-1 lg:order-2 bg-top xxl:bg-center xl:bg-cover bg-no-repeat branded-bg">
+            <div class=" order-1 lg:order-2 bg-top xxl:bg-center xl:bg-cover bg-no-repeat branded-bg">
                 <div class="flex flex-col p-8 lg:p-16 gap-4">
-                    <a href="html/demo1.html">
-                        <img class="h-[28px] max-w-none" src="{{ asset("metronic/dist/assets/media/app/mini-logo.svg") }}"/>
-                    </a>
-                    <div class="flex flex-col gap-3">
-                        <h3 class="text-2xl font-semibold text-gray-900">
-                            Secure Access Portal
-                        </h3>
-                        <div class="text-base font-medium text-gray-600">
-                            Lorem ipsum dolor sit amet consectetur<br /> adipisicing elit reprenderit.
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
