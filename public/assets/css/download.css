@@ -1,0 +1,102 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+body {
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    background-image: url('{{ public_path("metronic/dist/assets/media/images/pict/pdf-header.png") }}');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    width: 75%;
+    margin-top: 100px;
+    margin-right: 100px;
+    margin-bottom: 120px; 
+    margin-left: 100px;  
+    padding: 0px;
+    background-color: rgba(192, 137, 137, 0.9);
+}
+.title {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-right: 50px;
+    margin-bottom: 50px; 
+    margin-left: 20px;  
+}
+.content {
+    margin: 17px 0;
+}
+.content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+.content td {
+    padding: 8px;
+    vertical-align: top;
+}
+.label {
+    font-weight: bold;
+    width: 30%;
+    white-space: nowrap;
+}
+.value {
+    width: 70%;
+}
+.signature-section {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+}
+.signature-item {
+    position: absolute;
+    text-align: center;
+    width: 40%;
+    margin: 0 5%;
+}
+.left-signature {
+    left: -50px;
+    text-align: center;
+}
+.right-signature {
+    right: 5% !important;
+    text-align: center;
+}
+.acceptance{
+    padding-left: 55px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+.label-acceptance, .label-userstory {
+    padding-left: 10px;
+}
+.userstory {
+    padding-left: 30px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+.label-keterangan, .label-lampiran {
+    padding-left: 10px; 
+}
+.keterangan, .lampiran {
+    padding-left: 30px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}

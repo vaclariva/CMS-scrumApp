@@ -21,11 +21,14 @@ function openDrawer({ url, backlogId }) {
                 $('#backlogStatus').prop('checked', response.backlog.status === '1');
                 $('#backlogSprint').val(response.backlog.sprint_id).trigger('change');
 
-                let sprintOptions = response.sprints.map(sprint => `
-                    <option value="${sprint.id}" ${sprint.id == response.backlog.sprint_id ? 'selected' : ''}>
-                        ${sprint.name}
-                    </option>
-                `).join('');
+                let sprintOptions = `
+                    <option value="" ${response.backlog.sprint_id ? '' : 'selected'}>Pilih Sprint</option>
+                    ${response.sprints.map(sprint => `
+                        <option value="${sprint.id}" ${sprint.id == response.backlog.sprint_id ? 'selected' : ''}>
+                            ${sprint.name}
+                        </option>
+                    `).join('')}
+                `;
                 $('#backlogSprint').html(sprintOptions); 
 
                 const checklistItems = response.checklists.map(checklist => `

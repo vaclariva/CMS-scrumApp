@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <div class="w-full py-2">
+            <div class="w-full">
                 <div class="flex items-center flex-wrap lg:flex-nowrap">
                     <i class="ki-duotone ki-user"></i>
                     <label class="form-label flex items-center gap-1 max-w-48">Dibuat Oleh</label>

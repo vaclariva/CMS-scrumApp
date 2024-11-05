@@ -134,7 +134,7 @@ class BacklogController extends Controller
             'hours' => 'nullable|string',
             'applicant' => 'nullable|string',
             'status' => 'required|in:0,1', 
-            'sprint_id' => 'sometimes|exists:sprints,id',
+            'sprint_id' => 'nullable|exists:sprints,id',
             'product_id' => 'required|exists:products,id',
         ]);
 
@@ -263,6 +263,7 @@ class BacklogController extends Controller
             $newBacklog = Backlog::create([
                 'product_id' => $backlog->product_id,
                 'sprint_id' => $backlog->sprint_id,
+                'user_id' => $backlog->user_id,
                 'name' => $backlog->name . "-copy",
                 'description' => $backlog->description,
                 'priority' => $backlog->priority,

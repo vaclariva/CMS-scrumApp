@@ -26,10 +26,10 @@
             align-items: center;
         }
         .container {
-            width: 90%;
+            width: 75%;
             margin-top: 100px;
-            margin-right: 70px;
-            margin-bottom: 150px; 
+            margin-right: 100px;
+            margin-bottom: 120px; 
             margin-left: 100px;  
             padding: 0px;
             background-color: rgba(255, 255, 255, 0.9);
@@ -38,7 +38,7 @@
             text-align: center;
             font-weight: bold;
             margin-top: 20px;
-            margin-right: 100px;
+            margin-right: 20px;
             margin-bottom: 50px; 
             margin-left: 20px;  
         }
@@ -85,7 +85,6 @@
         }
         .acceptance{
             padding-left: 55px;
-            padding-right: 70px;
             word-wrap: break-word;
             overflow-wrap: break-word;
             white-space: normal;
@@ -95,7 +94,6 @@
         }
         .userstory {
             padding-left: 30px;
-            padding-right: 70px;
             word-wrap: break-word;
             overflow-wrap: break-word;
             white-space: normal;
@@ -105,7 +103,6 @@
         }
         .keterangan, .lampiran {
             padding-left: 30px;
-            padding-right: 70px;
             word-wrap: break-word;
             overflow-wrap: break-word;
             white-space: normal;
