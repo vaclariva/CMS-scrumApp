@@ -12,8 +12,8 @@
             <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-                <input type="hidden" id="input_start_date" name="start_date">
-                <input type="hidden" id="input_end_date" name="end_date">
+                <input type="hidden" id="input_start_date" name="start_date" value="{{ old('start_date') }}">
+                <input type="hidden" id="input_end_date" name="end_date" value="{{ old('end_date') }}">
 
                 <div class="form-group p-2">
                     <label class="text-sm" for="name"><strong>Nama</strong></label>
@@ -28,7 +28,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input class="input" name="name" placeholder="Masukkan Nama Produk" type="text" value="" required />
+                        <input class="input" name="name" placeholder="Masukkan Nama Produk" type="text" value="{{ old('name') }}" required />
                     </div>
                 </div>
 
@@ -36,11 +36,11 @@
                     <label class="text-sm" for="label"><strong>Label</strong></label>
                     <div class="flex">
                         <label class="form-label flex items-center gap-2.5 text-nowrap">
-                            <input class="radio" name="label" type="radio" value="internal" required />
+                            <input class="radio" name="label" type="radio" value="internal" {{ old('label') == 'internal' ? 'checked' : '' }} required />
                             Internal
                         </label>
                         <label class="form-label flex items-center gap-2.5 text-nowrap">
-                            <input class="radio" name="label" type="radio" value="eksternal" required />
+                            <input class="radio" name="label" type="radio" value="eksternal" {{ old('label') == 'eksternal' ? 'checked' : '' }} required />
                             External
                         </label>
                     </div>
@@ -52,7 +52,7 @@
                         <span class="btn btn-icon btn-icon-lg btn-input">
                             <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                         </span>
-                        <input class="input" id="start_date" name="start_date_display" type="text" value="" required />
+                        <input class="input" id="start_date" name="start_date_display" type="text" value="{{ old('start_date_display') }}" required />
                     </div>
                 </div>
 
@@ -62,7 +62,7 @@
                         <span class="btn btn-icon btn-icon-lg btn-input">
                             <i class="ki-duotone ki-calendar text-3xl text-gray-500"></i>
                         </span>
-                        <input class="input" id="end_date" name="end_date_display" type="text" value="" required />
+                        <input class="input" id="end_date" name="end_date_display" type="text" value="{{ old('end_date_display') }}" required />
                     </div>
                 </div>
 
@@ -71,7 +71,9 @@
                     <div class="relative w-full">
                         <select class="select select2-apply block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-sm" name="user_id" required>
                             @foreach ($users as $user)
-                            <option value="{{ $user->id }}" data-image="{{ $user->image_path ? asset($user->image_path) : asset('metronic/dist/assets/media/avatars/blank.png') }}">
+                            <option value="{{ $user->id }}" 
+                                data-image="{{ $user->image_path ? asset($user->image_path) : asset('metronic/dist/assets/media/avatars/blank.png') }}"
+                                {{ old('user_id') == $user->id ? 'selected' : '' }}>
                                 {{ $user->name }}
                             </option>
                             @endforeach
@@ -79,7 +81,7 @@
                     </div>
                 </div>
 
-                <input type="hidden" id="icon1" name="icon" value="" />
+                <input type="hidden" id="icon1" name="icon" value="ki-duotone ki-abstract-33" />
 
                 <div class="modal-footer">
                     <div class="flex gap-4 justify-end p-5">

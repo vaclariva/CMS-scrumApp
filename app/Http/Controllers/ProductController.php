@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Backlog;
 use App\Models\Product;
-use App\Models\User;
 use App\Models\VisionBoard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -55,16 +56,17 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'icon' => 'required|string',
-            'name' => 'required|string',
-            'label' => 'required|string',
-            'start_date' => 'required',
-            'end_date' => 'required|after_or_equal:start_date',
-            'user_id' => 'required|exists:users,id',
-        ]);
-
-        try {
+        
+        try {            
+            $request->validate([
+                'icon' => 'required|string',
+                'name' => 'required|string',
+                'label' => 'required|string',
+                'start_date' => 'required',
+                'end_date' => 'required|after_or_equal:start_date',
+                'user_id' => 'required|exists:users,id',
+            ]);
+    
             DB::beginTransaction();
 
             $product = Product::create([
@@ -77,13 +79,17 @@ class ProductController extends Controller
             ]);
 
             DB::commit();
-            info('Produk berhasil ditambahkan');
 
             return redirect()->route('products.show', $product->id)
                             ->with('success', 'Produk berhasil ditambahkan');
+        } catch (ValidationException $ve) {
+            info($ve);
+            $allErrors = array_values($ve->errors());
+            return redirect()->back()->withInput()->with('error', $allErrors[0][0]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Terjadi kesalahan. Produk gagal ditambahkan');
+            info($e);
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan. Produk gagal ditambahkan');
         }
     }
 
@@ -91,7 +97,7 @@ class ProductController extends Controller
      * Display the specified resource.
      */
 
-     public function show($productId)
+    public function show($productId)
     {
         $product = Product::findOrFail($productId);
 
