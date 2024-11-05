@@ -161,24 +161,24 @@ class UserController extends Controller
     public function resendEmailRegister(User $user)
     {
         try {
-            
+        
             if (! $user->is_password_null) {
                 return response()->json([
                     'message' => 'Gagal, kata sandi sudah di input sebelumnya',
                 ], 403);
             }
-
+        
             $user->sendCreatePasswordNotification();
 
             // return redirect()->back()->with('success', 'Tautan untuk reset kata sandi berhasil terkirim. Minta kepada pengguna baru untuk cek kotak masuk secara berkala.');
             return response()->json([
                 'message' => 'Tautan untuk reset kata sandi berhasil terkirim. Minta kepada pengguna baru untuk cek kotak masuk secara berkala.',
-                // 'redirect' => route('users.edit', $user->id)
             ]);
         } catch (\Throwable $th) {
             Log::info($th->getMessage());
-
-            abort(500);
+            return response()->json([
+                'message' => 'Gagal mengirim email.',
+            ], 500);
         }
     }
 }

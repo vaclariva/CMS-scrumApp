@@ -154,6 +154,7 @@
             },
             success: function (res) {
                 showSuccessToast({ message: res?.message ?? "Success" });
+                // toastr.success(message: res?.message, 'Berhasil');
             },
             error: function (xhr, status, error) {
                 if (typeof xhr.responseJSON?.errors === "object") {
