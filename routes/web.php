@@ -32,7 +32,7 @@ Route::middleware(['middleware' =>
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
+    Route::post('/users/{user}/resend-email', [UserController::class, 'resendEmailRegister'])->name('users.resend-email');
     Route::get('/user', [UserController::class, 'index'])->name('user');
     Route::post('/user', [UserController::class, 'store'])->name('user.store');
     Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
