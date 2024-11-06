@@ -9,7 +9,6 @@
                     @else
                         @foreach($groupedBacklogs as $sprintId => $sprintBacklogs)
                             @php
-                                // Ambil sprint pertama, jika ada
                                 $sprint = $sprintBacklogs->first()->sprint ?? null;
                             @endphp
 
@@ -36,7 +35,6 @@
                                     <div class="card-body-backlog p-4">
                                         @foreach($sprintBacklogs as $backlog)
                                             @php
-                                                // Ambil data checklist untuk setiap backlog
                                                 $checklists = $backlog->checklists()->get(); 
                                                 $jumlahChecklistSelesai = $checklists->where('status', 1)->count();
                                                 $jumlahChecklistTotal = $checklists->count();
@@ -50,32 +48,6 @@
                                 </div>
                             @endif
                         @endforeach
-                    @endif
-                </div>
-
-                <!----------------------------LIST BACKLOG BARU--------------------------->
-                @include('pages.backlogs.partials.new-backlog', ['product' => $product])
-
-                <!----------------------------LIST BACKLOG TANPA SPRINT--------------------------->
-                <div class="unsprint-backlogs">
-                    @if ($backlogs->whereNull('sprint_id')->isNotEmpty())
-                        @foreach ($backlogs->whereNull('sprint_id')->sortByDesc('created_at') as $backlog)
-                            @php
-                                // Ambil data checklist untuk backlog yang tidak terkait dengan sprint
-                                $checklists = $backlog->checklists()->get(); 
-                                $jumlahChecklistSelesai = $checklists->where('status', 1)->count();
-                                $jumlahChecklistTotal = $checklists->count();
-                                $persentase = $jumlahChecklistTotal > 0 ? ($jumlahChecklistSelesai / $jumlahChecklistTotal) * 100 : 0;
-                            @endphp
-                            @if (!empty($backlog->name) && !empty($backlog->product_id) && empty($backlog->priority) && empty($backlog->description) && empty($backlog->hours) && empty($backlog->status) && empty($backlog->sprint_id))
-                                @continue
-                            @endif
-                            <div class="backlogContainer">
-                                @include('pages.backlogs.partials.card-backlog', ['backlog' => $backlog, 'product' => $product])
-                            </div>
-                        @endforeach
-                    @else
-                        <p class="text-center text-gray-500">Belum ada backlog yang tidak memiliki sprint.</p>
                     @endif
                 </div>
             </div>
