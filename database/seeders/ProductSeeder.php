@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
         Product::factory()->create([
             'icon' => 'ki-duotone ki-abstract-24',
             'name' => 'Projek 1',
-            'label' => 'Internal',
+            'label' => 'internal',
             'start_date' => '2024-05-27',
             'end_date' => '2024-05-27',
             'user_id' => 1

@@ -98,7 +98,18 @@ class User extends Authenticatable
     public function sendCreatePasswordNotification(): void
     {
         $url = route('password.reset', ['token' => Password::createToken($this), 'email' => $this->email]);
-
+        info($url);
         $this->notify(new CreatePasswordNotification($url, $this));
     }
+
+    /**
+     * Define accessor for is password null.
+     */
+    protected function isPasswordNull(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $this->password == NULL
+        );
+    }
+    
 }
