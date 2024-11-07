@@ -48,8 +48,6 @@ class VisionBoardController extends Controller
         return redirect()->back()->with('success', 'Vision board berhasil ditambahkan');
     }
 
-
-
     /**
      * Display the specified resource.
      */

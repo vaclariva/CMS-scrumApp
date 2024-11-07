@@ -42,6 +42,16 @@ $(document).ready(function() {
                         $(`#backlog-footer-${response.id}`).removeClass('hidden');
                     }
                     updateDisplay(response.backlog);
+
+                    const backlogId = response.backlog.id;
+                    const backlogDiv = $('.filter-backlog[data-backlog-id="' + backlogId + '"]');
+    
+                    if (response.backlog.sprint_id) {
+                        backlogDiv.show();
+                    } else {
+                        backlogDiv.hide();
+                    }
+
                 } else {
                     console.error('Autosave failed:', response);
                     alert('Failed to save changes.');

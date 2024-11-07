@@ -84,6 +84,8 @@
             </div>
 
             <div class="w-full">
+                <div class="flex items-center flex-wrap lg:flex-nowrap">
+                    <i class="ki-duotone ki-user me-2"></i>
                 <div class="flex items-center flex-wrap lg:flex-nowrap gap-2.5">
                     <i class="ki-duotone ki-user"></i>
                     <label class="form-label flex items-center gap-1 max-w-48">Dibuat Oleh</label>

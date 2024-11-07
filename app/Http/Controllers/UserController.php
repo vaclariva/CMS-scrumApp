@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
+use App\Http\Requests\User\StoreUserRequest;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use App\Traits\UploadTraits;
 use Illuminate\Support\Arr;
+use App\Traits\UploadTraits;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -43,19 +45,17 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
 
         // return response()->json([
         //     'data' => $request->all()
         // ], 200);
         try {
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email|max:255',
-                'role_id' => 'required|string|max:255',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            ]);
+
+            $validatedData = $request->validated();
+
+            DB::beginTransaction();
 
             $user = User::create(array_merge(
                 Arr::except($validatedData, ['image'])
@@ -69,14 +69,23 @@ class UserController extends Controller
 
             $user->sendCreatePasswordNotification();
 
-            return response()->json(['success' => 'Berhasil disimpan.']);
+            DB::commit();
+            return response()->json([
+                'message' => 'Berhasil disimpan.',
+                'redirect' => route('user')
+            ]);
         } catch (ValidationException $e) {
-            $errors = $e->validator->errors()->first('email');
-            Log::error('Failed to save user: ' . $errors);
-            return response()->json(['error' => $e], 422);
-        } catch (\Exception $e) {
-            Log::error('Failed to save user: ' . $e->getMessage());
-            return response()->json(['error' => $e], 500);
+            info($e);
+            DB::rollBack();
+            return response()->json([
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Throwable $th) {
+            info($th);
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Gagal disimpan.',
+            ], 500);
         }
     }
 
