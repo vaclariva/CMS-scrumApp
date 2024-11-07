@@ -106,6 +106,38 @@ class VisionBoardController extends Controller
         }
     }
 
+/**
+     * Update the specified resource in storage.
+     */
+    public function updateTitle(Request $request, Product $product, VisionBoard $visionBoard)
+    {
+        try {
+            DB::beginTransaction();
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
+
+            $visionBoard->update($request->only(['name']));
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil diupdate.',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            Log::error('Error update Vision Board for Product ID ' . $product->id . ': ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui Vision Board. Silakan coba lagi.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
