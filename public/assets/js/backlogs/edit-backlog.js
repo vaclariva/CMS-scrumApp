@@ -31,6 +31,7 @@ $(document).ready(function() {
             type: 'PUT',
             data: formData,
             success: function(response) {
+                console.log(response);
                 if (response.success) {
                     console.log('Response data:', response);
                     $(`#name-${response.id}`).val(response.name);
@@ -83,8 +84,8 @@ $(document).ready(function() {
         backlogHoursDisplay.empty();
         if (backlog.hours) {
             backlogHoursDisplay.append(
-                '<i class="ki-duotone ki-timer text-lg"></i>' +
-                '<span class="ml-1 text-xs">' + backlog.hours + ' Jam</span>'
+                '<div class="flex items-center text-xs"> <i class="ki-duotone ki-timer text-lg"></i>' +
+                '<span class="ml-1 text-xs">' + backlog.hours + ' Jam</span></div>'
             ).show();
         } else {
             backlogHoursDisplay.hide();
@@ -139,18 +140,19 @@ $(document).ready(function() {
 
     function updateBacklog(value, backlogId, product_id) {
         $.ajax({
-            url: `/products/${product_id}/backlogs/${backlogId}`,
+            url: `/products/${product_id}/backlogs/${backlogId}/title`,
             type: 'PUT',
             data: {
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 name: value
             },
             success: function(response) {
-                if (response.success) {
-                    console.log('Backlog updated successfully:', response);
-                    updateDisplay(response.backlog);
+                if(response.status === 'success') {
+                    $(`#backlog-action-${backlogId}`).addClass('hidden');
+                    $(`#backlog-footer-${backlogId}`).removeClass('hidden');
                 } else {
-                    console.error('Failed to update backlog:', response);
+                    $(`#backlog-action-${backlogId}`).removeClass('hidden');
+                    $(`#backlog-footer-${backlogId}`).addClass('hidden');
                 }
             },
             error: function(xhr) {
