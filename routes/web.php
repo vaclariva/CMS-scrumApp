@@ -50,6 +50,7 @@ Route::middleware([
     Route::get('/detail-products/{product}', [DetailProductController::class, 'index'])->name('detail-product');
 
     Route::post('/detail-product', [VisionBoardController::class, 'store'])->name('vision-board.store');
+    Route::put('product/{product}/vision_board/{visionBoard}/title', [VisionBoardController::class, 'updateTitle'])->name('visionBoard.updateTitle');
     Route::put('product/{product}/vision_board/{visionBoard}', [VisionBoardController::class, 'update'])->name('visionBoard.update');
     Route::delete('/product/{product}/vision_board/{visionBoard}', [VisionBoardController::class, 'destroy'])->name('visionBoard.destroy');
     Route::post('/product/{product}/vision_board/{visionBoard}/duplicate', [VisionBoardController::class, 'duplicate'])->name('visionBoard.duplicate');
