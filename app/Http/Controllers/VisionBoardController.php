@@ -69,6 +69,7 @@ class VisionBoardController extends Controller
      */
     public function update(Request $request, Product $product, VisionBoard $visionBoard)
     {
+        Log::info('Product ID: ' . $product->id);
         $request->validate([
             'name' => 'required|string|max:255',
             'vision' => 'nullable|string|max:500',

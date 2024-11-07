@@ -65,7 +65,7 @@
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a class="menu-link" href="html/demo1/account/integrations.html">
+                                <a class="menu-link" href="/two-factor">
                                     <span class="menu-icon">
                                         <i class="ki-filled ki-switch"></i>
                                     </span>
