@@ -9,7 +9,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <form id="user-form" action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
+            <form class="tbr_main_form" action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="form-group p-2">
@@ -49,7 +49,7 @@
 
                 <div class="form-group p-2">
                     <label class="text-sm" for="name"><strong>Nama</strong></label>
-                    <input id="name" class="input" name="name" placeholder="Masukkan Nama Pengguna" type="text" value="" required />
+                    <input id="name" class="input" name="name" placeholder="Masukkan Nama Pengguna" type="text" value="" />
                 </div>
 
                 <div class="form-group p-2">
@@ -58,7 +58,7 @@
                         <span class="btn btn-icon btn-icon-lg btn-input">
                             <i class="ki-filled ki-sms"></i>
                         </span>
-                        <input id="email" class="input" name="email" placeholder="Masukkan Email Pengguna" type="email" value="{{ old('email') }}" required />
+                        <input id="email" class="input" name="email" placeholder="Masukkan Email Pengguna" type="email" value="{{ old('email') }}" />
                     </div>
                     @error('email')
                     <span id="email-error" class="form-hint text-danger d-none">
@@ -69,7 +69,7 @@
 
                 <div class="form-group p-2">
                     <label class="text-sm" for="role_id"><strong>Peran</strong></label>
-                    <select id="role_id" class="select" name="role_id" required>
+                    <select id="role_id" class="select" name="role_id">
                         <!-- <i class="ki-outline ki-down !text-sm dropdown-open:hidden">
                         </i>
                         <i class="ki-outline ki-up !text-sm hidden dropdown-open:block">
