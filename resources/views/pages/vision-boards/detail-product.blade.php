@@ -81,26 +81,26 @@
         @include('pages.vision-boards.vision')
         @include('pages.backlogs.backlog')
     </div>
-@endsection
 
-<!-- modal dan drawer untuk vision boards dan backlog -->
-@foreach ($visionBoards as $item)
+    <!-- modal dan drawer untuk vision boards dan backlog -->
+    @foreach ($visionBoards as $item)
     @include('pages.vision-boards.partials.modal-edit-vision-board')
-@endforeach
+    @endforeach
 
-@foreach ($backlogs as $backlog)
+    @foreach ($backlogs as $backlog)
     @php
         $checklists = $backlog->checklists()->get(); 
         $jumlahChecklistSelesai = $checklists->where('status', 1)->count();
         $jumlahChecklistTotal = $checklists->count();
         $persentase = $jumlahChecklistTotal > 0 ? ($jumlahChecklistSelesai / $jumlahChecklistTotal) * 100 : 0;
     @endphp
-    
+
     @include('pages.backlogs.partials.drawer-edit', [
         'checklists' => $checklists,
     ])
-@endforeach
+    @endforeach
 
+@endsection
 
 @push('blockfoot')
     <script>

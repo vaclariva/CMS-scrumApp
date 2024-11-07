@@ -222,6 +222,17 @@ table td[colspan="5"] {
     background-color: #006AE6;
 }
 
+#sidebar {
+    height: 100vh;
+}
+
+#sidebar_content .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
 
 /* ------------BACKLOG-------------- */
 .title-backlog{
