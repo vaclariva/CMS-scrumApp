@@ -56,6 +56,7 @@ Route::middleware([
 
     Route::post('product/{productId}/backlog', [BacklogController::class, 'store'])->name('backlog.store');
     Route::put('products/{product}/backlogs/{backlog}', [BacklogController::class, 'update'])->name('backlogs.update');
+    Route::put('products/{product}/backlogs/{backlog}/title', [BacklogController::class, 'updateTitle'])->name('backlogs.updateTitle');
     Route::delete('/product/{product}/backlog/{backlog}', [BacklogController::class, 'destroy'])->name('backlogs.destroy');
     Route::post('/product/{product}/backlog/{backlog}/duplicate', [BacklogController::class, 'duplicate'])->name('backlogs.duplicate');
     Route::get('/products/{productId}/sprints/{sprintId}/backlogs', [BacklogController::class, 'index'])->name('backlogs.index');

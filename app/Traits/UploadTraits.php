@@ -27,8 +27,6 @@ trait UploadTraits
         $filePath = 'users/photo/';
         Storage::disk('public')->putFileAs($filePath, $image, $image_name);
 
-        info('File uploaded to: ' . $filePath . $image_name);
-
         return $filePath . $image_name;
     }
 
