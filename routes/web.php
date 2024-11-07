@@ -81,6 +81,12 @@ Route::middleware([
         $icons = file_get_contents(public_path('assets/icons.json'));
         return response()->json(json_decode($icons, true));
     });
+
+
+    Route::get('/two-factor', function () {
+        return view('pages.twoFactor.two-factor');
+    })->name('two-factor');
+
 });
 
 require __DIR__ . '/auth.php';
