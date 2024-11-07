@@ -6,19 +6,7 @@
             <div class="vision-board" id="vision-board-{{ $item->id }}">
                 <div class="card mb-3">
                     <div class="card-header">
-                        <h3 class="card-title custom-" contenteditable="true" 
-                            data-id="{{ $item->id }}" 
-                            id="item-name-{{ $item->id }}" 
-                            onclick="saveName({
-                                id: '{{ $item->id }}', 
-                                name: '{{ $item->name }}', 
-                                url_update: '{{ route('visionBoard.update', [$product->id, $item->id]) }}'
-                            })">
-                            {{ $item->name }}
-                        </h3>  
-                        <div class="modal-footer rounded-3xl justify-end hidden">
-                            <button type="submit" class="btn btn-primary rounded-full">Simpan</button>
-                        </div>                  
+                        <input type="text" class="card-title title-card-vision cstm-input" data-product-id="{{ $item->product_id }}" data-id="{{ $item->id }}" id="name-{{ $item->id }}" value="{{ $item->name }}">
                         <div class="flex gap-2 items-center">
                             <a class="menu-link" id="vision-board-btn-{{ $item->id }}" onclick="openEditModalVision({
                                 id: {{ $item->id }},
