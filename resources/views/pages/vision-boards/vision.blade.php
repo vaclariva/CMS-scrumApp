@@ -9,7 +9,7 @@
                         <h3 class="card-title custom-" contenteditable="true" 
                             data-id="{{ $item->id }}" 
                             id="item-name-{{ $item->id }}" 
-                            onclick="editName({
+                            onclick="saveName({
                                 id: '{{ $item->id }}', 
                                 name: '{{ $item->name }}', 
                                 url_update: '{{ route('visionBoard.update', [$product->id, $item->id]) }}'
@@ -136,6 +136,55 @@
     @endif
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+    function debounce(func, delay) {
+        let timer;
+        return function(...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
 
+    function saveName(data) {
+        console.log(data);
+
+        const element = document.getElementById(`item-name-${data.id}`);
+        element.contentEditable = true;
+
+        // Listener for keyup to trigger debounce save on typing
+        element.onkeyup = debounce(function () {
+            const newName = element.innerText.trim();
+
+            if (newName && newName !== data.name) {
+                console.log("URL Update:", data.url_update);
+
+                $.ajax({
+                    url: data.url_update,
+                    type: 'PUT',
+                    data: { name: newName, _token: '{{ csrf_token() }}' },
+                    success: response => console.log(response.message || 'Update berhasil'),
+                    error: xhr => console.error('Update gagal:', xhr.responseText)
+                });
+            }
+        }, 500);
+
+        // Trigger AJAX on blur as well
+        element.onblur = function () {
+            const newName = element.innerText.trim();
+
+            if (newName && newName !== data.name) {
+                $.ajax({
+                    url: data.url_update,
+                    type: 'PUT',
+                    data: { name: newName, _token: '{{ csrf_token() }}' },
+                    success: response => console.log(response.message || 'Update berhasil'),
+                    error: xhr => console.error('Update gagal:', xhr.responseText)
+                });
+            }
+
+            element.contentEditable = false;
+        };
+    }
 </script>
+
