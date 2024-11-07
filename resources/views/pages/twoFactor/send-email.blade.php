@@ -1,7 +1,7 @@
 @extends('auth.layouts.app')
 
 @section('title')
-Forgot password
+Send email
 @endsection
 
 @section('content')
@@ -9,11 +9,11 @@ Forgot password
         @csrf
         <div class="text-center mb-2.5">
             <h3 class="text-lg font-semibold text-gray-900 leading-none mb-2.5">
-                Lupa Kata Sandi
+                Two Factor
             </h3>
             <div class="flex items-center justify-center font-medium">
                 <span class="text-2sm text-gray-600 me-1.5">
-                    Masukkan email untuk reset kata sandi
+                    Masukkan email untuk verifikasi two factor.
                 </span>
             </div>
         </div>
