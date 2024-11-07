@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    let cardTitle = $('.card-title');
+    let cardTitle = $('.title-card-backlog');
 
     $(cardTitle).on('keyup',this,debounce(function() {
         let backlogId = $(this).data('id');

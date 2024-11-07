@@ -3,7 +3,7 @@
     @if (!empty($backlog->name) && !empty($backlog->product_id) && empty($backlog->priority) && empty($backlog->description) && empty($backlog->hours) && empty($backlog->status) && empty($backlog->sprint_id))
     <div class="card mb-3 backlog-edit" data-backlog-id="{{$backlog->id}}">
         <div class="BacklogNameDisplay card-body title-backlog mb-0 flex justify-between items-center">
-            <input type="text" class="card-title cstm-input" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}" id="name-{{ $backlog->id }}" value="{{ $backlog->name }}">
+            <input type="text" class="card-title title-card-backlog cstm-input" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}" id="name-{{ $backlog->id }}" value="{{ $backlog->name }}">
             <div class="flex gap-2 items-center {{ $backlog->created_at == $backlog->updated_at ? '' : 'hidden' }}" id="backlog-action-{{ $backlog->id }}">
                 <a class="btn btn-icon" id="editBtn" data-product-id="{{ $product->id }}" data-backlog-id="{{ $backlog->id }}"
                     onclick="openDrawer({backlogId: {{ $backlog->id }}, url: '{{ route('backlogs.edit', ['product' => $product->id, 'backlog' => $backlog->id]) }}'})">

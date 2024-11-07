@@ -1,6 +1,6 @@
 <div class="card mb-3 backlog-edit" data-backlog-id="{{ $backlog->id }}">
     <div class="BacklogNameDisplay card-body title-backlog mb-0">
-        <input type="text" class="card-title cstm-input" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}" name="titles" id="name-{{ $backlog->id }}" value="{{ $backlog->name }}">
+        <input type="text" class="card-title title-card-backlog cstm-input" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}" name="titles" id="name-{{ $backlog->id }}" value="{{ $backlog->name }}">
     </div>
     <div class="flex justify-between">
         <div class="px-7 pb-4 flex items-center gap-3">
