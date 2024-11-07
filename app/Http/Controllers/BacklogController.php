@@ -121,8 +121,6 @@ class BacklogController extends Controller
 
     public function update(Request $request, $productId, $backlogId)
     {
-        info('Request data: ', $request->all());
-
         $request->merge([
             'product_id' => $productId, 
         ]);
@@ -175,6 +173,35 @@ class BacklogController extends Controller
             'groupedBacklogs' => $groupedBacklogs,
             'csrf_token' => csrf_token(),
         ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+
+    public function updateTitle(Request $request, Product $product, Backlog $backlog)
+    {
+        try {
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
+
+
+            $backlog->update([
+                'name' => $request->input('name'),
+            ]);
+
+            return response()->json([
+                'message' => 'Berhasil disimpan.',
+            ]);
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Gagal disimpan.',
+            ], 500);
+        }        
     }
 
     public function storeOrUpdateChecklist(Request $request, $backlog_id)

@@ -91,6 +91,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
     <script src="{{ asset('assets/js/default-setup-ajax.js') }}"></script>
+    <script src="{{ asset('assets/js/default-ajax.js') }}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('assets/js/default-toast.js') }}"></script>
     <script src="{{ asset('metronic/dist/assets/js/core.bundle.js') }}"></script>
