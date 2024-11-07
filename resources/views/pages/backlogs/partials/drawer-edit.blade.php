@@ -1,7 +1,7 @@
 <div class="backdrop" id="backdrop"></div>
 <div class="drawer drawer-up flex flex-col gap-4 max-w-[1200px]" data-drawer="true" id="drawer_4">
     <div class="flex items-center justify-between p-5 border-b">
-        <button class="btn btn-xs btn-icon"  id="drawerDismissButton">
+        <button class="btn btn-xs btn-icon" id="drawerDismissButton">
             <i class="ki-duotone ki-double-right"></i>
         </button>
     </div>
@@ -14,17 +14,17 @@
             <!-- Input untuk nama backlog -->
             <div class="mb-4">
                 <textarea id="BacklogName" name="name" class="custom-input" placeholder="Enter title" oninput="autoResize(this)">{{ old('name', $backlog->name) }}</textarea>
-            </div>                      
-        
+            </div>
+
             <!-- Input untuk deskripsi backlog -->
             <div class="w-full py-2">
                 <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                     <i class="ki-duotone ki-textalign-left"></i>
                     <label class="form-label flex items-center gap-1 max-w-48">Deskripsi</label>
-                    <textarea id="BacklogDescription" name="description" class="cstm-input">{{ old('description', $backlog->description) }}</textarea>
+                    <textarea id="BacklogDescription" name="description" class="textarea" placeholder="Deskripsi" rows="3" value="{{ old('description', $backlog->description) }}"></textarea>
                 </div>
             </div>
-        
+
             <!-- Pilihan prioritas backlog -->
             <div class="w-full py-2">
                 <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
@@ -39,16 +39,16 @@
                     </div>
                 </div>
             </div>
-        
+
             <!-- Input jam backlog -->
             <div class="w-full py-2">
                 <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                     <i class="ki-duotone ki-timer"></i>
                     <label class="form-label flex items-center gap-1 max-w-48">Jam</label>
-                    <input id="backlogHours" name="hours" class="cstm-input"></input>
+                    <input id="backlogHours" name="hours" class="input"></input>
                 </div>
             </div>
-        
+
             <!-- Checkbox status backlog -->
             <div class="w-full py-2">
                 <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
@@ -61,14 +61,14 @@
                     </label>
                 </div>
             </div>
-                      
-        
+
+
             <!-- Input sprint backlog -->
             <div class="w-full py-2">
                 <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                     <i class="ki-duotone ki-courier-express"></i>
                     <label class="form-label flex items-center gap-1 max-w-48">Sprint</label>
-                     <select id="backlogSprint" class="input" name="sprint_id">
+                    <select id="backlogSprint" class="input" name="sprint_id">
                         <option value="" disabled selected>Pilih Sprint</option>
                     </select>
                 </div>
@@ -79,12 +79,12 @@
                 <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                     <i class="ki-duotone ki-users"></i>
                     <label class="form-label flex items-center gap-1 max-w-48">Nama Pengguna</label>
-                    <input id="backlogApplicant" name="applicant" class="cstm-input"></input>
+                    <input id="backlogApplicant" name="applicant" class="input"></input>
                 </div>
             </div>
 
             <div class="w-full">
-                <div class="flex items-center flex-wrap lg:flex-nowrap">
+                <div class="flex items-center flex-wrap lg:flex-nowrap gap-2.5">
                     <i class="ki-duotone ki-user"></i>
                     <label class="form-label flex items-center gap-1 max-w-48">Dibuat Oleh</label>
                     <span class="text-2sm text-gray-600 me-1.5 mb-2 mt-0.5 flex items-center">
@@ -100,17 +100,17 @@
                 </div>
             </div>
         </form>
-        
+
         <div class="flex justify-start gap-4 border-t p-5">
             <button class="btn btn-light hidden" data-drawer-dismiss="true">Cancel</button>
             <button class="btn btn-primary hidden" form="editBacklogForm">Submit</button>
-        </div>        
-            
+        </div>
+
         <div id="checklist-{{ $backlog->id }}">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4" id="checklistCount">
                     Checklist ({{ $checklists->where('status', '1')->count() }}/{{ $checklists->count() }})
-                </h2>                    
+                </h2>
 
                 <button type="button" class="btn btn-sm btn-outline btn-primary rounded-full" id="addChecklist">
                     <i class="ki-duotone ki-plus"></i>
@@ -134,72 +134,71 @@
                     </div>
                 </div>
             </div>
-            
+
             <ul class="list-none" id="checklistItems">
                 @if ($checklists->isEmpty())
-                    <li class="mb-3">
-                        <span class="text-gray-600">Belum ada checklist</span>
-                    </li>
+                <li class="mb-3">
+                    <span class="text-gray-600">Belum ada checklist</span>
+                </li>
                 @else
-                    @foreach ($checklists as $checklist)
-                        <li class="mb-3" id="checklist-{{ $checklist->id }}">
-                            <form id="form-{{ $checklist->id }}" class="checklist-form" action="{{ route('checklists.update', $checklist) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <label class="form-label flex items-center gap-2.5">
-                                    <input class="checkbox" name="status" type="checkbox" data-id="{{ $checklist->id }}" value="{{ $checklist->id }}" {{ $checklist->status === '1' ? 'checked' : '' }} />
-                                    <span class="w-full">
-                                        <textarea class="custom-textarea w-full {{ $checklist->status === '1' ? 'line-through text-gray-500' : '' }}" data-id="{{ $checklist->id }}" name="description">{{ $checklist->description }}</textarea>
-                                    </span>
-                                </label>
-                                <button type="submit" class="hidden">Simpan</button>
-                            </form>
-                        </li>
-                    @endforeach                
+                @foreach ($checklists as $checklist)
+                <li class="mb-3" id="checklist-{{ $checklist->id }}">
+                    <form id="form-{{ $checklist->id }}" class="checklist-form" action="{{ route('checklists.update', $checklist) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <label class="form-label flex items-center gap-2.5">
+                            <input class="checkbox" name="status" type="checkbox" data-id="{{ $checklist->id }}" value="{{ $checklist->id }}" {{ $checklist->status === '1' ? 'checked' : '' }} />
+                            <span class="w-full">
+                                <textarea class="custom-textarea w-full {{ $checklist->status === '1' ? 'line-through text-gray-500' : '' }}" data-id="{{ $checklist->id }}" name="description">{{ $checklist->description }}</textarea>
+                            </span>
+                        </label>
+                        <button type="submit" class="hidden">Simpan</button>
+                    </form>
+                </li>
+                @endforeach
                 @endif
             </ul>
-        </div>        
+        </div>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    
     $(document).ready(function() {
-    $('#addChecklist').off('click').on('click', function() {
-        var backlogId = $('#backlog_id').val(); 
-        var description = 'untitled'; 
-        var status = 0;
+        $('#addChecklist').off('click').on('click', function() {
+            var backlogId = $('#backlog_id').val();
+            var description = 'untitled';
+            var status = 0;
 
-        console.log('Tombol Tambah diklik');
-        console.log('Mengirim data:', {
-            backlog_id: backlogId,
-            description: description,
-            status: status
-        });
-
-        $.ajax({
-            url: '/backlogs/' + backlogId + '/checklists',
-            type: 'POST', 
-            data: {
-                _token: $('input[name="_token"]').val(), 
+            console.log('Tombol Tambah diklik');
+            console.log('Mengirim data:', {
                 backlog_id: backlogId,
                 description: description,
                 status: status
-            },
-            success: function(response) {
-                var checklist = response.checklist;
-                const backlog = response.backlog;
-                const completedChecklists = response.completedChecklists; 
-                const totalChecklists = response.totalChecklists;
-                console.log('Checklist berhasil ditambahkan:', checklist);
+            });
 
-                if (!checklist.id) {
-                    console.error('ID checklist tidak ditemukan dalam respons');
-                    return;
-                }
+            $.ajax({
+                url: '/backlogs/' + backlogId + '/checklists',
+                type: 'POST',
+                data: {
+                    _token: $('input[name="_token"]').val(),
+                    backlog_id: backlogId,
+                    description: description,
+                    status: status
+                },
+                success: function(response) {
+                    var checklist = response.checklist;
+                    const backlog = response.backlog;
+                    const completedChecklists = response.completedChecklists;
+                    const totalChecklists = response.totalChecklists;
+                    console.log('Checklist berhasil ditambahkan:', checklist);
 
-                var newChecklistItem = `
+                    if (!checklist.id) {
+                        console.error('ID checklist tidak ditemukan dalam respons');
+                        return;
+                    }
+
+                    var newChecklistItem = `
                     <li class="mb-3" id="checklist-${checklist.id}">
                         <label class="form-label flex items-center gap-2.5">
                             <input class="checkbox" name="status" type="checkbox" data-id="${checklist.id}" value="${checklist.id}" ${checklist.status === '1' ? 'checked' : ''}/>
@@ -210,24 +209,24 @@
                     </li>
                 `;
 
-                $('#checklistItems').append(newChecklistItem);
+                    $('#checklistItems').append(newChecklistItem);
 
-                if ($('#checklist-' + checklist.id).length > 0) {
-                    console.log('Checklist baru sudah dimuat di drawer dengan ID:', checklist.id);
-                } else {
-                    console.error('Checklist baru gagal dimuat di drawer.');
+                    if ($('#checklist-' + checklist.id).length > 0) {
+                        console.log('Checklist baru sudah dimuat di drawer dengan ID:', checklist.id);
+                    } else {
+                        console.error('Checklist baru gagal dimuat di drawer.');
+                    }
+
+                    $('#checklistCount').text(`Checklist ${response.completedChecklists}/${response.totalChecklists}`);
+                    $('#progressBar').css('width', `${response.persentase}%`);
+                    $('#progressPercentage').text(`${Math.round(response.persentase)}%`);
+                    updateBacklogChecklistDisplay(response.backlog, response.completedChecklists, response.totalChecklists);
+
+                },
+                error: function(xhr) {
+                    console.error('Error menambahkan checklist:', xhr.responseJSON);
                 }
-
-                $('#checklistCount').text(`Checklist ${response.completedChecklists}/${response.totalChecklists}`);
-                $('#progressBar').css('width', `${response.persentase}%`);
-                $('#progressPercentage').text(`${Math.round(response.persentase)}%`);
-                updateBacklogChecklistDisplay(response.backlog, response.completedChecklists, response.totalChecklists);
-
-            },
-            error: function(xhr) {
-                console.error('Error menambahkan checklist:', xhr.responseJSON);
-            }
+            });
         });
     });
-});
 </script>
