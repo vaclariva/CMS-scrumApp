@@ -4,7 +4,7 @@ function openEditModalVision(data) {
     console.log(data);
     $('#updateVisionBoardForm').attr('action', data.url_update); 
     
-    document.getElementById('name').value = data.name || '';
+    document.getElementById('name-vision').value = data.name || '';
     document.getElementById('vision').value = data.vision || '';
     editors[0].setData(data.target_group); 
     editors[1].setData(data.needs);
@@ -21,8 +21,8 @@ document.getElementById('updateVisionBoardForm').addEventListener('submit', func
 });
 
 function saveData() {
-    const formData = new FormData(document.getElementById('updateVisionBoardForm'));
-    const url = document.getElementById('updateVisionBoardForm').getAttribute('action');
+    const formData = new FormData(document.getElementById('updateVisionBoard'));
+    const url = document.getElementById('updateVisionBoard').getAttribute('action');
 
     $.ajax({
         type: 'POST',

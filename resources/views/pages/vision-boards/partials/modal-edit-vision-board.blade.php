@@ -30,7 +30,7 @@
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                 <div class="mb-4">
-                    <input id="name" name="name" class="custom-input" type="text" placeholder="Enter title"  />
+                    <input id="name-vision" name="name" class="custom-input" type="text" placeholder="Enter title" value="{!! $item->name !!}" />
                 </div>                
 
                 <div class="mb-4">
