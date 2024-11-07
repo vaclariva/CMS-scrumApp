@@ -183,15 +183,16 @@ class BacklogController extends Controller
     {
         try {
 
+            DB::beginTransaction();
             $request->validate([
                 'name' => 'required|string|max:255',
             ]);
-
 
             $backlog->update([
                 'name' => $request->input('name'),
             ]);
 
+            DB::commit();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Berhasil disimpan.',
