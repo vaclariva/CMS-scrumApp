@@ -97,6 +97,17 @@ Route::middleware([
         return view('pages.twoFactor.two-factor');
     })->name('two-factor');
 
+    Route::get('/send-email', function () {
+        return view('pages.twoFactor.send-email');
+    })->name('send-email');
+
+    Route::get('/verification', function () {
+        return view('pages.twoFactor.verification');
+    })->name('verification');
+    Route::get('/confirm', function () {
+        return view('auth.confirm-password');
+    })->name('confirm-password');
+
 });
 
 require __DIR__ . '/auth.php';
