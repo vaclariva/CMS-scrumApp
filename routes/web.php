@@ -10,13 +10,13 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SprintController;
 use App\Http\Controllers\VisionBoardController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return redirect('dashboard');
 });
 
-Route::middleware(['middleware' => 
+Route::middleware([
+    'middleware' =>
     'auth',
     'web',
     'verified',
@@ -77,10 +77,9 @@ Route::middleware(['middleware' =>
     Route::delete('/products/{id}/sprints/{sprintId}', [SprintController::class, 'destroy'])->name('sprints.destroy');
 
     Route::get('/icons', function () {
-        $icons = Storage::get('icons.json');
+        $icons = file_get_contents(public_path('assets/icons.json'));
         return response()->json(json_decode($icons, true));
     });
-    
 });
 
 require __DIR__ . '/auth.php';
