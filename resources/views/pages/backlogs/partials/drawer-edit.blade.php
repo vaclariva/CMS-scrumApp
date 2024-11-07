@@ -85,7 +85,7 @@
 
             <div class="w-full">
                 <div class="flex items-center flex-wrap lg:flex-nowrap">
-                    <i class="ki-duotone ki-user"></i>
+                    <i class="ki-duotone ki-user me-2"></i>
                     <label class="form-label flex items-center gap-1 max-w-48">Dibuat Oleh</label>
                     <span class="text-2sm text-gray-600 me-1.5 mb-2 mt-0.5 flex items-center">
                         <div class="menu-toggle btn btn-icon rounded-full">

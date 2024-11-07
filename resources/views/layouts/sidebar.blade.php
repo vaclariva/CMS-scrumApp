@@ -1,4 +1,4 @@
-<div class="sidebar dark [&.dark]:bg-coal-600 bg-light border-r border-r-gray-200 dark:border-r-coal-100 fixed z-20 hidden lg:flex flex-col items-stretch shrink-0" data-drawer="true" data-drawer-class="drawer drawer-start top-0 bottom-0" data-drawer-enable="true|lg:false" id="sidebar">
+<div class="sidebar dark [&.dark]:bg-coal-600 bg-light border-r border-r-gray-200 dark:border-r-coal-100 fixed z-20 hidden lg:flex flex-col items-stretch shrink-0 min-h-screen" data-drawer="true" data-drawer-class="drawer drawer-start top-0 bottom-0" data-drawer-enable="true|lg:false" id="sidebar">
     <div class="sidebar-header hidden lg:flex items-center relative justify-center px-3 lg:px-6 shrink-0" id="sidebar_header">
         <a class="dark:hidden" href="">
             <img class="default-logo min-h-[22px] max-w-none" src="{{ asset('metronic/dist/assets/media/app/logo.svg') }}" />
@@ -13,7 +13,7 @@
         </button>
     </div>
 
-    <div class="sidebar-content flex flex-col grow shrink-0 py-5 pr-2 mb-10" id="sidebar_content">
+    <div class="sidebar-content flex flex-col grow shrink-0 py-5 pr-2 mb-10 overflow-y-auto" id="sidebar_content">
         <div class="scrollable-y-hover grow shrink-0 flex pl-2 lg:pl-5 pr-1 lg:pr-3" data-scrollable="true" data-scrollable-dependencies="#sidebar_header" data-scrollable-height="auto" data-scrollable-offset="0px" data-scrollable-wrappers="#sidebar_content" id="sidebar_scrollable">
             <div class="menu flex flex-col grow gap-0.5" data-menu="true" data-menu-accordion-expand-all="false" id="sidebar_menu">
 
@@ -193,7 +193,8 @@
                 </div>
             </div>
         </div>
-        <div class="border-t border-gray-300 dark:border-gray-600 pt-2 px- text-center text-gray-500 dark:text-gray-400 text-sm mt-[-10px]">
+        <div class="footer pt-2 pb-2 px-5 text-center text-gray-500 dark:text-gray-400 text-sm mt-[10px]">
+            <hr class="mb-2">
             <p>Copyright © 2024 CMS.</p>
             <p>Versi 1.0</p>
         </div>

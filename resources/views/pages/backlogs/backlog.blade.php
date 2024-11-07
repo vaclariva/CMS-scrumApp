@@ -41,7 +41,9 @@
                                                 $persentase = $jumlahChecklistTotal > 0 ? ($jumlahChecklistSelesai / $jumlahChecklistTotal) * 100 : 0;
                                             @endphp
                                             <div class="backlogContainer">
-                                                @include('pages.backlogs.partials.card-backlog', ['backlog' => $backlog, 'product' => $product])
+                                                <div class="filter-backlog" data-backlog-id="{{ $backlog->id }}">
+                                                    @include('pages.backlogs.partials.card-backlog', ['backlog' => $backlog, 'product' => $product])
+                                                </div>
                                             </div>
                                         @endforeach
                                     </div>
