@@ -29,7 +29,7 @@ class ProductController extends Controller
             if ($count == 0) {
                 return view('pages.add-products.add-product', compact('users', 'products'));
             }
-            
+
             // Ambil produk terakhir dari $products
             $lastProduct = $products->first(); // Ambil produk terbaru
             return redirect()->route('products.show', $lastProduct->id);
@@ -110,8 +110,17 @@ class ProductController extends Controller
 
         $productOwner = $product->user()->first();
         $visionBoards = VisionBoard::with('product')->where('product_id', $productId)->latest()->get();
-        
-        $backlogs = Backlog::with('product')->where('product_id', $productId)->latest()->get();
+
+        $backlogs = Backlog::with('product')
+        ->withCount([
+            'checklists as jumlahChecklistSelesai' => function ($query) {
+                $query->where('status', '1'); // Menghitung hanya checklist yang selesai
+            },
+            'checklists as jumlahChecklistTotal' // Menghitung total checklist tanpa syarat
+        ])
+        ->where('product_id', $productId)
+        ->latest()
+        ->get();
 
         $groupedBacklogs = Backlog::with('product')
             ->where('product_id', $productId)

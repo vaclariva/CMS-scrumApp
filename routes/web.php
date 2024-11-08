@@ -67,7 +67,7 @@ Route::middleware([
 
     Route::post('/backlogs/{backlog_id}/checklists', [BacklogController::class, 'storeOrUpdateChecklist'])->name('backlogs.checklists.storeOrUpdate');
 
-    // Route::post('/backlogs/{backlog}/checklists', [ChecklistController::class, 'store'])->name('checklists.store');
+    Route::post('/backlogs/{backlog}/checklists', [ChecklistController::class, 'store'])->name('checklists.store');
     Route::put('/checklists/{checklist}', [ChecklistController::class, 'update'])->name('checklists.update');
     Route::delete('checklists/{id}/{backlogId}', [ChecklistController::class, 'destroy'])->name('checklists.destroy');
 

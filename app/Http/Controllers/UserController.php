@@ -101,7 +101,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::findOrFail($id);
+        //
     }
 
     /**
@@ -110,6 +110,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         try {
+            DB::beginTransaction();
             $validatedData = $request->validate([
                 'name' => 'nullable|string|max:255',
                 'role' => 'nullable|string|max:255',
@@ -129,9 +130,11 @@ class UserController extends Controller
                 ]);
             }
 
+            DB::commit();
             return redirect()->route('user')->with('success', 'Berhasil diperbarui.');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+            DB::commit();
             return redirect()->route('user')->with('error', 'Gagal diperbarui.');
         }
     }
