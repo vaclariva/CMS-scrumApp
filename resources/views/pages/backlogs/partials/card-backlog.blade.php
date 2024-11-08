@@ -1,6 +1,6 @@
 <div class="card mb-3 backlog-edit" data-backlog-id="{{$backlog->id}}">
     <div class="BacklogNameDisplay card-body title-backlog mb-0 flex justify-between items-center">
-        <input type="text" class="card-title title-card-backlog cstm-input" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}" id="name-backlog-{{ $backlog->id }}" value="{{ $backlog->name }}">
+        <textarea class="textarea cstm-textarea" id="name-backlog-{{ $backlog->id }}" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}">{{ $backlog->name }}</textarea>
         <div class="flex gap-2 items-center {{ $backlog->created_at == $backlog->updated_at ? '' : 'hidden' }}" id="backlog-action-{{ $backlog->id }}">
             <a class="btn btn-icon" id="editBtn" data-product-id="{{ $product->id }}" data-backlog-id="{{ $backlog->id }}"
             onclick="openDrawer({backlogId: {{ $backlog->id }}, url: '{{ route('backlogs.edit', ['product' => $product->id, 'backlog' => $backlog->id]) }}'})">
@@ -47,13 +47,12 @@
             <div class="px-7 pb-4 flex items-center gap-3">
                 <!-- Badge Priority -->
                 <div class="BacklogPriorityDisplay {{$backlog->priority ? '' : 'hidden'}}" data-backlog-id="{{$backlog->id}}">
-                    <span class="badge badge-pill badge-outline gap-1.5 
-                    {{$backlog->priority}} === 'Tinggi' ? 'badge-danger' : 
-                    {{$backlog->priority}} === 'Sedang' ? 'badge-warning' : 'badge-success'}">
-                    <span class="badge badge-dot 
-                    {{$backlog->priority}} === 'Tinggi' ? 'badge-danger' : 
-                    {{$backlog->priority}} === 'Sedang' ? 'badge-warning' : 
-                    'badge-success'} size-1.5" data-backlog-id="{{$backlog->id}}"></span>
+                    <span class="badge badge-pill badge-outline gap-1.5
+                    {{ $backlog->priority == 'Tinggi' ? 'badge-danger' : ($backlog->priority == 'Sedang' ? 'badge-warning' : 'badge-success') }}
+                    ">
+                    <span class="badge badge-dot size-1.5
+                    {{ $backlog->priority == 'Tinggi' ? 'badge-danger' : ($backlog->priority == 'Sedang' ? 'badge-warning' : 'badge-success') }}
+                    " data-backlog-id="{{$backlog->id}}"></span>
                     {{$backlog->priority}}            
                     </span>
                 </div>
@@ -73,7 +72,6 @@
             <div class="BacklogChecklistDisplay flex items-center text-xs {{$backlog->status == 0 ? 'hidden': 'text-gray-500'}}"
                 data-backlog-id="{{$backlog->id}}">
                 <i class="ki-duotone ki-check-squared text-lg"></i>
-                {{$backlog->status == 1 ? 'Selesai' : ''}}
             </div>
             
             <!-- Hours -->
