@@ -15,7 +15,7 @@ class TwoFactor
      */
     public function handle(Request $request, Closure $next): Response
     {
-        
+        info('masuk two factor');
         $user = auth()->user();
         
         $twoFactor = $user->twoFactors->where('two_factor_ip', $request->ip())->first();
@@ -40,7 +40,7 @@ class TwoFactor
             }
         } else {
             
-            if (! $twoFactor || $user->enabled_2fa === 0) {
+            if (! $twoFactor && $user->enabled_2fa === 1) {
                 auth()->logout();
                 return redirect()->route('login');
             }

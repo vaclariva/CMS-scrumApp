@@ -33,15 +33,20 @@ class TwoFactorController extends Controller
     public function validateTwoFactor(StoreTwoFactorRequest $request)
     {
         try {
+            $twoFactor = $request->user()->twoFactors->where('two_factor_ip', $request->ip())->first();
 
-            if ($request->two_factor_code == optional($request->user()->twoFactors->where('two_factor_ip', $request->ip())->first())->two_factor_code) {
+            if ($twoFactor) {
+                if ($request->two_factor_code == $twoFactor->two_factor_code) {
             
-                $request->user()->resetTwoFactorCode($request->ip());
+                    $request->user()->resetTwoFactorCode($request->ip());
+    
+                    return redirect()->intended(route('product', absolute: false));
+                }
 
-                return redirect()->intended(route('product', absolute: false));
+                return redirect()->back()->withInput()->with('error', 'Kode Two Factor tidak valid.');
+            } else {
+                return redirect()->route('login');
             }
-            
-            return redirect()->back()->withInput()->with('error', 'Kode Two Factor tidak valid.');
         
         } catch (\Throwable $th) {
             info($th->getMessage());

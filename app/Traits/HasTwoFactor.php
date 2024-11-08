@@ -43,10 +43,10 @@ trait HasTwoFactor
      */
     public function resetTwoFactorCode($ip)
     {
-        $two_factor = $this->twoFactors()->where('two_factor_ip', $ip)->first();
-
-        if ($two_factor) {
-            $this->twoFactors()->update([
+        $twoFactor = $this->twoFactors()->where('two_factor_ip', $ip)->first();
+        
+        if ($twoFactor) {
+            $twoFactor->update([
                 'two_factor_code' => null,
                 'two_factor_expires_at' => null,
             ]);
