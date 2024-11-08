@@ -1,10 +1,10 @@
 let debounceTimeout;
 
 function openEditModalVision(data) {
-    console.log(data);
     $('#updateVisionBoardForm').attr('action', data.url_update); 
+    let name =  $(`#name-${data.id}`).val();
     
-    document.getElementById('name-vision').value = data.name || '';
+    document.getElementById('name-vision').value = name;
     document.getElementById('vision').value = data.vision || '';
     editors[0].setData(data.target_group); 
     editors[1].setData(data.needs);
@@ -21,8 +21,8 @@ document.getElementById('updateVisionBoardForm').addEventListener('submit', func
 });
 
 function saveData() {
-    const formData = new FormData(document.getElementById('updateVisionBoard'));
-    const url = document.getElementById('updateVisionBoard').getAttribute('action');
+    const formData = new FormData(document.getElementById('updateVisionBoardForm'));
+    const url = document.getElementById('updateVisionBoardForm').getAttribute('action');
 
     $.ajax({
         type: 'POST',
@@ -56,104 +56,6 @@ function updateVisionBoard(data, url_update) {
     visionBoard.find('.board-sub.competitors').html(data.competitors);
 
     let dropdownToggle = visionBoard.find(`#dropdown-toggle-${data.id}`);
-    console.log(dropdownToggle);
-
-    if (dropdownToggle.length) {
-        if (data.name || data.vision || data.target_group || data.needs || data.product || data.business_goals || data.competitors) {
-            console.log('Menampilkan dropdown-toggle');
-            dropdownToggle.show(); 
-        } else {
-            console.log('Menyembunyikan dropdown-toggle');
-            dropdownToggle.hide();
-        }
-        } else {
-            console.error('Tombol dropdown-toggle tidak ditemukan!');
-        }
-        
-
-        let visionElement = visionBoard.find(`#item-vision-${data.id}`);
-        if (data.vision && data.vision.trim() !== '') {
-            visionElement.html(`
-                <div class="mb-5">
-                    <span class="px-2.5" style="font-weight: 500;"> • Vision (Visi) </span><br>
-                    <div class="board-sub vision text-gray-600">${data.vision}</div>
-                </div>
-            `);
-            visionElement.show();
-        } else {
-            visionElement.hide();
-        }
-          
-
-        // Update target group
-        let targetGroupElement = visionBoard.find(`#item-target-group-${data.id}`);
-        if (data.target_group && data.target_group.trim() !== '') {
-            targetGroupElement.html(`
-                <div class="mb-5">
-                    <span class="px-2.5" style="font-weight: 500;"> • Target Group (Kelompok Sasaran) </span><br>
-                    <div class="board-sub target-group text-gray-600" >${data.target_group}</div>
-                </div>
-            `);
-            targetGroupElement.show(); 
-        } else {
-            targetGroupElement.hide();
-        }
-
-        // Update needs
-        let needsElement = visionBoard.find(`#item-needs-${data.id}`);
-        if (data.needs && data.needs.trim() !== '') {
-            needsElement.html(`
-                <div class="mb-5">
-                    <span class="px-2.5" style="font-weight: 500;"> • Needs (Kebutuhan) </span><br>
-                    <div class="board-sub needs text-gray-600">${data.needs}</div>
-                </div>
-            `);
-            needsElement.show(); 
-        }  else {
-            needsElement.hide();
-        }
-
-        // Update product
-        let productElement = visionBoard.find(`#item-product-${data.id}`);
-        if (data.product && data.product.trim() !== '') {
-            productElement.html(`
-                <div class="mb-5">
-                    <span class="px-2.5" style="font-weight: 500;"> • Product (Product) </span><br>
-                    <div class="board-sub product text-gray-600">${data.product}</div>
-                </div>
-            `);
-            productElement.show(); 
-        }  else {
-            productElement.hide();
-        }
-
-        // Update business goals
-        let businessGoalsElement = visionBoard.find(`#item-business-goals-${data.id}`);
-        if (data.business_goals && data.business_goals.trim() !== '') {
-            businessGoalsElement.html(`
-                <div class="mb-5">
-                    <span class="px-2.5" style="font-weight: 500;"> • Business Goals (Tujuan Bisnis) </span><br>
-                    <div class="board-sub business-goals text-gray-600">${data.business_goals}</div>
-                </div>
-            `);
-            businessGoalsElement.show(); 
-        }  else {
-            businessGoalsElement.hide();
-        }
-
-        // Update competitors
-        let competitorsElement = visionBoard.find(`#item-competitors-${data.id}`);
-        if (data.competitors && data.competitors.trim() !== '') {
-            competitorsElement.html(`
-                 <div class="mb-5">
-                    <span class="px-2.5" style="font-weight: 500;"> • Competitors (Pesaing) </span><br>
-                    <div class="board-sub competitors text-gray-600">${data.competitors}</div>
-                </div>
-            `);
-            competitorsElement.show(); 
-        }  else {
-            competitorsElement.hide();
-        }
 
         visionBoard.find(`#vision-board-btn-${data.id}`).attr('onclick',
             `openEditModalVision({
@@ -168,7 +70,6 @@ function updateVisionBoard(data, url_update) {
                 url_update: '${url_update}'
             })`
         );
-    console.log(visionBoard);
 }
 
 document.querySelectorAll('[data-modal-dismiss="true"]').forEach(button => {
@@ -215,7 +116,36 @@ function debounceSaveData() {
     }, 1000); 
 }
 
+function updateTitleVision(value, visionId, productId) {
+    $.ajax({
+        url: `/product/${productId}/vision_board/${visionId}/title`,
+        type: 'PUT',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            name: value
+        },
+        success: function(response) {
+            console.log(response.message);
+        },
+        error: function(xhr) {
+            console.error('Error:', xhr);
+        }
+    });
+}
+
 $(document).ready(function () {
+    let cardTitleVision = $('.title-card-vision');
+
+    $(cardTitleVision).on('keyup',this,debounce(function() {
+        let visionId = $(this).data('id');
+        let productId = $(this).data('product-id');
+        let value = $(this).val();
+        console.log('Product ID: ' + productId);
+        console.log('Vision ID: ' + visionId);
+        
+        updateTitleVision(value, visionId, productId);
+    }, 1000));
+
     $('#updateVisionBoardForm').on('keyup', 'textarea, input', function () {
         debounceSaveData(); 
     });

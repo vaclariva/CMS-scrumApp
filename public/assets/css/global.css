@@ -1,5 +1,5 @@
 /* ------------TOASTR-------------- */
-html body #toast-container>.toast-success{
+html body #toast-container>.toast-success {
     background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHZpZXdCb3g9IjAgMCAzNSAzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggb3BhY2l0eT0iMC40IiBkPSJNMTUuOTg0IDMuMDA0MjZMNy45NjMxNSA2LjAwODQzQzYuNDMxOSA2LjU5MTc2IDUuMTc3NzMgOC40MDAxIDUuMTc3NzMgMTAuMDQ4VjIxLjg2MDVDNS4xNzc3MyAyMy4wNDE4IDUuOTUwNjUgMjQuNjAyMiA2Ljg5ODU3IDI1LjMwMjJMMTQuOTE5NCAzMS4yOTU5QzE2LjMzNCAzMi4zNjA1IDE4LjY1MjcgMzIuMzYwNSAyMC4wNjczIDMxLjI5NTlMMjguMDg4MiAyNS4zMDIyQzI5LjAzNjEgMjQuNTg3NiAyOS44MDkgMjMuMDQxOCAyOS44MDkgMjEuODYwNVYxMC4wNDhDMjkuODA5IDguNDE0NjggMjguNTU0OCA2LjU5MTc2IDI3LjAyMzYgNi4wMjMwMUwxOS4wMDI3IDMuMDE4ODVDMTguMTg2MSAyLjY5ODAxIDE2LjgxNTIgMi42OTgwMSAxNS45ODQgMy4wMDQyNloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xNS41NDU0IDIwLjc1MjFDMTUuMjY4NCAyMC43NTIxIDE0Ljk5MTMgMjAuNjUgMTQuNzcyNSAyMC40MzEyTDEyLjQyNDYgMTguMDgzM0MxMi4wMDE3IDE3LjY2MDQgMTIuMDAxNyAxNi45NjA0IDEyLjQyNDYgMTYuNTM3NUMxMi44NDc1IDE2LjExNDYgMTMuNTQ3NSAxNi4xMTQ2IDEzLjk3MDQgMTYuNTM3NUwxNS41NDU0IDE4LjExMjVMMjEuMDQzNCAxMi42MTQ2QzIxLjQ2NjMgMTIuMTkxNiAyMi4xNjYzIDEyLjE5MTYgMjIuNTg5MiAxMi42MTQ2QzIzLjAxMjEgMTMuMDM3NSAyMy4wMTIxIDEzLjczNzUgMjIuNTg5MiAxNC4xNjA0TDE2LjMxODQgMjAuNDMxMkMxNi4wOTk2IDIwLjY1IDE1LjgyMjUgMjAuNzUyMSAxNS41NDU0IDIwLjc1MjFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K) !important;
 }
 
@@ -7,33 +7,34 @@ html body #toast-container>.toast-success{
     background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjciIGhlaWdodD0iMjciIHZpZXdCb3g9IjAgMCAyNyAyNyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE5LjEyNjEgMTkuMDQ2NkMxOC45MTU0IDE5LjI1NjEgMTguNjMwMiAxOS4zNzM3IDE4LjMzMyAxOS4zNzM3QzE4LjAzNTggMTkuMzczNyAxNy43NTA3IDE5LjI1NjEgMTcuNTM5OSAxOS4wNDY2TDcuOTMyMzggOS41NTE1OUM3LjgyNjk0IDkuNDQ3MDEgNy43NDMyNCA5LjMyMjU5IDcuNjg2MTMgOS4xODU0OUM3LjYyOTAxIDkuMDQ4NCA3LjU5OTYxIDguOTAxMzYgNy41OTk2MSA4Ljc1Mjg1QzcuNTk5NjEgOC42MDQzMyA3LjYyOTAxIDguNDU3MjkgNy42ODYxMyA4LjMyMDJDNy43NDMyNCA4LjE4MzEgNy44MjY5NCA4LjA1ODY4IDcuOTMyMzggNy45NTQxQzguMTQzMTcgNy43NDQ1NiA4LjQyODMgNy42MjY5NSA4LjcyNTUxIDcuNjI2OTVDOS4wMjI3MiA3LjYyNjk1IDkuMzA3ODUgNy43NDQ1NiA5LjUxODYzIDcuOTU0MUwxOS4xMjYxIDE3LjQ0OTFDMTkuMjMxNiAxNy41NTM3IDE5LjMxNTMgMTcuNjc4MSAxOS4zNzI0IDE3LjgxNTJDMTkuNDI5NSAxNy45NTIzIDE5LjQ1ODkgMTguMDk5MyAxOS40NTg5IDE4LjI0NzhDMTkuNDU4OSAxOC4zOTY0IDE5LjQyOTUgMTguNTQzNCAxOS4zNzI0IDE4LjY4MDVDMTkuMzE1MyAxOC44MTc2IDE5LjIzMTYgMTguOTQyIDE5LjEyNjEgMTkuMDQ2NloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIG9wYWNpdHk9IjAuMyIgZD0iTTkuNTE3NzEgMTkuMTI1MkM5LjMwMjg5IDE5LjM0MyA5LjAxMDM0IDE5LjQ2NjYgOC43MDQ0MiAxOS40Njg3QzguMzk4NSAxOS40NzA4IDguMTA0MjcgMTkuMzUxMyA3Ljg4NjQ2IDE5LjEzNjVDNy42Njg2NiAxOC45MjE3IDcuNTQ1MTEgMTguNjI5MSA3LjU0MyAxOC4zMjMyQzcuNTQwODkgMTguMDE3MyA3LjY2MDM5IDE3LjcyMyA3Ljg3NTIxIDE3LjUwNTJMMTcuNDgyNyA3Ljg3NTIzQzE3LjY5NzUgNy42NTc0MiAxNy45OTAxIDcuNTMzODggMTguMjk2IDcuNTMxNzdDMTguNjAxOSA3LjUyOTY2IDE4Ljg5NjIgNy42NDkxNiAxOS4xMTQgNy44NjM5OEMxOS4zMzE4IDguMDc4ODEgMTkuNDU1MyA4LjM3MTM2IDE5LjQ1NzQgOC42NzcyOEMxOS40NTk1IDguOTgzMiAxOS4zNCA5LjI3NzQyIDE5LjEyNTIgOS40OTUyM0w5LjUxNzcxIDE5LjEyNTJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K) !important;
 } */
 
-html body #toast-container>.toast-error{
+html body #toast-container>.toast-error {
     background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzUiIGhlaWdodD0iMzUiIHZpZXdCb3g9IjAgMCAzNSAzNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggb3BhY2l0eT0iMC40IiBkPSJNMTUuOTg0IDMuMDA0MjZMNy45NjMxNSA2LjAwODQzQzYuNDMxOSA2LjU5MTc2IDUuMTc3NzMgOC40MDAxIDUuMTc3NzMgMTAuMDQ4VjIxLjg2MDVDNS4xNzc3MyAyMy4wNDE4IDUuOTUwNjUgMjQuNjAyMiA2Ljg5ODU3IDI1LjMwMjJMMTQuOTE5NCAzMS4yOTU5QzE2LjMzNCAzMi4zNjA1IDE4LjY1MjcgMzIuMzYwNSAyMC4wNjczIDMxLjI5NTlMMjguMDg4MiAyNS4zMDIyQzI5LjAzNjEgMjQuNTg3NiAyOS44MDkgMjMuMDQxOCAyOS44MDkgMjEuODYwNVYxMC4wNDhDMjkuODA5IDguNDE0NjggMjguNTU0OCA2LjU5MTc2IDI3LjAyMzYgNi4wMjMwMUwxOS4wMDI3IDMuMDE4ODVDMTguMTg2MSAyLjY5ODAxIDE2LjgxNTIgMi42OTgwMSAxNS45ODQgMy4wMDQyNloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yMS40MDgzIDE4LjgyNzJMMTkuMDg5NiAxNi41MDg0TDIxLjM1IDE0LjI0OEMyMS43NzI5IDEzLjgyNTEgMjEuNzcyOSAxMy4xMjUxIDIxLjM1IDEyLjcwMjJDMjAuOTI3MSAxMi4yNzkzIDIwLjIyNzEgMTIuMjc5MyAxOS44MDQyIDEyLjcwMjJMMTcuNTQzNyAxNC45NjI2TDE1LjIyNSAxMi42NDM4QzE0LjgwMjEgMTIuMjIwOSAxNC4xMDIxIDEyLjIyMDkgMTMuNjc5MiAxMi42NDM4QzEzLjI1NjMgMTMuMDY2OCAxMy4yNTYzIDEzLjc2NjggMTMuNjc5MiAxNC4xODk3TDE1Ljk5NzkgMTYuNTA4NEwxMy42MDYyIDE4LjkwMDFDMTMuMTgzMyAxOS4zMjMgMTMuMTgzMyAyMC4wMjMgMTMuNjA2MiAyMC40NDU5QzEzLjgyNSAyMC42NjQ3IDE0LjEwMjEgMjAuNzY2OCAxNC4zNzkyIDIwLjc2NjhDMTQuNjU2MiAyMC43NjY4IDE0LjkzMzMgMjAuNjY0NyAxNS4xNTIxIDIwLjQ0NTlMMTcuNTQzNyAxOC4wNTQzTDE5Ljg2MjUgMjAuMzczQzIwLjA4MTIgMjAuNTkxOCAyMC4zNTgzIDIwLjY5MzggMjAuNjM1NCAyMC42OTM4QzIwLjkxMjUgMjAuNjkzOCAyMS4xODk2IDIwLjU5MTggMjEuNDA4MyAyMC4zNzNDMjEuODMxMyAxOS45MzU1IDIxLjgzMTMgMTkuMjUwMSAyMS40MDgzIDE4LjgyNzJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K) !important;
 }
 
 .toast-success .toast-message,
 .toast-error .toast-message {
-    margin-left: 0.75rem; 
+    margin-left: 0.75rem;
 }
 
 .toast-success .toast-title,
 .toast-error .toast-title {
-    margin-left: 0.75rem; 
+    margin-left: 0.75rem;
 }
 
 /* ------------SELECT-------------- */
 .select2.select2-container.select2-container--default {
     width: 100% !important;
 }
-.select2-selection__rendered{
+
+.select2-selection__rendered {
     font-size: 0.85rem;
 }
 
 .select2-results__option img {
     width: 1.5rem;
     height: 1.5rem;
-    object-fit: cover; 
-    border-radius: 50%; 
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .select2-results__option {
@@ -43,23 +44,23 @@ html body #toast-container>.toast-error{
     font-size: 0.80rem;
 }
 
-.select2-selection .select2-selection--single{
+.select2-selection .select2-selection--single {
     height: 3rem;
 }
 
-.select2-search__field{
+.select2-search__field {
     font-size: 0.75rem;
 }
 
 
 /* ------------HEADER-------------- */
-.header-product{
+.header-product {
     height: 110px !important;
 }
 
 
 /* ------------ICON-------------- */
-.dropdownicon{
+.dropdownicon {
     width: 445px;
 }
 
@@ -72,8 +73,8 @@ html body #toast-container>.toast-error{
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); 
-    z-index: 999; 
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }
 
 .open {
@@ -97,10 +98,10 @@ table td[colspan="5"] {
 
 /* ------------COMPONENT INPUT-------------- */
 .btn-input {
-    border: 1px solid #ccc; 
-    border-radius: 0.25rem; 
-    padding: 0.5rem; 
-    background-color: #f9f9f9; 
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
 }
 
 /* ------------ROTASE ICON-------------- */
@@ -108,12 +109,12 @@ table td[colspan="5"] {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease, padding 0.3s ease;
-    padding: 0 1rem; 
+    padding: 0 1rem;
 }
 
 .card-body-vision.show {
-    max-height: 10000px; 
-    padding: 1rem; 
+    max-height: 10000px;
+    padding: 1rem;
 }
 
 .rotate {
@@ -134,33 +135,35 @@ table td[colspan="5"] {
 
 
 /* ------------CARDS-------------- */
-.board-title{
+.board-title {
     font-weight: 800;
 }
-.board-sub{
+
+.board-sub {
     padding-right: 1.5rem;
     padding-left: 1.5rem;
-    word-break: break-word; 
+    word-break: break-word;
     overflow-wrap: break-word;
 }
-.modal-create-vision-board{
+
+.modal-create-vision-board {
     width: 60%;
 }
 
 /* ------------VISION BOARDS-------------- */
-.input-vision{
+.input-vision {
     font-weight: 700;
 }
 
 .footer-vision {
     display: flex;
     justify-content: center;
-    border-top: 1px solid #ccc; 
-    padding-top: 10px; 
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
 }
 
 .btn-link-red {
-    text-decoration-color: red; 
+    text-decoration-color: red;
 }
 
 #removeCompetitorsBtn:hover {
@@ -168,56 +171,63 @@ table td[colspan="5"] {
 }
 
 .custom-add {
-    width: 100%; 
-    font-size: 1rem; 
-    border: none; 
+    width: 100%;
+    font-size: 1rem;
+    border: none;
     outline: none;
     font-weight: 600;
-    resize: none; /* Mencegah perubahan ukuran manual oleh pengguna */
-    overflow: hidden; /* Mencegah scroll */
-    padding: 8px; /* Tambahkan padding jika diinginkan */
-    box-sizing: border-box; /* Menghindari perubahan ukuran karena padding */
+    resize: none;
+    /* Mencegah perubahan ukuran manual oleh pengguna */
+    overflow: hidden;
+    /* Mencegah scroll */
+    padding: 8px;
+    /* Tambahkan padding jika diinginkan */
+    box-sizing: border-box;
+    /* Menghindari perubahan ukuran karena padding */
 }
 
 
 .custom-input {
-    width: 100%; 
-    font-size: 2rem; 
-    border: none; 
+    width: 100%;
+    font-size: 2rem;
+    border: none;
     outline: none;
     font-weight: 800;
 }
+
 .cstm-input {
-    width: 100%; 
-    font-size: 0.90rem; 
-    border: none; 
+    width: 100%;
+    font-size: 0.90rem;
+    border: none;
     outline: none;
-    font-weight: 400;
 }
 
 
 /* ------------DROPDOWN SIDEBAR-------------- */
 .menu-sidebar:hover {
-    color: #f9fafb; 
+    color: #f9fafb;
 }
+
 .menu-sidebar i:hover {
     color: #f9fafb;
 }
 
 .product-list-container {
-    max-height: calc(6 * 2.5rem); 
-    overflow-y: auto; 
+    max-height: calc(6 * 2.5rem);
+    overflow-y: auto;
 }
 
 .menu-item-active {
-    background-color: #131418 !important; 
-    color: #0034fb !important; 
+    background-color: #131418 !important;
+    color: #0034fb !important;
     border-radius: 2rem;
     border: 1px solid #727272;
 }
+
 .menu-item-active .menu-title {
     color: #006AE6 !important;
 }
+
 .menu-item-active .menu-bullet::before {
     background-color: #006AE6;
 }
@@ -235,15 +245,15 @@ table td[colspan="5"] {
 }
 
 /* ------------BACKLOG-------------- */
-.title-backlog{
+.title-backlog {
     font-weight: 600;
 }
 
 /* ------------CK EDITOR-------------- */
 .ck-editor {
-    border: 1px solid #ccc !important; 
+    border: 1px solid #ccc !important;
     border-radius: 8px;
-    overflow: hidden;  
+    overflow: hidden;
 }
 
 .ck-content {
@@ -259,18 +269,21 @@ table td[colspan="5"] {
 .drawer {
     position: fixed;
     top: 0;
-    right: -700px; /* Awalnya di luar layar sebelah kanan */
+    right: -700px;
+    /* Awalnya di luar layar sebelah kanan */
     height: 100vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     width: 700px !important;
     z-index: 999;
-    transition: transform 0.3s ease; /* Animasi transisi masuk */
+    transition: transform 0.3s ease;
+    /* Animasi transisi masuk */
 }
 
 .drawer.open {
-    transform: translateX(-700px); /* Menggeser drawer ke dalam layar */
+    transform: translateX(-700px);
+    /* Menggeser drawer ke dalam layar */
 }
 
 /* Konten dengan scroll vertikal */
@@ -303,11 +316,13 @@ table td[colspan="5"] {
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 150;
-    display: none; /* Secara default tersembunyi */
+    display: none;
+    /* Secara default tersembunyi */
 }
 
 .backdrop.open {
-    display: block; /* Muncul saat kelas open ditambahkan */
+    display: block;
+    /* Muncul saat kelas open ditambahkan */
 }
 
 /* ------------DRAWER-------------- */
@@ -316,6 +331,7 @@ table td[colspan="5"] {
     outline: none;
     height: 20px;
 }
+
 .custom-textarea:focus {
     background-color: #f3f4f6;
 }
@@ -323,5 +339,3 @@ table td[colspan="5"] {
 .line-through {
     text-decoration: line-through;
 }
-
-

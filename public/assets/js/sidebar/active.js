@@ -1,13 +1,13 @@
 $(document).ready(function() {
     var currentPath = window.location.pathname.split('/').slice(0, 4).join('/');
-    console.log("Current Path:", currentPath);
+    // console.log("Current Path:", currentPath);
 
     $('.menu-item a').each(function() {
         var href = $(this).attr('href'); 
         if (!href) return; 
 
         var linkPath = new URL(href, window.location.origin).pathname; 
-        console.log("Checking link path:", linkPath);
+        // console.log("Checking link path:", linkPath);
 
         if (currentPath === linkPath) {
             var accordion = $(this).closest('.menu-accordion');

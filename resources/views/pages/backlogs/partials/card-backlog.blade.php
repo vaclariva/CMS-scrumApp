@@ -1,42 +1,38 @@
 <div class="card mb-3 backlog-edit" data-backlog-id="{{ $backlog->id }}">
-    <div class="BacklogNameDisplay card-body title-backlog mb-0" data-backlog-id="{{ $backlog->id }}">
-        {{$backlog->name}}
+    <div class="BacklogNameDisplay card-body title-backlog mb-0">
+        <input type="text" class="card-title title-card-backlog cstm-input" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}" name="titles" id="name-{{ $backlog->id }}" value="{{ $backlog->name }}">
     </div>
     <div class="flex justify-between">
         <div class="px-7 pb-4 flex items-center gap-3">
             <!-- Badge Priority -->
-            <div class="BacklogPriorityDisplay" data-backlog-id="{{ $backlog->id }}">
-                @if(!empty($backlog->priority))
-                    <span class="badge badge-pill badge-outline gap-1.5
+            <div class="BacklogPriorityDisplay {{ $backlog->priority ? '' : 'hidden' }}" data-backlog-id="{{ $backlog->id }}">
+                <span class="badge badge-pill badge-outline gap-1.5
+                    @if($backlog->priority == 'Tinggi')
+                        badge-danger
+                    @elseif($backlog->priority == 'Sedang')
+                        badge-warning
+                    @elseif($backlog->priority == 'Rendah')
+                        badge-success
+                    @endif">
+                    <span class="badge badge-dot
                         @if($backlog->priority == 'Tinggi')
                             badge-danger
                         @elseif($backlog->priority == 'Sedang')
                             badge-warning
                         @elseif($backlog->priority == 'Rendah')
                             badge-success
-                        @endif">
-                        <span class="badge badge-dot
-                            @if($backlog->priority == 'Tinggi')
-                                badge-danger
-                            @elseif($backlog->priority == 'Sedang')
-                                badge-warning
-                            @elseif($backlog->priority == 'Rendah')
-                                badge-success
-                            @endif size-1.5" data-backlog-id="{{ $backlog->id }}"></span>
-                        {{ $backlog->priority }}
-                    </span>
-                @endif
+                        @endif size-1.5" data-backlog-id="{{ $backlog->id }}"></span>
+                    {{ $backlog->priority }}
+                </span>
             </div>                                        
 
             <!-- Icon Description -->
-            <div class="BacklogDescriptionDisplay" data-backlog-id="{{ $backlog->id }}">
-                @if(!empty($backlog->description))
+            <div class="BacklogDescriptionDisplay {{ $backlog->description ? '' : 'hidden' }}" data-backlog-id="{{ $backlog->id }}">
                 <i class="ki-duotone ki-textalign-left"></i>
-                @endif
             </div>
 
             <!-- Checklist -->
-            <div class="BacklogChecklistDisplay flex items-center text-xs 
+            <div class="BacklogChecklistDisplay flex items-center text-xs {{$checklists ? '' : 'hidden'}} 
                 @if(!empty($checklists))
                     @if ($checklists->where('status', 1)->count() === $checklists->count())
                         text-success
@@ -50,28 +46,24 @@
             </div> 
 
             <!-- Hours -->
-            <div class="BacklogHoursDisplay flex items-center" data-backlog-id="{{ $backlog->id }}">
-                @if(!empty($backlog->hours))
+            <div class="BacklogHoursDisplay flex items-center {{ $backlog->hours ? '' : 'hidden' }}" data-backlog-id="{{ $backlog->id }}">
                 <div class="flex items-center text-xs">
                     <i class="ki-duotone ki-timer text-lg"></i>
                     <span class="ml-1 text-xs"> {{$backlog->hours}} Jam</span>
                 </div>
-                @endif
             </div>
 
             <!-- Status Check -->
-            <div class="BacklogStatusDisplay" data-backlog-id="{{ $backlog->id }}">
-                @if($backlog->status == 1)
+            <div class="BacklogStatusDisplay {{$backlog->status == 0 ? 'hidden' : ''}}" data-backlog-id="{{ $backlog->id }}">
                 <div class="flex items-center text-xs text-success">
                     <i class="ki-duotone ki-flag text-lg"></i>
                     <span class="ml-1">Selesai</span>
                 </div>
-                @endif
             </div>
 
             <!-- Product Owner Image -->
             <div class="flex items-center">
-                <div class="menu-toggle btn btn-icon rounded-full" data-backlog-id="{{ $backlog->id }}">
+                <div class="menu-toggle rounded-full me-2" data-backlog-id="{{ $backlog->id }}">
                     @if($productOwner->image)
                     <img src="{{ asset('/storage/'. $productOwner->image) }}" alt="{{Auth::user()->name}}" class="w-5 h-5 rounded-full object-cover">
                     @else
