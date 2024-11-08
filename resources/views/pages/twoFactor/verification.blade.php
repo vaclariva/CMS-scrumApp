@@ -30,6 +30,10 @@ Verification
             </div>
         @endif
         
+        <span class="form-hint text-danger">
+            {{ $message }}
+        </span>
+        
         <div class="flex flex-col gap-1">
             <input 
                 type="text" 
