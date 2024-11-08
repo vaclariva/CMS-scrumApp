@@ -48,12 +48,11 @@
                 <!-- Badge Priority -->
                 <div class="BacklogPriorityDisplay {{$backlog->priority ? '' : 'hidden'}}" data-backlog-id="{{$backlog->id}}">
                     <span class="badge badge-pill badge-outline gap-1.5
-                    {{$backlog->priority}} === 'Tinggi' ? 'badge-danger' : 
-                    {{$backlog->priority}} === 'Sedang' ? 'badge-warning' : 'badge-success'}">
-                    <span class="badge badge-dot 
-                    {{$backlog->priority}} === 'Tinggi' ? 'badge-danger' : 
-                    {{$backlog->priority}} === 'Sedang' ? 'badge-warning' : 
-                    'badge-success'} size-1.5" data-backlog-id="{{$backlog->id}}"></span>
+                    {{ $backlog->priority == 'Tinggi' ? 'badge-danger' : ($backlog->priority == 'Sedang' ? 'badge-warning' : 'badge-success') }}
+                    ">
+                    <span class="badge badge-dot size-1.5
+                    {{ $backlog->priority == 'Tinggi' ? 'badge-danger' : ($backlog->priority == 'Sedang' ? 'badge-warning' : 'badge-success') }}
+                    " data-backlog-id="{{$backlog->id}}"></span>
                     {{$backlog->priority}}            
                     </span>
                 </div>
