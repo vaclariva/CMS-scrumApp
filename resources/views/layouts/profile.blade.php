@@ -21,7 +21,7 @@
                 </div>
                 <div class="menu-separator"></div>
                 <div class="flex flex-col" data-menu-dismiss="true">
-                    <div class="menu-item">
+                    <!--<div class="menu-item">
                         <a class="menu-link" href="{{route('profile.edit')}}">
                             <span class="menu-icon">
                                 <i class="ki-filled ki-profile-circle"></i>
@@ -30,7 +30,7 @@
                                 My Profile
                             </span>
                         </a>
-                    </div>
+                    </div>-->
                     <div class="menu-item" data-menu-item-offset="-50px, 0" data-menu-item-placement="left-start" data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:hover">
                         <div class="menu-link">
                             <span class="menu-icon">
@@ -44,6 +44,17 @@
                             </span>
                         </div>
                         <div class="menu-dropdown menu-default light:border-gray-300 w-full max-w-[220px]">
+                            <!-- <div class="menu-item">
+                                <a class="menu-link" href="html/demo1/account/members/teams.html">
+                                    <span class="menu-icon">
+                                        <i class="ki-filled ki-setting"></i>
+                                    </span>
+                                    <span class="menu-title">
+                                        Members &amp; Roles
+                                    </span>
+                                </a>
+                            </div> -->
+
                             <div class="menu-item">
                                 <a class="menu-link" href="{{route('settings.twofactors.index')}}">
                                     <span class="menu-icon">
@@ -54,17 +65,8 @@
                                     </span>
                                 </a>
                             </div>
+                        
                             <!-- <div class="menu-item">
-                                <a class="menu-link" href="html/demo1/account/members/teams.html">
-                                    <span class="menu-icon">
-                                        <i class="ki-filled ki-setting"></i>
-                                    </span>
-                                    <span class="menu-title">
-                                        Members &amp; Roles
-                                    </span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
                                 <a class="menu-link" href="/two-factor">
                                     <span class="menu-icon">
                                         <i class="ki-filled ki-switch"></i>
@@ -79,7 +81,7 @@
                 </div>
                 <div class="menu-separator"></div>
                 <div class="flex flex-col">
-                    <div class="menu-item mb-0.5">
+                    <!--<div class="menu-item mb-0.5">
                         <div class="menu-link">
                             <span class="menu-icon">
                                 <i class="ki-filled ki-moon"></i>
@@ -91,7 +93,7 @@
                                 <input data-theme-state="dark" data-theme-toggle="true" name="check" type="checkbox" value="1"></input>
                             </label>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="menu-item px-4 py-1.5">
                         <a class="btn btn-sm btn-light justify-center" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             Log out
