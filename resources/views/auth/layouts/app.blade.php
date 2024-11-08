@@ -14,6 +14,25 @@
         <link href="{{ asset('metronic/dist/assets/vendors/keenicons/styles.bundle.css') }}" rel="stylesheet"/>
         <link href="{{ asset('metronic/dist/assets/css/styles.css') }}" rel="stylesheet"/>
         @yield('blockhead')
+
+        <style>
+            .spinner {
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid #3498db;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                animation: spin 1s linear infinite;
+                /* display: inline-block; */
+                vertical-align: middle;
+            }
+    
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+    
+        </style>
     </head>
     <body class="flex h-full demo1 sidebar-fixed header-fixed bg-[#fefefe] dark:bg-coal-500">
         <script>
@@ -56,10 +75,12 @@
                 </div>
             </div>
         </div>
-
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ asset('metronic/dist/assets/js/core.bundle.js') }}"></script>
         <script src="{{ asset('metronic/dist/assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
         <script src="{{ asset('metronic/dist/assets/js/widgets/general.js') }}"></script>
         <script src="{{ asset('metronic/dist/assets/js/layouts/demo1.js') }}"></script>
+        <script src="{{ asset('assets/js/app.js') }}"></script>
+        @stack('blockfoot')
     </body>
 </html>

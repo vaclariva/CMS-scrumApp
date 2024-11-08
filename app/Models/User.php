@@ -4,20 +4,23 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
-use App\Notifications\Auth\CreatePasswordNotification;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\TwoFactor;
+use App\Traits\HasTwoFactor;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Password;
+use App\Notifications\Auth\TwoFactorNotification;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Notifications\Auth\CreatePasswordNotification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasTwoFactor;
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +32,7 @@ class User extends Authenticatable
         'email',
         'role_id',
         'image',
+        'enabled_2fa'
     ];
 
     /**
@@ -53,6 +57,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Define HasMany to relationship with two factor .
+     */
+    public function twoFactors(): HasMany
+    {
+        return $this->hasMany(TwoFactor::class);
+    }
+
     /**
      * Define function for checking the user's avatar.
      */
@@ -98,8 +111,16 @@ class User extends Authenticatable
     public function sendCreatePasswordNotification(): void
     {
         $url = route('password.reset', ['token' => Password::createToken($this), 'email' => $this->email]);
-        info($url);
+
         $this->notify(new CreatePasswordNotification($url, $this));
+    }
+
+    /**
+     * Send a two factor notification to the user.
+     */
+    public function sendTwoFactorNotification($request)
+    {
+        $this->notify(new TwoFactorNotification($this->generateTwoFactorCode($request->ip())));
     }
 
     /**

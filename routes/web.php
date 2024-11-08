@@ -1,23 +1,25 @@
 <?php
 
-use App\Http\Controllers\BacklogController;
-use App\Http\Controllers\ChecklistController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\DetailProductController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SprintController;
-use App\Http\Controllers\VisionBoardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SprintController;
+use App\Http\Controllers\BacklogController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ChecklistController;
+use App\Http\Controllers\VisionBoardController;
+use App\Http\Controllers\DetailProductController;
+use App\Http\Controllers\Auth\TwoFactorController;
 
 Route::get('/', function () {
     return redirect('dashboard');
 });
 
 Route::middleware([
-    'middleware' =>
-    'auth',
+    'middleware' => 'auth',
+    'auth.twofactor',
     'web',
     'verified',
 ])->group(function () {
@@ -77,6 +79,13 @@ Route::middleware([
     Route::put('/products/{product}/sprints/{sprintId}', [SprintController::class, 'update'])->name('sprints.update');
     Route::post('/products/{id}/sprints', [SprintController::class, 'store'])->name('sprints.store');
     Route::delete('/products/{id}/sprints/{sprintId}', [SprintController::class, 'destroy'])->name('sprints.destroy');
+    
+    Route::controller(SettingController::class)->name('settings.')->prefix('/settings')->group(function () {
+        Route::name('twofactors.')->prefix('two-factor')->group(function () {
+            Route::get('/', 'showTwoFactorPage')->name('index');
+            Route::patch('/', 'updateTwoFactor')->name('update');
+        });
+    });
 
     Route::get('/icons', function () {
         $icons = file_get_contents(public_path('assets/icons.json'));
@@ -84,22 +93,14 @@ Route::middleware([
     });
 
 
-    Route::get('/two-factor', function () {
-        return view('pages.twoFactor.two-factor');
-    })->name('two-factor');
-
-    Route::get('/send-email', function () {
-        return view('pages.twoFactor.send-email');
-    })->name('send-email');
-
-    Route::get('/verification', function () {
-        return view('pages.twoFactor.verification');
-    })->name('verification');
     Route::get('/confirm', function () {
         return view('auth.confirm-password');
     })->name('confirm-password');
 
 });
+
+
+
 
 require __DIR__ . '/auth.php';
 
