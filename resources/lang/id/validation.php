@@ -40,7 +40,7 @@ return [
     'digits_between'       => ':Attribute harus terdiri dari :min sampai :max angka.',
     'dimensions'           => ':Attribute tidak memiliki dimensi gambar yang valid.',
     'distinct'             => ':Attribute memiliki nilai yang duplikat.',
-    'email'                => 'Masukkan alamat :attribute dengan format yang benar.',
+    'email'                => 'Format :attribute tidak valid.',
     'ends_with'            => ':Attribute harus diakhiri salah satu dari berikut: :values.',
     'exists'               => ':Attribute yang dipilih tidak valid.',
     'file'                 => ':Attribute harus berupa sebuah berkas.',
@@ -109,7 +109,7 @@ return [
     'prohibited_unless'    => ':Attribute tidak boleh ada kecuali :other memiliki nilai :values.',
     'regex'                => 'Format :attribute tidak valid.',
     'relatable'            => ':Attribute ini mungkin tidak berasosiasi dengan sumber ini.',
-    'required'             => ':attribute wajib diisi.',
+    'required'             => ':Attribute harus diisi.',
     'required_choose'      => 'Kolom :attribute wajib untuk dipilih.',
     'required_if'          => ':Attribute wajib diisi bila :other adalah :value.',
     'required_unless'      => ':Attribute wajib diisi kecuali :other memiliki nilai :values.',
@@ -172,8 +172,8 @@ return [
     */
 
     'attributes' => [
-        'password' => 'Kata sandi',
-        'email' => 'Alamat email',
+        'password' => 'kata sandi',
+        'email' => 'alamat email',
         ],
 
 ];

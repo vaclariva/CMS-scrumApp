@@ -15,7 +15,6 @@ class TwoFactor
      */
     public function handle(Request $request, Closure $next): Response
     {
-        info('masuk two factor');
         $user = auth()->user();
         
         $twoFactor = $user->twoFactors->where('two_factor_ip', $request->ip())->first();
