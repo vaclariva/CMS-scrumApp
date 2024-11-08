@@ -40,7 +40,9 @@ Verification
         @endif
 
         <div class="badge badge-sm badge-success badge-outline rounded-xl px-3.5 py-2.5 hidden" id="alert-success">
-            Kami sudah mengirimkan email yang berisi kode untuk proses login Anda.
+            <div class="text-2sm text-success">
+                Kami sudah mengirimkan email yang berisi kode untuk proses login Anda.
+            </div>
         </div>
 
         <div class="badge badge-sm badge-danger badge-outline rounded-xl px-3.5 py-2.5 hidden" id="alert-error"></div>
@@ -62,13 +64,7 @@ Verification
         </div>
 
         <div class="flex items-center justify-center font-medium">
-            {{-- <span class="text-2sm text-gray-600 me-1.5">
-                Belum menerima kode?
-            </span> --}}
-            {{-- <a class="text-2sm link" href="#">
-                Kirim ulang
-            </a> --}}
-            <span class="text-2sm text-gray-600 me-1.5">Belum menerima kode?? <a type="button" class="text-2sm link" onclick="resendCode({el: this, url: '{{ route('verify.resend-two-factor') }}', token: '{{ csrf_token() }}' })">Kirim Ulang</a></span>
+            <span class="text-2sm text-gray-600 me-1.5">Belum menerima kode?? <a type="button" class="text-2sm link cursor-pointer" onclick="resendCode({el: this, url: '{{ route('verify.resend-two-factor') }}', token: '{{ csrf_token() }}' })">Kirim Ulang</a></span>
             <span class="spinner hidden" id="loader"></span>
         </div>
 
