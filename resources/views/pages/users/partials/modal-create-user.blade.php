@@ -79,7 +79,7 @@
 
                 <div class="modal-footer ">
                     <div class="flex gap-4 justify-end p-5">
-                        <button class="btn btn-light rounded-full" data-modal-dismiss="true">
+                        <button class="btn btn-light rounded-full" type="button" data-modal-dismiss="true">
                             Batal
                         </button>
                         <button class="btn btn-primary rounded-full" type="submit">
