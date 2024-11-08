@@ -1,5 +1,10 @@
 
 @extends('auth.layouts.app')
+
+@section('title')
+Success reset
+@endsection
+
 @section('content')
     <form method="POST" action="{{ route('login') }}" class="card-body flex flex-col gap-5 p-10">
         @csrf

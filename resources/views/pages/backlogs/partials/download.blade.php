@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Requirement Sign Off Sheet</title>
     <style>
+
         html, body {
             margin: 0;
             padding: 0;
@@ -25,15 +26,19 @@
             justify-content: center;
             align-items: center;
         }
-        .container {
-            width: 75%;
-            margin-top: 100px;
-            margin-right: 100px;
-            margin-bottom: 120px; 
-            margin-left: 100px;  
-            padding: 0px;
-            background-color: rgba(255, 255, 255, 0.9);
+        @media print {
+            @page {
+                margin: 2000mm; /* Adjust this value as needed */
+            }
+            .container {
+                width: 50% !important; /* Set width to ensure space from edges */
+                margin: auto !important; /* Center container */
+                padding: 2000px !important; /* Add padding to create inner spacing */
+                background-color: rgba(255, 255, 255, 0.9);
+            }
         }
+
+
         .title {
             text-align: center;
             font-weight: bold;
@@ -44,6 +49,7 @@
         }
         .content {
             margin: 17px 0;
+            break-before: auto;
         }
         .content table {
             width: 100%;
