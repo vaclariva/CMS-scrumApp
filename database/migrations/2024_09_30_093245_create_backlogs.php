@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable(); 
             $table->string('priority')->nullable(); 
-            $table->integer('hours')->nullable(); 
+            $table->double('hours')->nullable(); 
             $table->string('applicant')->nullable(); 
             $table->enum('status', ['0', '1'])->default('0');
             $table->unsignedBigInteger('sprint_id')->nullable(); 

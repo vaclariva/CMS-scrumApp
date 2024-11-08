@@ -97,6 +97,8 @@ Route::middleware([
         return view('auth.confirm-password');
     })->name('confirm-password');
 
+    
+
 });
 
 
