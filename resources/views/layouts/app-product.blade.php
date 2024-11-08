@@ -157,11 +157,8 @@
                             'redo',
                             'heading',
                             '|',
-                            'alignment',
-                            '|',
                             'bold',
                             'italic',
-                            'underline',
                             'link',
                             '|',
                             'bulletedList',
@@ -173,7 +170,6 @@
                     })
                     .then(editor => {
                         editors.push(editor);
-                        console.log('Editor was initialized', editor);
                     })
                     .catch(error => {
                         console.error('Error during initialization of the editor', error);
