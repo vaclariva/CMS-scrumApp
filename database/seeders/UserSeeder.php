@@ -40,5 +40,12 @@ class UserSeeder extends Seeder
             'role_id' => 2,
             'password' => Hash::make('password'),
         ]);
+
+        User::factory()->create([
+            'name' => 'Andri Suryono',
+            'email' => 'andri.suryono@gmail.com',
+            'role_id' => 2,
+            'password' => Hash::make('password'),
+        ]);
     }
 }

@@ -9,7 +9,6 @@ use App\Models\VisionBoard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 
@@ -20,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        info('masuk products');
+        
         $users = User::all();
         $products = Product::latest()->get();
         $count = $products->count();
@@ -30,6 +29,7 @@ class ProductController extends Controller
             if ($count == 0) {
                 return view('pages.add-products.add-product', compact('users', 'products'));
             }
+            
             // Ambil produk terakhir dari $products
             $lastProduct = $products->first(); // Ambil produk terbaru
             return redirect()->route('products.show', $lastProduct->id);

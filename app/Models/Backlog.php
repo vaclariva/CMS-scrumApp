@@ -19,6 +19,7 @@ class Backlog extends Model
         'product_id',
         'created_by', 
         'user_id',
+        'updated_at'
     ];
 
     public function checklists()

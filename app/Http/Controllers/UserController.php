@@ -27,10 +27,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->latest()->get();
-        $totalUser = User::count();
+        try {
+            $users = User::with('role')->latest()->get();
+            
+            $totalUser = User::count();
 
-        return view('pages.users.user', compact('users', 'totalUser'));
+            return view('pages.users.user', compact('users', 'totalUser'));
+        } catch (\Throwable $th) {
+            info($th);
+            
+            abort(500);
+        }
     }
 
     /**
