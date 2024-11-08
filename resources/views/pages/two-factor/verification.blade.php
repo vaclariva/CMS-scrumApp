@@ -32,7 +32,7 @@ Verification
 
         {{-- Menampilkan pesan error dari session --}}
         @if (session('error'))
-            <div class="badge badge-sm badge-danger badge-outline rounded-xl px-3.5 py-2.5 d-none">
+            <div class="badge badge-sm badge-danger badge-outline rounded-xl px-3.5 py-2.5" id="alert-error">
                 <div class="text-2sm text-danger">
                     {{ session('error') }}
                 </div>
