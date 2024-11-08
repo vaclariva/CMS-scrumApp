@@ -32,7 +32,7 @@ class StoreTwoFactorRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'two_factor_code' => 'two factor authentication',
+            'two_factor_code' => 'Kode verifikasi',
         ];
     }
 }
