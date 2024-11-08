@@ -2,7 +2,7 @@ let debounceTimeout;
 
 function openEditModalVision(data) {
     $('#updateVisionBoardForm').attr('action', data.url_update); 
-    let name =  $('.title-card-vision').val();
+    let name =  $(`#name-${data.id}`).val();
     
     document.getElementById('name-vision').value = name;
     document.getElementById('vision').value = data.vision || '';
@@ -140,6 +140,8 @@ $(document).ready(function () {
         let visionId = $(this).data('id');
         let productId = $(this).data('product-id');
         let value = $(this).val();
+        console.log('Product ID: ' + productId);
+        console.log('Vision ID: ' + visionId);
         
         updateTitleVision(value, visionId, productId);
     }, 1000));
