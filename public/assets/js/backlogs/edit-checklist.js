@@ -7,8 +7,8 @@ function openDrawer({ url, backlogId }) {
         data: { backlog_id: backlogId },
         success: function(response) {
             if (response.success) {
-                // console.log('Data loaded successfully:', response);
-                const checklist = response.checklist;
+                console.log('Data loaded successfully:', response);
+                $(`#percentage-${backlogId}`).text(`${response.completedChecklists}/${response.totalChecklists}`);
 
                 $('#editBacklogForm').attr('action', `/products/${response.backlog.product_id}/backlogs/${response.backlog.id}`);
 
@@ -90,7 +90,6 @@ function openDrawer({ url, backlogId }) {
 }
 
 function updateChecklistSummary(checklists) {
-    console.log(checklists);
     const totalChecklists = checklists.length;
     const completedChecklists = checklists.filter(checklist => checklist.status === '1').length;
     const percentage = (completedChecklists / totalChecklists) * 100 || 0; 
@@ -179,9 +178,6 @@ function deleteChecklist(checklistId, backlogId) {
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function(response) {
-            const backlog = response.backlog;
-            const completedChecklists = response.completedChecklists; 
-            const totalChecklists = response.totalChecklists;
             
             $(`#checklist-${checklistId}`).remove(); 
             console.log(`Checklist ${checklistId} deleted.`, response);
@@ -198,18 +194,20 @@ function deleteChecklist(checklistId, backlogId) {
 
 
 function updateBacklogChecklistDisplay(backlog, completedChecklists, totalChecklists) {
-    const checklistDisplay = $(`.BacklogChecklistDisplay[data-backlog-id="${backlog.id}"]`);
- 
+    const checklistDisplay = $(`#checklist-${backlog.id}`);
+    checklistDisplay.removeClass('hidden');
+    if(completedChecklists === totalChecklists) {
+        checklistDisplay.addClass('text-success');
+        checklistDisplay.removeClass('text-gray-500');
+    } else {
+        checklistDisplay.removeClass('text-success');
+        checklistDisplay.addClass('text-gray-500');
+    }
+    checklistDisplay.empty();
     checklistDisplay.html(`
-        <i class="ki-duotone ki-check-squared text-lg"></i>
+        <i class="ki-duotone ki-check-squared text-lg me-2"></i>
         ${completedChecklists}/${totalChecklists}
     `);
- 
-    if (completedChecklists === totalChecklists) {
-        checklistDisplay.removeClass('text-gray-500').addClass('text-success');
-    } else {
-        checklistDisplay.removeClass('text-success').addClass('text-gray-500');
-    }
 }
 
 

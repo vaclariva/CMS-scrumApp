@@ -31,6 +31,7 @@ $(document).ready(function() {
             type: 'PUT',
             data: formData,
             success: function(response) {
+                console.log("Respon e: ",response);
                 if (response.success) {
                     $(`#name-backlog-${response.id}`).val(response.name);
                     if(response.backlog.created_at === response.backlog.updated_at) {
@@ -66,17 +67,23 @@ $(document).ready(function() {
         const backlog = response.backlog;
 
         let checklistDiv = $(`#checklist-${backlog.id}`);
-        if(response.checklist_complete === response.checklist_total) {
-            checklistDiv.addClass('text-success');
-            checklistDiv.removeClass('text-gray-500');
-        } else {
-            checklistDiv.addClass('text-gray-500');
-            checklistDiv.removeClass('text-success');
-        }
-        checklistDiv.html(`
-            <i class="ki-duotone ki-check-squared text-lg"></i>
-            ${response.checklist_complete}/${response.checklist_total}
-        `);
+        // checklistDiv.removeClass('hidden');
+        // checklistDiv.empty();
+        // checklistDiv.html(`
+        // <i class="ki-duotone ki-check-squared text-lg me-1"></i> 
+        //         ${response.checklist_complete}/${response.checklist_total}
+        // `);
+        // if(response.checklist_complete === response.checklist_total) {
+        //     checklistDiv.addClass('text-success');
+        //     checklistDiv.removeClass('text-gray-500');
+        // } else {
+        //     checklistDiv.addClass('text-gray-500');
+        //     checklistDiv.removeClass('text-success');
+        // }
+        // checklistDiv.html(`
+        //     <i class="ki-duotone ki-check-squared text-lg"></i>
+        //     ${response.checklist_complete}/${response.checklist_total}
+        // `);
 
 
         // Update Backlog Name
