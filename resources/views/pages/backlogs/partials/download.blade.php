@@ -18,7 +18,7 @@
             font-size: 1rem;
             margin: 0;
             padding: 0;
-            background-image: url('{{ public_path("metronic/dist/assets/media/images/pict/pdf-header.png") }}');
+            background-image: url('{{ public_path("metronic/dist/assets/media/images/pict/pdf-template.png") }}');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
@@ -26,19 +26,14 @@
             justify-content: center;
             align-items: center;
         }
-        @media print {
-            @page {
-                margin: 2000mm; /* Adjust this value as needed */
-            }
-            .container {
-                width: 50% !important; /* Set width to ensure space from edges */
-                margin: auto !important; /* Center container */
-                padding: 2000px !important; /* Add padding to create inner spacing */
-                background-color: rgba(255, 255, 255, 0.9);
-            }
+        .container {
+            width: 75% !important; /* Set width to ensure space from edges */
+            margin-top: 100px;
+            margin-right: 100px;
+            margin-bottom: 120px; 
+            margin-left: 100px;  
+            background-color: rgba(255, 255, 255, 0.9);
         }
-
-
         .title {
             text-align: center;
             font-weight: bold;
@@ -86,7 +81,7 @@
             text-align: center;
         }
         .right-signature {
-            right: 5% !important;
+            right: 3% !important;
             text-align: center;
         }
         .acceptance{
