@@ -61,19 +61,7 @@
             @foreach ($backlogs as $backlog)
                 <!----------------------------LIST BACKLOG--------------------------->
                 <div id="backlogList" class="backlog-content" style="display: none;">
-
-                    @include('pages.backlogs.partials.new-backlog', ['backlog' => $backlog, 'product' => $product])
-
                     @foreach ($backlogs as $backlog)
-                        @php
-                            $checklists = $backlog->checklists()->get(); 
-                            $jumlahChecklistSelesai = $checklists->where('status', 1)->count();
-                            $jumlahChecklistTotal = $checklists->count();
-                            $persentase = $jumlahChecklistTotal > 0 ? ($jumlahChecklistSelesai / $jumlahChecklistTotal) * 100 : 0;
-                        @endphp
-                        @if (!empty($backlog->name) && !empty($backlog->product_id) && empty($backlog->priority) && empty($backlog->description) && empty($backlog->hours) && empty($backlog->status) && empty($backlog->sprint_id))
-                            @continue
-                        @endif
                         <div class="backlogContainer">
                             @include('pages.backlogs.partials.card-backlog', ['backlog' => $backlog, 'product' => $product])
                         </div>
