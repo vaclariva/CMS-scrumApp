@@ -47,7 +47,6 @@
             <div class="px-7 pb-4 flex items-center gap-3">
                 <!-- Badge Priority -->
                 <div class="BacklogPriorityDisplay {{$backlog->priority ? '' : 'hidden'}}" data-backlog-id="{{$backlog->id}}">
-                    {{$backlog->priority}}
                     <span class="badge badge-pill badge-outline gap-1.5 
                     {{$backlog->priority}} === 'Tinggi' ? 'badge-danger' : 
                     {{$backlog->priority}} === 'Sedang' ? 'badge-warning' : 'badge-success'}">
