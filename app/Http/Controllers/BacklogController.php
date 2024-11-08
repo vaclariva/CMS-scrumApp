@@ -129,7 +129,7 @@ class BacklogController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'priority' => 'nullable|string',
-            'hours' => 'nullable|string',
+            'hours' => 'nullable|numeric',
             'applicant' => 'nullable|string',
             'status' => 'required|in:0,1', 
             'sprint_id' => 'nullable|exists:sprints,id',
@@ -150,11 +150,11 @@ class BacklogController extends Controller
         ]);
 
         $groupedBacklogs = Backlog::with('product')
-        ->where('product_id', $productId)
-        ->latest()
-        ->get()
-        ->groupBy('sprint_id')
-        ->sortKeysDesc();
+            ->where('product_id', $productId)
+            ->latest()
+            ->get()
+            ->groupBy('sprint_id')
+            ->sortKeysDesc();
 
         return response()->json([
             'success' => true,
