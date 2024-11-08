@@ -170,13 +170,6 @@
             var description = 'untitled';
             var status = 0;
 
-            console.log('Tombol Tambah diklik');
-            console.log('Mengirim data:', {
-                backlog_id: backlogId,
-                description: description,
-                status: status
-            });
-
             $.ajax({
                 url: '/backlogs/' + backlogId + '/checklists',
                 type: 'POST',
@@ -191,7 +184,13 @@
                     const backlog = response.backlog;
                     const completedChecklists = response.completedChecklists;
                     const totalChecklists = response.totalChecklists;
-                    console.log('Checklist berhasil ditambahkan:', checklist);
+                    if(!response.backlog.id) {
+                        $(`#backlog-action-${response.backlog.id}`).removeClass('hidden');
+                        $(`#backlog-footer-${response.backlog.id}`).addClass('hidden');
+                    } else {
+                        $(`#backlog-action-${response.backlog.id}`).addClass('hidden');
+                        $(`#backlog-footer-${response.backlog.id}`).removeClass('hidden');
+                    }
 
                     if (!checklist.id) {
                         console.error('ID checklist tidak ditemukan dalam respons');
@@ -199,15 +198,15 @@
                     }
 
                     var newChecklistItem = `
-                    <li class="mb-3" id="checklist-${checklist.id}">
-                        <label class="form-label flex items-center gap-2.5">
-                            <input class="checkbox" name="status" type="checkbox" data-id="${checklist.id}" value="${checklist.id}" ${checklist.status === '1' ? 'checked' : ''}/>
-                            <span class="w-full">
-                                ${checklist.status === '1' ? '<span class="line-through text-gray-500">' + checklist.description + '</span>' : '<textarea class="w-full custom-textarea" name="description[]">' + (checklist.description || 'untitled') + '</textarea>'}
-                            </span>
-                        </label>
-                    </li>
-                `;
+                        <li class="mb-3" id="checklist-${checklist.id}">
+                            <label class="form-label flex items-center gap-2.5">
+                                <input class="checkbox" name="status" type="checkbox" data-id="${checklist.id}" value="${checklist.id}" ${checklist.status === '1' ? 'checked' : ''}/>
+                                <span class="w-full">
+                                    ${checklist.status === '1' ? '<span class="line-through text-gray-500">' + checklist.description + '</span>' : '<textarea class="w-full custom-textarea" name="description[]">' + (checklist.description || 'untitled') + '</textarea>'}
+                                </span>
+                            </label>
+                        </li>
+                    `;
 
                     $('#checklistItems').append(newChecklistItem);
 

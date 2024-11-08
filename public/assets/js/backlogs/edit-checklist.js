@@ -1,5 +1,5 @@
 function openDrawer({ url, backlogId }) {
-    console.log('Opening drawer with URL:', url, 'and backlog ID:', backlogId);
+    // console.log('Opening drawer with URL:', url, 'and backlog ID:', backlogId);
     
     $.ajax({
         url: url,
@@ -7,7 +7,7 @@ function openDrawer({ url, backlogId }) {
         data: { backlog_id: backlogId },
         success: function(response) {
             if (response.success) {
-                console.log('Data loaded successfully:', response);
+                // console.log('Data loaded successfully:', response);
                 const checklist = response.checklist;
 
                 $('#editBacklogForm').attr('action', `/products/${response.backlog.product_id}/backlogs/${response.backlog.id}`);

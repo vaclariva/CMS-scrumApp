@@ -31,9 +31,7 @@ $(document).ready(function() {
             type: 'PUT',
             data: formData,
             success: function(response) {
-                console.log(response);
                 if (response.success) {
-                    console.log('Response data:', response);
                     $(`#name-backlog-${response.id}`).val(response.name);
                     if(response.backlog.created_at === response.backlog.updated_at) {
                         $(`#backlog-action-${response.id}`).removeClass('hidden');
@@ -42,7 +40,7 @@ $(document).ready(function() {
                         $(`#backlog-action-${response.id}`).addClass('hidden');
                         $(`#backlog-footer-${response.id}`).removeClass('hidden');
                     }
-                    updateDisplay(response.backlog);
+                    updateDisplay(response);
 
                     const backlogId = response.backlog.id;
                     const backlogDiv = $('.filter-backlog[data-backlog-id="' + backlogId + '"]');
@@ -64,7 +62,22 @@ $(document).ready(function() {
         });
     }
 
-    function updateDisplay(backlog) {
+    function updateDisplay(response) {
+        const backlog = response.backlog;
+
+        let checklistDiv = $(`#checklist-${backlog.id}`);
+        if(response.checklist_complete === response.checklist_total) {
+            checklistDiv.addClass('text-success');
+            checklistDiv.removeClass('text-gray-500');
+        } else {
+            checklistDiv.addClass('text-gray-500');
+            checklistDiv.removeClass('text-success');
+        }
+        checklistDiv.html(`
+            <i class="ki-duotone ki-check-squared text-lg"></i>
+            ${response.checklist_complete}/${response.checklist_total}
+        `);
+
 
         // Update Backlog Name
         $(`.BacklogNameDisplay[data-backlog-id="${backlog.id}"]`).text(backlog.name).show();
@@ -142,18 +155,10 @@ $(document).ready(function() {
         $.ajax({
             url: `/products/${product_id}/backlogs/${backlogId}/title`,
             type: 'PUT',
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                name: value
-            },
+            data: { _token: $('meta[name="csrf-token"]').attr('content'), name: value },
             success: function(response) {
-                if(response.status === 'success') {
-                    $(`#backlog-action-${backlogId}`).addClass('hidden');
-                    $(`#backlog-footer-${backlogId}`).removeClass('hidden');
-                } else {
-                    $(`#backlog-action-${backlogId}`).removeClass('hidden');
-                    $(`#backlog-footer-${backlogId}`).addClass('hidden');
-                }
+                $(`#backlog-action-${backlogId}`).toggleClass('hidden', response.status === 'success');
+                $(`#backlog-footer-${backlogId}`).toggleClass('hidden', response.status !== 'success');
             },
             error: function(xhr) {
                 console.error('Error:', xhr);
