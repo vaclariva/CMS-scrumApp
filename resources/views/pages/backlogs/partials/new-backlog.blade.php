@@ -69,7 +69,8 @@
                 </div>
 
                  <!-- Checklist -->
-                
+                <div class="BacklogChecklistDisplay flex items-center text-xs" id="checklist-{{$backlog->id}}">
+                </div> 
 
                 <!-- Status -->
                 <div class="BacklogChecklistDisplay flex items-center text-xs {{$backlog->status == 0 ? 'hidden': 'text-gray-500'}}"
