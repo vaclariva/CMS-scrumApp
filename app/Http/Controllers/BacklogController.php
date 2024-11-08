@@ -137,6 +137,7 @@ class BacklogController extends Controller
         ]);
 
         $backlog = Backlog::findOrFail($backlogId);
+        $checklists = $backlog->checklists()->where('backlog_id', $backlog->id)->get();
 
         $backlog->update([
             'name' => $request->input('name'),
@@ -171,6 +172,7 @@ class BacklogController extends Controller
             'sprint_id' => $backlog->sprint_id,
             'backlog' => $backlog,
             'groupedBacklogs' => $groupedBacklogs,
+            'checklists' => $checklists,
             'csrf_token' => csrf_token(),
         ]);
     }
