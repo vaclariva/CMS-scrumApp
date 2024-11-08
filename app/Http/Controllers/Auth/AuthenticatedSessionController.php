@@ -26,6 +26,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        
         //$product = Product::first();
 
         $request->authenticate();
@@ -33,8 +34,8 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $cookieLifetime = 10080; // Seminggu
-            Cookie::queue(Cookie::make('status', 'admin', $cookieLifetime));
-
+        Cookie::queue(Cookie::make('status', 'admin', $cookieLifetime));
+        info('masuk');
 
         //if ($product->exists()){
             //return redirect(route('product.index'));    
@@ -42,18 +43,18 @@ class AuthenticatedSessionController extends Controller
         //return redirect()->intended(route('product', absolute: false));
 
         if ($this->isTwoFactor($request)) {
+            info('masuk atas');
+            $request->user()->sendTwoFactorNotification($request);
 
-                $request->user()->sendTwoFactorNotification($request);
-
-                return redirect()->intended(route('product', absolute: false));
-                // return response()->json([
-                //     'message' => 'Mengalihkan ..',
-                //     'redirect' => route('twofactor.verify')
-                // ], 200);
-            } else {
-
-                return redirect()->intended(route('product', absolute: false));
-            }
+            return redirect()->intended(route('product', absolute: false));
+            // return response()->json([
+            //     'message' => 'Mengalihkan ..',
+            //     'redirect' => route('twofactor.verify')
+            // ], 200);
+        } else {
+            info('masuk Bawah');
+            return redirect()->intended(route('product', absolute: false));
+        }
 
         
     }

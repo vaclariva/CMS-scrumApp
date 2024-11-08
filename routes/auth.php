@@ -59,7 +59,6 @@ Route::middleware('auth')->group(function () {
                 ->name('logout');
 
     Route::get('verify', [TwoFactorController::class, 'verify'])->name('verify.index');
-    Route::post('two-factor/verify', [TwoFactorController::class, 'validateTwoFactor'])->name('verify.validate');
     Route::post('two-factor/resend', [TwoFactorController::class, 'resend'])->name('verify.resend-two-factor')->middleware('throttle:5,1');
-            
+    Route::post('two-factor/verify', [TwoFactorController::class, 'validateTwoFactor'])->name('verify.validate');
 });

@@ -20,6 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
+        info('masuk products');
         $users = User::all();
         $products = Product::latest()->get();
         $count = $products->count();
