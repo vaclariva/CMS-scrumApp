@@ -15,6 +15,12 @@ $breadcrumb = [
 <div class="container-fixed mt-4" id="content_container">
     <div class="container mx-auto lg:px-8">
         <div class="card">
+            <form
+            action="{{ route('settings.twofactors.update')}}"
+            method="POST"
+            class="tbr_main_form">
+            @method("PATCH")
+
             <div class="card-header">
                 <div class="flex flex-col gap-1">
                     <h3 class="card-title text-lg font-semibold">
@@ -31,14 +37,12 @@ $breadcrumb = [
                 
                     <div class="flex gap-10">
                         <label class="form-label flex items-center gap-2.5 text-nowrap">
-                            <input type="radio" id="enabled" name="enabled_2fa" value="1"
-                                   class="radio">
+                            <input type="radio" id="enabled" name="enabled_2fa" value="1" class="radio" {{ $enabled_2fa == '1' ? 'checked' : '' }}>
                             Aktif
                         </label>
                 
                         <label class="form-label flex items-center gap-2.5 text-nowrap">
-                            <input type="radio" id="disabled" name="enabled_2fa" value="0"
-                                   class="radio">
+                            <input type="radio" id="disabled" name="enabled_2fa" value="0" class="radio" {{ $enabled_2fa == '0' ? 'checked' : '' }}>
                             Nonaktif
                         </label>
                     </div>
@@ -55,6 +59,7 @@ $breadcrumb = [
                     </button>
                 </div>
             </div>
+        </form>
         </div>
     </div>
 </div>

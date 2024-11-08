@@ -47,10 +47,6 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-
-        // return response()->json([
-        //     'data' => $request->all()
-        // ], 200);
         try {
 
             $validatedData = $request->validated();
@@ -74,12 +70,7 @@ class UserController extends Controller
                 'message' => 'Berhasil disimpan.',
                 'redirect' => route('user')
             ]);
-        } catch (ValidationException $e) {
-            info($e);
-            DB::rollBack();
-            return response()->json([
-                'errors' => $e->errors(),
-            ], 422);
+        
         } catch (\Throwable $th) {
             info($th);
             DB::rollBack();
@@ -179,7 +170,6 @@ class UserController extends Controller
         
             $user->sendCreatePasswordNotification();
 
-            // return redirect()->back()->with('success', 'Tautan untuk reset kata sandi berhasil terkirim. Minta kepada pengguna baru untuk cek kotak masuk secara berkala.');
             return response()->json([
                 'message' => 'Tautan untuk reset kata sandi berhasil terkirim. Minta kepada pengguna baru untuk cek kotak masuk secara berkala.',
             ]);

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Product;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cookie;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,11 +32,30 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $cookieLifetime = 10080; // Seminggu
+            Cookie::queue(Cookie::make('status', 'admin', $cookieLifetime));
+
+
         //if ($product->exists()){
             //return redirect(route('product.index'));    
         //}
         //return redirect()->intended(route('product', absolute: false));
-        return redirect()->intended(route('product', absolute: false));
+
+        if ($this->isTwoFactor($request)) {
+
+                $request->user()->sendTwoFactorNotification($request);
+
+                return redirect()->intended(route('product', absolute: false));
+                // return response()->json([
+                //     'message' => 'Mengalihkan ..',
+                //     'redirect' => route('twofactor.verify')
+                // ], 200);
+            } else {
+
+                return redirect()->intended(route('product', absolute: false));
+            }
+
+        
     }
 
     /**
@@ -50,5 +70,13 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    /**
+     * Check if two factor authentication is enabled.
+     */
+    protected function isTwoFactor(Request $request): bool
+    {
+        return $request->user()->enabled_2fa ? true : false;
     }
 }

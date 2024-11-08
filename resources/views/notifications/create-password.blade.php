@@ -79,7 +79,7 @@
             
             <p>Link membuat password baru akan kadaluarsa dalam 60 menit.</p>
             <p>Hormat kami,<br>{{ config('app.name') }}</p>
-       
+
             <p class="email-footer">© 2024 SaaS. All rights reserved.</p>
         </div>
     </div>

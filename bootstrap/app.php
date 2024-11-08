@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\Auth\TwoFactor;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Symfony\Component\Mailer\Exception\TransportException;
@@ -12,7 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'auth.twofactor' => TwoFactor::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable $e, $request) {
@@ -21,10 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
              */
             if ($e instanceof ValidationException) {
                 if ($request->ajax()) {
-                    /**
-                     * Handling Authorization Validation.
-                     */
-
+                    
                     /**
                      * Fallback Handling for Other Validation.
                      */

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('role_id');
             $table->string('image')->nullable();
             $table->string('password')->nullable();
+            $table->boolean('enabled_2fa')->nullable()->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

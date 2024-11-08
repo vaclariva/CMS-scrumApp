@@ -111,5 +111,16 @@ return [
     */
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
-
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Two Factor Timeout
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the amount of minutes before a two factor code
+    | times out and the user is prompted to re-enter their credentials via the
+    | login screen. By default, the timeout lasts for 10 minutes.
+    |
+    */
+    'two_factor_expired' => 10,
 ];
