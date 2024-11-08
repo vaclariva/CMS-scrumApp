@@ -1,6 +1,6 @@
 <div class="card mb-3 backlog-edit" data-backlog-id="{{$backlog->id}}">
     <div class="BacklogNameDisplay card-body title-backlog mb-0 flex justify-between items-center">
-        <input type="text" class="card-title title-card-backlog cstm-input" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}" id="name-backlog-{{ $backlog->id }}" value="{{ $backlog->name }}">
+        <textarea class="textarea cstm-textarea" id="name-backlog-{{ $backlog->id }}" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}">{{ $backlog->name }}</textarea>
         <div class="flex gap-2 items-center {{ $backlog->created_at == $backlog->updated_at ? '' : 'hidden' }}" id="backlog-action-{{ $backlog->id }}">
             <a class="btn btn-icon" id="editBtn" data-product-id="{{ $product->id }}" data-backlog-id="{{ $backlog->id }}"
             onclick="openDrawer({backlogId: {{ $backlog->id }}, url: '{{ route('backlogs.edit', ['product' => $product->id, 'backlog' => $backlog->id]) }}'})">
@@ -72,7 +72,6 @@
             <div class="BacklogChecklistDisplay flex items-center text-xs {{$backlog->status == 0 ? 'hidden': 'text-gray-500'}}"
                 data-backlog-id="{{$backlog->id}}">
                 <i class="ki-duotone ki-check-squared text-lg"></i>
-                {{$backlog->status == 1 ? 'Selesai' : ''}}
             </div>
             
             <!-- Hours -->
