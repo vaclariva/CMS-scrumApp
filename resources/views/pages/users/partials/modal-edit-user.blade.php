@@ -76,8 +76,9 @@
 
                 <div class="form-group p-2">
                     <label class="text-sm" for="role"><strong>Peran</strong></label>
-                    <select class="select" name="role" required>
-                        <option value="Product Owner" {{ $user->role === 'Product Owner' ? 'selected' : '' }}>Product Owner</option>
+                    <select class="select" name="role_id" required>
+                        <option value="1" {{ $user->role_id == '1' ? 'selected' : '' }}>Product Owner</option>
+                        <option value="2" {{ $user->role_id == '2' ? 'selected' : '' }}>Super Admin</option>
                     </select>
                 </div>
 
