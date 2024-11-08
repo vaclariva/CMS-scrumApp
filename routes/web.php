@@ -11,7 +11,6 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ChecklistController;
 use App\Http\Controllers\VisionBoardController;
 use App\Http\Controllers\DetailProductController;
-use App\Http\Controllers\Auth\TwoFactorController;
 
 Route::get('/', function () {
     return redirect('dashboard');

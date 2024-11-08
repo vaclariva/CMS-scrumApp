@@ -210,57 +210,76 @@ class BacklogController extends Controller
 
     public function storeOrUpdateChecklist(Request $request, $backlog_id)
     {       
-        $request->validate([
-            'checklist_id' => 'nullable|integer',
-            'description' => 'required|string',
-            'status' => 'nullable|boolean'
-        ]);
+        try {
+            
+            DB::beginTransaction();
 
-        if ($request->checklist_id) {
-            $checklist = Checklist::find($request->checklist_id);
-            if ($checklist) {
-                $checklist->update([
-                    'description' => $request->description,
-                    'status' => $request->status ?? false,
-                ]);
+            $request->validate([
+                'checklist_id' => 'nullable|integer',
+                'description' => 'required|string',
+                'status' => 'nullable|boolean'
+            ]);
 
-                $backlog = $checklist->backlog;
-                $completedChecklists = $backlog->checklists()->where('status', '1')->count();
-                $totalChecklists = $backlog->checklists()->count();
+            // if ($request->checklist_id) {
+            //     $checklist = Checklist::find($request->checklist_id);
+            //     if ($checklist) {
+            //         $checklist->update([
+            //             'description' => $request->description,
+            //             'status' => $request->status ?? false,
+            //         ]);
 
-                $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
+            //         $backlog = $checklist->backlog;
+            //         $completedChecklists = $backlog->checklists()->where('status', '1')->count();
+            //         $totalChecklists = $backlog->checklists()->count();
 
-                return response()->json([
-                    'id' => $checklist->id,
-                    'description' => $checklist->description,
-                    'status' => $checklist->status,
-                    'message' => 'Checklist berhasil ditambahkan.'
-                        ], 200);
-            }
+            //         $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
+
+            //         return response()->json([
+            //             'id' => $checklist->id,
+            //             'description' => $checklist->description,
+            //             'status' => $checklist->status,
+            //             'message' => 'Checklist berhasil ditambahkan.'
+            //                 ], 200);
+            //     }
+            // }
+
+            
+            $backlog = Backlog::find($backlog_id);
+
+            $checklist = $backlog->checklists()->create([
+                'description' => $request->description,
+                'status' => $request->status ?? false, 
+            ]);
+
+            $backlog->update([
+                'updated_at' => now()
+            ]);
+
+            // $checklists = $backlog->checklists; 
+
+            $completedChecklists = $backlog->checklists()->where('status', '1')->count();
+            $totalChecklists = $backlog->checklists()->count();
+
+            $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
+
+            DB::commit();
+
+            return response()->json([
+                'checklist'=> $checklist,
+                'completedChecklists' => $completedChecklists,
+                'totalChecklists' => $totalChecklists,
+                'persentase' => number_format($persentase, 2),
+                'backlog' => $backlog,
+                'message' => 'Checklist berhasil ditambahkan.'
+            ], 201);
+
+        } catch (\Throwable $th) {
+            info($th);
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Gagal disimpan.',
+            ], 500);
         }
-
-        
-        $backlog = Backlog::find($backlog_id);
-        $checklist = $backlog->checklists()->create([
-            'description' => $request->description,
-            'status' => $request->status ?? false, 
-        ]);
-
-        $checklists = $backlog->checklists; 
-
-        $completedChecklists = $backlog->checklists()->where('status', '1')->count();
-        $totalChecklists = $backlog->checklists()->count();
-
-        $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
-
-        return response()->json([
-            'checklist'=> $checklist,
-            'completedChecklists' => $completedChecklists,
-            'totalChecklists' => $totalChecklists,
-            'persentase' => number_format($persentase, 2),
-            'backlog' => $backlog,
-            'message' => 'Checklist berhasil ditambahkan.'
-        ], 201);
     }
 
     /**

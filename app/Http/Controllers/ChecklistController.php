@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Backlog;
 use App\Models\Checklist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ChecklistController extends Controller
 {
@@ -86,34 +87,52 @@ public function index($backlogId)
      */
     public function update(Request $request, Checklist $checklist)
     {
-        $validatedData = $request->validate([
-            'status' => 'required|in:0,1',
-            'description' => 'nullable|string',
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $checklist->status = $validatedData['status'];
+            $validatedData = $request->validate([
+                'status' => 'required|in:0,1',
+                'description' => 'nullable|string',
+            ]);
 
-        if (array_key_exists('description', $validatedData) && $validatedData['description'] !== null) {
-            $checklist->description = $validatedData['description'];
+            $checklist->status = $validatedData['status'];
+
+            if (array_key_exists('description', $validatedData) && $validatedData['description'] !== null) {
+                $checklist->description = $validatedData['description'];
+            }
+
+            $checklist->save();
+
+            $backlog = $checklist->backlog;
+
+            $backlog->update([
+                'updated_at' => now()
+            ]);
+
+            $completedChecklists = $backlog->checklists()->where('status', '1')->count();
+            $totalChecklists = $backlog->checklists()->count();
+
+            $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
+
+            DB::commit();
+
+            return response()->json([
+                'id' => $checklist->id,
+                'description' => $checklist->description,
+                'status' => $checklist->status,
+                'completedChecklists' => $completedChecklists,
+                'totalChecklists' => $totalChecklists,
+                'persentase' => number_format($persentase),
+                'backlog' => $backlog,
+            ]);
+
+        } catch (\Throwable $th) {
+            info($th);
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Gagal disimpan.',
+            ], 500);
         }
-
-        $checklist->save();
-
-        $backlog = $checklist->backlog;
-        $completedChecklists = $backlog->checklists()->where('status', '1')->count();
-        $totalChecklists = $backlog->checklists()->count();
-
-        $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
-
-        return response()->json([
-            'id' => $checklist->id,
-            'description' => $checklist->description,
-            'status' => $checklist->status,
-            'completedChecklists' => $completedChecklists,
-            'totalChecklists' => $totalChecklists,
-            'persentase' => number_format($persentase),
-            'backlog' => $backlog,
-        ]);
     }
 
     
@@ -128,6 +147,11 @@ public function index($backlogId)
         $checklist->delete(); 
 
         $backlog = $checklist->backlog;
+
+        $backlog->update([
+            'updated_at' => now()
+        ]);
+
 
         $checklists = $backlog->checklists()->where('backlog_id', $backlogId)->get();
         $completedChecklists = $backlog->checklists()->where('status', '1')->count();
