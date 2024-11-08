@@ -31,8 +31,8 @@ function saveData() {
         contentType: false,
         processData: false,
         success: function (response) {
-            console.log('Auto-save response:', response);
             if (response.success) {
+                $(`#name-${response.data.id}`).val(response.data.name);
                 updateVisionBoard(response.data, url); 
             } else {
                 console.error('Auto-save gagal: ', response.message);
