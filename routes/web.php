@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Route::middleware([
     'middleware' => 'auth',
-    'auth.twofactor',
+    //'auth.twofactor',
     'web',
     'verified',
 ])->group(function () {

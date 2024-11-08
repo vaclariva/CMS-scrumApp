@@ -45,16 +45,16 @@
                         </div>
                         <div class="menu-dropdown menu-default light:border-gray-300 w-full max-w-[220px]">
                             <div class="menu-item">
-                                <a class="menu-link" href="html/demo1/account/security/overview.html">
+                                <a class="menu-link" href="{{route('settings.twofactors.index')}}">
                                     <span class="menu-icon">
                                         <i class="ki-filled ki-medal-star"></i>
                                     </span>
                                     <span class="menu-title">
-                                        Security
+                                        Security 2FA
                                     </span>
                                 </a>
                             </div>
-                            <div class="menu-item">
+                            <!-- <div class="menu-item">
                                 <a class="menu-link" href="html/demo1/account/members/teams.html">
                                     <span class="menu-icon">
                                         <i class="ki-filled ki-setting"></i>
@@ -73,7 +73,7 @@
                                         Integrations
                                     </span>
                                 </a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

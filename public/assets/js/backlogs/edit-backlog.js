@@ -34,7 +34,7 @@ $(document).ready(function() {
                 console.log(response);
                 if (response.success) {
                     console.log('Response data:', response);
-                    $(`#name-${response.id}`).val(response.name);
+                    $(`#name-backlog-${response.id}`).val(response.name);
                     if(response.backlog.created_at === response.backlog.updated_at) {
                         $(`#backlog-action-${response.id}`).removeClass('hidden');
                         $(`#backlog-footer-${response.id}`).addClass('hidden');
