@@ -42,15 +42,21 @@ $(document).ready(function() {
                         $(`#backlog-footer-${response.id}`).removeClass('hidden');
                     }
                     updateDisplay(response);
-
+                    
                     const backlogId = response.backlog.id;
                     const backlogDiv = $('.filter-backlog[data-backlog-id="' + backlogId + '"]');
-    
+                    const groupedBacklogList = $('#groupedBacklogList'); // ambil elemen seluruh div backlog list
+                    
                     if (response.backlog.sprint_id) {
                         backlogDiv.show();
+                        // Jika ada sprint_id, pastikan seluruh div backlog list ditampilkan
+                        groupedBacklogList.show();
                     } else {
                         backlogDiv.hide();
+                        // Jika tidak ada sprint_id, sembunyikan seluruh div backlog list
+                        groupedBacklogList.hide();
                     }
+                    
 
                 } else {
                     console.error('Autosave failed:', response);
@@ -67,24 +73,6 @@ $(document).ready(function() {
         const backlog = response.backlog;
 
         let checklistDiv = $(`#checklist-${backlog.id}`);
-        // checklistDiv.removeClass('hidden');
-        // checklistDiv.empty();
-        // checklistDiv.html(`
-        // <i class="ki-duotone ki-check-squared text-lg me-1"></i> 
-        //         ${response.checklist_complete}/${response.checklist_total}
-        // `);
-        // if(response.checklist_complete === response.checklist_total) {
-        //     checklistDiv.addClass('text-success');
-        //     checklistDiv.removeClass('text-gray-500');
-        // } else {
-        //     checklistDiv.addClass('text-gray-500');
-        //     checklistDiv.removeClass('text-success');
-        // }
-        // checklistDiv.html(`
-        //     <i class="ki-duotone ki-check-squared text-lg"></i>
-        //     ${response.checklist_complete}/${response.checklist_total}
-        // `);
-
 
         // Update Backlog Name
         $(`.BacklogNameDisplay[data-backlog-id="${backlog.id}"]`).text(backlog.name).show();

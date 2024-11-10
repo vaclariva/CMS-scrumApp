@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Requirement Sign Off Sheet</title>
     <style>
-
+        .container {
+            width: 75% !important;
+            padding: 100px;
+            justify-content: center;
+        }
         html, body {
             margin: 0;
             padding: 0;
@@ -16,8 +20,6 @@
         body {
             font-family: Arial, sans-serif;
             font-size: 1rem;
-            margin: 0;
-            padding: 0;
             background-image: url('{{ public_path("metronic/dist/assets/media/images/pict/pdf-template.png") }}');
             background-size: cover;
             background-repeat: no-repeat;
@@ -26,24 +28,17 @@
             justify-content: center;
             align-items: center;
         }
-        .container {
-            width: 75% !important; /* Set width to ensure space from edges */
-            margin-top: 100px;
-            margin-right: 100px;
-            margin-bottom: 120px; 
-            margin-left: 100px;  
-            background-color: rgba(255, 255, 255, 0.9);
-        }
+
         .title {
             text-align: center;
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 30px;
             margin-right: 20px;
-            margin-bottom: 50px; 
+            margin-bottom: 30px; 
             margin-left: 20px;  
         }
         .content {
-            margin: 17px 0;
+            margin: 10px 0;
             break-before: auto;
         }
         .content table {
@@ -159,7 +154,7 @@
             <div class="signature-item left-signature">
                 <p>Mengetahui</p>
                 <br><br>
-                <p><strong>{{ $applicant }}n</strong></p>
+                <p><strong>{{ $applicant }}</strong></p>
             </div>
             <div class="signature-item right-signature">
                 <p>Dibuat Oleh</p>
@@ -167,7 +162,6 @@
                 <p><strong>{{ $backlog->user->name }}</strong></p>
             </div>
         </div>
-        
     </div>
 </body>
 </html>

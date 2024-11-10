@@ -177,13 +177,9 @@ table td[colspan="5"] {
     outline: none;
     font-weight: 600;
     resize: none;
-    /* Mencegah perubahan ukuran manual oleh pengguna */
     overflow: hidden;
-    /* Mencegah scroll */
     padding: 8px;
-    /* Tambahkan padding jika diinginkan */
     box-sizing: border-box;
-    /* Menghindari perubahan ukuran karena padding */
 }
 
 
@@ -197,19 +193,15 @@ table td[colspan="5"] {
 
 .cstm-input {
     width: 100%;
-    font-size: 0.90rem;
+    font-size: 1rem;
     border: none;
     outline: none;
 }
 
 .cstm-textarea {
-    /* resize: none !important; */
     border: none !important;
     background-color: #fff;
     scrollbar-width: none !important;
-    /* -webkit-overflow-scrolling: touch !important;
-    width: 100%;
-    height: 100%; */
     padding: 0 !important;
     font-size: 1rem !important;
 }
@@ -282,7 +274,6 @@ table td[colspan="5"] {
     position: fixed;
     top: 0;
     right: -700px;
-    /* Awalnya di luar layar sebelah kanan */
     height: 100vh;
     overflow: hidden;
     display: flex;
@@ -290,22 +281,18 @@ table td[colspan="5"] {
     width: 700px !important;
     z-index: 999;
     transition: transform 0.3s ease;
-    /* Animasi transisi masuk */
 }
 
 .drawer.open {
     transform: translateX(-700px);
-    /* Menggeser drawer ke dalam layar */
 }
 
-/* Konten dengan scroll vertikal */
 .scrollable-y {
     overflow-y: auto;
     flex-grow: 1;
     max-height: calc(100vh - 100px);
 }
 
-/* Custom scrollbar */
 .scrollable-y::-webkit-scrollbar {
     width: 8px;
 }
@@ -329,12 +316,10 @@ table td[colspan="5"] {
     background: rgba(0, 0, 0, 0.5);
     z-index: 150;
     display: none;
-    /* Secara default tersembunyi */
 }
 
 .backdrop.open {
     display: block;
-    /* Muncul saat kelas open ditambahkan */
 }
 
 /* ------------DRAWER-------------- */

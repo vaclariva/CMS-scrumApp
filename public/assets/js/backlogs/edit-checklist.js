@@ -136,7 +136,6 @@ function updateChecklistStatus(checklistId, status) {
             updateBacklogChecklistDisplay(backlog, completedChecklists, totalChecklists);
         },
         error: function(xhr) {
-            console.error('Error updating checklist status:', xhr.responseText);
         }
     });
 }
