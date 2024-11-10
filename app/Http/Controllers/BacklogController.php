@@ -20,11 +20,16 @@ class BacklogController extends Controller
      */
     public function index(Product $product, Sprint $sprint)
     {   
-        $sprints = Sprint::all();
-        
-        $backlogs = $product->backlogs()->where('sprint_id', $sprint->id)->latest()->with('user')->get();
+        try {
+            $sprints = Sprint::all();
+            
+            $backlogs = $product->backlogs()->where('sprint_id', $sprint->id)->latest()->with('user')->get();
 
-        return view('pages.vision-boards.detail-product', compact('backlogs', 'product', 'sprints'));
+            return view('pages.vision-boards.detail-product', compact('backlogs', 'product', 'sprints'));
+        } catch (\Throwable $th) {
+            info($th);
+            abort(500);
+        }
     }
 
     /**
@@ -41,38 +46,29 @@ class BacklogController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'name' => 'required|string|max:255',
-        ]);
-
-        $product = Product::findOrFail($request->product_id);
-
-        Log::info('Menciptakan backlog baru', [
-            'product_id' => $product->id,
-            'name' => $request->name,
-            'user_id' => $product->user_id,
-        ]);
 
         try {
+            DB::beginTransaction();
+
+            $request->validate([
+                'product_id' => 'required|exists:products,id',
+                'name' => 'required|string|max:255',
+            ]);
+    
+            $product = Product::findOrFail($request->product_id);
+
             Backlog::create([
                 'product_id' => $product->id,
                 'name' => $request->name,
                 'user_id' => $product->user_id,
             ]);
 
-            Log::info('Backlog berhasil ditambahkan', [
-                'backlog_id' => $product->id,
-            ]);
+            DB::commit();
 
             return redirect()->back()->with('success', 'Backlog berhasil ditambahkan');
         } catch (\Exception $e) {
-            Log::error('Gagal menambahkan backlog', [
-                'error' => $e->getMessage(),
-                'product_id' => $product->id,
-                'name' => $request->name,
-            ]);
-
+            info($e);
+            DB::rollBack();
             return redirect()->back()->with('error', 'Backlog gagal ditambahkan');
         }
     }
@@ -119,63 +115,76 @@ class BacklogController extends Controller
 
     public function update(Request $request, $productId, $backlogId)
     {
-        $request->merge([
-            'product_id' => $productId, 
-        ]);
+        try {
+            $request->merge([
+                'product_id' => $productId, 
+            ]);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'priority' => 'nullable|string',
-            'hours' => 'nullable|numeric',
-            'applicant' => 'nullable|string',
-            'status' => 'required|in:0,1', 
-            'sprint_id' => 'nullable|exists:sprints,id',
-            'product_id' => 'required|exists:products,id',
-        ]);
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'priority' => 'nullable|string',
+                'hours' => 'nullable|numeric',
+                'applicant' => 'nullable|string',
+                'status' => 'required|in:0,1', 
+                'sprint_id' => 'nullable|exists:sprints,id',
+                'product_id' => 'required|exists:products,id',
+            ]);
 
-        $backlog = Backlog::findOrFail($backlogId);
-        $checklists = $backlog->checklists()->where('backlog_id', $backlog->id)->get();
-        $sprints = Sprint::all();
-        
+            DB::beginTransaction();
 
-        $backlog->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'priority' => $request->input('priority'),
-            'hours' => $request->input('hours'),
-            'applicant' => $request->input('applicant'),
-            'status' => $request->input('status'),
-            'sprint_id' => $request->input('sprint_id'),
-            'product_id' => $productId,
-        ]);
+            $backlog = Backlog::findOrFail($backlogId);
+            $checklists = $backlog->checklists()->where('backlog_id', $backlog->id)->get();
+            $sprints = Sprint::all();
+            
 
-        $groupedBacklogs = Backlog::with('product')
-            ->where('product_id', $productId)
-            ->latest()
-            ->get()
-            ->groupBy('sprint_id')
-            ->sortKeysDesc();
+            $backlog->update([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'priority' => $request->input('priority'),
+                'hours' => $request->input('hours'),
+                'applicant' => $request->input('applicant'),
+                'status' => $request->input('status'),
+                'sprint_id' => $request->input('sprint_id'),
+                'product_id' => $productId,
+            ]);
 
-        return response()->json([
-            'success' => true,
-            'id' => $backlog->id,
-            'name' => $backlog->name,
-            'priority' => $backlog->priority,
-            'description' => $backlog->description,
-            'hours' => $backlog->hours,
-            'applicant' => $backlog->applicant,
-            'status' => $backlog->status,
-            'checklist_complete' => $backlog->checklists->where('status', 1)->count(),
-            'checklist_total' => $backlog->checklists->count(),
-            'product_id' => $backlog->product_id,
-            'sprint_id' => $backlog->sprint_id,
-            'backlog' => $backlog,
-            'groupedBacklogs' => $groupedBacklogs,
-            'checklists' => $checklists,
-            'sprint' => $sprints,
-            'csrf_token' => csrf_token(),
-        ]);
+            $groupedBacklogs = Backlog::with('product')
+                ->where('product_id', $productId)
+                ->latest()
+                ->get()
+                ->groupBy('sprint_id')
+                ->sortKeysDesc();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'id' => $backlog->id,
+                'name' => $backlog->name,
+                'priority' => $backlog->priority,
+                'description' => $backlog->description,
+                'hours' => $backlog->hours,
+                'applicant' => $backlog->applicant,
+                'status' => $backlog->status,
+                'checklist_complete' => $backlog->checklists->where('status', 1)->count(),
+                'checklist_total' => $backlog->checklists->count(),
+                'product_id' => $backlog->product_id,
+                'sprint_id' => $backlog->sprint_id,
+                'backlog' => $backlog,
+                'groupedBacklogs' => $groupedBacklogs,
+                'checklists' => $checklists,
+                'sprint' => $sprints,
+                'csrf_token' => csrf_token(),
+            ]);
+        } catch (\Throwable $th) {
+            info($th);
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data gagal disimpan.'
+            ]);
+        }
     }
 
     /**
@@ -187,6 +196,7 @@ class BacklogController extends Controller
         try {
 
             DB::beginTransaction();
+
             $request->validate([
                 'name' => 'required|string|max:255',
             ]);
@@ -200,6 +210,7 @@ class BacklogController extends Controller
                 'status' => 'success',
                 'message' => 'Berhasil disimpan.',
             ]);
+
         } catch (\Exception $e) {
             info($e);
             DB::rollBack();
@@ -220,30 +231,6 @@ class BacklogController extends Controller
                 'description' => 'required|string',
                 'status' => 'nullable|boolean'
             ]);
-
-            // if ($request->checklist_id) {
-            //     $checklist = Checklist::find($request->checklist_id);
-            //     if ($checklist) {
-            //         $checklist->update([
-            //             'description' => $request->description,
-            //             'status' => $request->status ?? false,
-            //         ]);
-
-            //         $backlog = $checklist->backlog;
-            //         $completedChecklists = $backlog->checklists()->where('status', '1')->count();
-            //         $totalChecklists = $backlog->checklists()->count();
-
-            //         $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
-
-            //         return response()->json([
-            //             'id' => $checklist->id,
-            //             'description' => $checklist->description,
-            //             'status' => $checklist->status,
-            //             'message' => 'Checklist berhasil ditambahkan.'
-            //                 ], 200);
-            //     }
-            // }
-
             
             $backlog = Backlog::find($backlog_id);
 
@@ -255,8 +242,6 @@ class BacklogController extends Controller
             $backlog->update([
                 'updated_at' => now()
             ]);
-
-            // $checklists = $backlog->checklists; 
 
             $completedChecklists = $backlog->checklists()->where('status', '1')->count();
             $totalChecklists = $backlog->checklists()->count();
@@ -336,8 +321,6 @@ class BacklogController extends Controller
 
             DB::commit();
 
-            Log::info('New Vision Board and its Checklists created:', $newBacklog->toArray());
-
             return redirect()->route('products.show', $product->id)
                             ->with('success', 'Berhasil menduplikasi Backlog.');
         } catch (\Exception $e) {
@@ -351,25 +334,31 @@ class BacklogController extends Controller
 
     public function download($backlog_id)
     {
-        $backlog = Backlog::with(['checklists', 'sprint', 'user'])->findOrFail($backlog_id);
+        try{
+            $backlog = Backlog::with(['checklists', 'sprint', 'user'])->findOrFail($backlog_id);
 
-        $data = [
-            'productName' => $backlog->product->name,
-            'hariTanggal' => Carbon::parse($backlog->created_at)->isoFormat('dddd, D MMMM YYYY'),
-            'userStory' => $backlog->name,
-            'acceptanceCriteria' => $backlog->checklists,
-            'keterangan' => $backlog->description,
-            'applicant' => $backlog->applicant,
-            'backlog' => $backlog,
-        ];
-
-        $pdf = Pdf::loadView('pages.backlogs.partials.download', $data);
-
-        $pdf->setPaper('A4', 'portrait');
+            $data = [
+                'productName' => $backlog->product->name,
+                'hariTanggal' => Carbon::parse($backlog->created_at)->isoFormat('dddd, D MMMM YYYY'),
+                'userStory' => $backlog->name,
+                'acceptanceCriteria' => $backlog->checklists,
+                'keterangan' => $backlog->description,
+                'applicant' => $backlog->applicant,
+                'backlog' => $backlog,
+            ];
+    
+            $pdf = Pdf::loadView('pages.backlogs.partials.download', $data);
+    
+            $pdf->setPaper('A4', 'portrait');
+            
+            $pdf->getDomPDF()->set_option('isHtml5ParserEnabled', true);
+            $pdf->getDomPDF()->set_option('isRemoteEnabled', true);
+    
+            return $pdf->download('Backlog_' . $backlog->id . '.pdf');
+        } catch (\Throwable $th) {
+            info($th);
+            abort(500);
+        }
         
-        $pdf->getDomPDF()->set_option('isHtml5ParserEnabled', true);
-        $pdf->getDomPDF()->set_option('isRemoteEnabled', true);
-
-        return $pdf->download('Backlog_' . $backlog->id . '.pdf');
     }
 }  
