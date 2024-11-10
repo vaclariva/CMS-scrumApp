@@ -55,14 +55,14 @@ Route::middleware([
     Route::put('product/{product}/vision_board/{visionBoard}', [VisionBoardController::class, 'update'])->name('visionBoard.update');
     Route::delete('/product/{product}/vision_board/{visionBoard}', [VisionBoardController::class, 'destroy'])->name('visionBoard.destroy');
     Route::post('/product/{product}/vision_board/{visionBoard}/duplicate', [VisionBoardController::class, 'duplicate'])->name('visionBoard.duplicate');
-    Route::delete('/vision-boards/{visionBoard}/competitors', [VisionBoardController::class, 'Competitors'])->name('vision-boards.remove-competitors');
+    Route::delete('/vision-boards/{visionBoard}/competitors', [VisionBoardController::class, 'competitors'])->name('vision-boards.remove-competitors');
 
     Route::post('product/{productId}/backlog', [BacklogController::class, 'store'])->name('backlog.store');
     Route::put('products/{product}/backlogs/{backlog}', [BacklogController::class, 'update'])->name('backlogs.update');
     Route::put('products/{product}/backlogs/{backlog}/title', [BacklogController::class, 'updateTitle'])->name('backlogs.updateTitle');
     Route::delete('/product/{product}/backlog/{backlog}', [BacklogController::class, 'destroy'])->name('backlogs.destroy');
     Route::post('/product/{product}/backlog/{backlog}/duplicate', [BacklogController::class, 'duplicate'])->name('backlogs.duplicate');
-    Route::get('/products/{productId}/sprints/{sprintId}/backlogs', [BacklogController::class, 'index'])->name('backlogs.index');
+    Route::get('/products/{product}/sprints/{sprint}/backlogs', [BacklogController::class, 'index'])->name('backlogs.index');
     Route::get('/products/{product}/backlogs/{backlog}/edit', [BacklogController::class, 'edit'])->name('backlogs.edit');
     Route::get('/backlogs/{backlog_id}/download', [BacklogController::class, 'download'])->name('backlogs.download');
 

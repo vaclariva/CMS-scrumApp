@@ -18,13 +18,11 @@ class BacklogController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($productId, $sprintId)
-    {
-        $product = Product::findOrFail($productId);
-        
+    public function index(Product $product, Sprint $sprint)
+    {   
         $sprints = Sprint::all();
         
-        $backlogs = $product->backlogs()->where('sprint_id', $sprintId)->latest()->with('user')->get();
+        $backlogs = $product->backlogs()->where('sprint_id', $sprint->id)->latest()->with('user')->get();
 
         return view('pages.vision-boards.detail-product', compact('backlogs', 'product', 'sprints'));
     }
