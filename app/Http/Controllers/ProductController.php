@@ -19,29 +19,34 @@ class ProductController extends Controller
      */
     public function index()
     {
-        
-        $users = User::all();
-        $products = Product::latest()->get();
-        $count = $products->count();
-        $user = auth()->user();
+        try {
+            $users = User::all();
+            $products = Product::latest()->get();
+            $count = $products->count();
+            $user = auth()->user();
 
-        if ($user->role_id == 2) { 
-            if ($count == 0) {
-                return view('pages.add-products.add-product', compact('users', 'products'));
+            if ($user->role_id == 2) { 
+                if ($count == 0) {
+                    return view('pages.add-products.add-product', compact('users', 'products'));
+                }
+
+                // Ambil produk terakhir dari $products
+                $lastProduct = $products->first(); // Ambil produk terbaru
+                return redirect()->route('products.show', $lastProduct->id);
             }
 
-            // Ambil produk terakhir dari $products
-            $lastProduct = $products->first(); // Ambil produk terbaru
-            return redirect()->route('products.show', $lastProduct->id);
+            $userProduct = $user->products()->latest()->first(); // Ambil produk terbaru pengguna
+
+            if ($userProduct) {
+                return redirect()->route('products.show', $userProduct->id);
+            }
+
+            return redirect()->route('dashboard');
+        } catch (\Throwable $th) {
+            info($th);
+            abort(500);
         }
 
-        $userProduct = $user->products()->latest()->first(); // Ambil produk terbaru pengguna
-
-        if ($userProduct) {
-            return redirect()->route('products.show', $userProduct->id);
-        }
-
-        return redirect()->route('dashboard');
     }
 
     /**
@@ -98,9 +103,8 @@ class ProductController extends Controller
      * Display the specified resource.
      */
 
-    public function show($productId)
+    public function show(Product $product)
     {
-        $product = Product::findOrFail($productId);
 
         if (auth()->user()->role->name !== 'Super Admin') {
             if ($product->user_id !== auth()->user()->id) {
@@ -108,29 +112,34 @@ class ProductController extends Controller
             }
         }
 
-        $productOwner = $product->user()->first();
-        $visionBoards = VisionBoard::with('product')->where('product_id', $productId)->latest()->get();
+        try {
 
-        $backlogs = Backlog::with('product')
-        ->withCount([
-            'checklists as jumlahChecklistSelesai' => function ($query) {
-                $query->where('status', '1'); // Menghitung hanya checklist yang selesai
-            },
-            'checklists as jumlahChecklistTotal' // Menghitung total checklist tanpa syarat
-        ])
-        ->where('product_id', $productId)
-        ->latest()
-        ->get();
+            $productOwner = $product->user()->first();
+            $visionBoards = $product->visionBoards()->with('product')->latest()->get();
 
-        $groupedBacklogs = Backlog::with('product')
-            ->where('product_id', $productId)
+            $backlogs = $product->backlogs()->with('product')
+            ->withCount([
+                'checklists as jumlahChecklistSelesai' => function ($query) {
+                    $query->where('status', '1'); // Menghitung hanya checklist yang selesai
+                },
+                'checklists as jumlahChecklistTotal' // Menghitung total checklist tanpa syarat
+            ])
             ->latest()
-            ->get()
-            ->groupBy('sprint_id');
+            ->get();
 
-        $groupedBacklogs = $groupedBacklogs->sortKeysDesc();
+            $groupedBacklogs = $product->backlogs()->with('product')
+                ->latest()
+                ->get()
+                ->groupBy('sprint_id');
 
-        return view('pages.vision-boards.detail-product', compact('productOwner', 'visionBoards', 'product', 'backlogs', 'groupedBacklogs'));
+            $groupedBacklogs = $groupedBacklogs->sortKeysDesc();
+
+            return view('pages.vision-boards.detail-product', compact('productOwner', 'visionBoards', 'product', 'backlogs', 'groupedBacklogs'));
+
+        } catch (\Throwable $th) {
+            info($th);
+            abort(500);
+        }
     }
 
 
@@ -139,15 +148,22 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('components.modal-edit-product', compact('product'));
+        try {
+
+            return view('components.modal-edit-product', compact('product'));
+
+        } catch (\Throwable $th) {
+            info($th);
+            abort(500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        //dd($request->all());
+        
         $request->validate([
             'icon' => 'required|string',
             'name' => 'required|string',
@@ -159,8 +175,6 @@ class ProductController extends Controller
 
         try {
             DB::beginTransaction();
-
-            $product = Product::findOrFail($id);
 
             $startDate = $request->start_date ?? $product->start_date;
             $endDate = $request->end_date ?? $product->end_date;
@@ -175,9 +189,12 @@ class ProductController extends Controller
             ]);
 
             DB::commit();
+
             return redirect()->back()->with('success', 'Product berhasil diperbarui');
+
         } catch (\Exception $e) {
             DB::rollBack();
+            info($e);
             return redirect()->route('product')->with('error', 'Gagal memperbarui data. Silakan coba lagi.');
         }
     }
@@ -186,25 +203,28 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
         try {
-            $product = Product::findOrFail($id);
-
-            $deletedProductId = $product->id;
+            DB::beginTransaction();
 
             $product->delete();
 
             $products = Product::orderBy('id')->get();
             $count = $products->count();
+
+            DB::commit();
+
             if ($count == 0) {
                 return redirect()->route('product')->with('success', 'Produk berhasil dihapus');
             } else {
                 $lastProducts = $products->last();
                 return redirect()->route('products.show', $lastProducts->id)->with('success', 'Produk berhasil dihapus');
             }
+
         } catch (\Exception $e) {
             Log::error('Error deleting product: ' . $e->getMessage());
+            DB::rollBack();
             return Redirect::to(route('product'))->with('error', 'Gagal menghapus produk.');
         }
     }
@@ -212,8 +232,9 @@ class ProductController extends Controller
     public function duplicate(Product $product)
     {
         try {
-            info($product);
-            $newProduct = Product::create([
+            DB::beginTransaction();
+
+            Product::create([
                 'name' => $product->name . "-copy",
                 'icon' => $product->icon,
                 'label' => $product->label,
@@ -222,12 +243,13 @@ class ProductController extends Controller
                 'user_id' => $product->user_id,
             ]);
 
-
-            Log::info('New product created:', $newProduct->toArray());
+            DB::commit();
 
             return redirect()->route('product')->with('success', 'Berhasil duplikasi.');
+
         } catch (\Exception $e) {
             Log::error('Error duplicate product: ' . $e->getMessage());
+            DB::rollBack();
             return Redirect::to(route('product'))->with('error', 'Gagal duplikasi.');
         }
     }

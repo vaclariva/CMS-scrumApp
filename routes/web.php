@@ -37,16 +37,16 @@ Route::middleware([
     Route::get('/user', [UserController::class, 'index'])->name('user');
     Route::post('/user', [UserController::class, 'store'])->name('user.store');
     Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
 
     Route::get('/add-product', [ProductController::class, 'index'])->name('product');
     Route::post('/add-product', [ProductController::class, 'store'])->name('product.store');
-    Route::get('products/{productId}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
-    Route::put('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
+    Route::put('/product/update/{product}', [ProductController::class, 'update'])->name('product.update');
     Route::post('/product/{product}/duplicate', [ProductController::class, 'duplicate'])->name('product.duplicate');
-    Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+    Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
 
     Route::get('/detail-products/{product}', [DetailProductController::class, 'index'])->name('detail-product');
 
