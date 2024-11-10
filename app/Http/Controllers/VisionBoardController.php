@@ -16,10 +16,15 @@ class VisionBoardController extends Controller
      */
     public function index($id)
     {
-        $product = Product::findOrFail($id);
-        $vision_boards = VisionBoard::with('product')->where('product_id', $id)->latest()->get();
-        
-        return view('pages.vision-boards.detail-product', compact('vision_boards', 'product'));
+        try {
+            $product = Product::findOrFail($id);
+            $vision_boards = VisionBoard::with('product')->where('product_id', $id)->latest()->get();
+            
+            return view('pages.vision-boards.detail-product', compact('vision_boards', 'product'));
+        } catch (\Throwable $th) {
+            info($th);
+            abort(500);
+        }
     }
 
     /**
@@ -35,17 +40,28 @@ class VisionBoardController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'name' => 'required|string|max:255',
-        ]);
+        try {
+            DB::beginTransaction();
+                
+            $request->validate([
+                'product_id' => 'required|exists:products,id',
+                'name' => 'required|string|max:255',
+            ]);
 
-        VisionBoard::create([
-            'product_id' => $request->product_id,
-            'name' => $request->name,
-        ]);
+            VisionBoard::create([
+                'product_id' => $request->product_id,
+                'name' => $request->name,
+            ]);
 
-        return redirect()->back()->with('success', 'Vision board berhasil ditambahkan');
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Vision board berhasil ditambahkan');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            info($e);
+            abort(500);
+        }
     }
 
     /**
@@ -69,7 +85,6 @@ class VisionBoardController extends Controller
      */
     public function update(Request $request, Product $product, VisionBoard $visionBoard)
     {
-        Log::info('Product ID: ' . $product->id);
         $request->validate([
             'name' => 'required|string|max:255',
             'vision' => 'nullable|string|max:500',
@@ -107,7 +122,7 @@ class VisionBoardController extends Controller
         }
     }
 
-/**
+    /**
      * Update the specified resource in storage.
      */
     public function updateTitle(Request $request, Product $product, VisionBoard $visionBoard)
@@ -166,10 +181,10 @@ class VisionBoardController extends Controller
     public function duplicate(Product $product, VisionBoard $visionBoard)
     {
         try {
-            info($visionBoard);
-            info('Product ID: ' . $visionBoard->product_id);
 
-            $newVisionBoard = VisionBoard::create([
+            DB::beginTransaction();
+
+            VisionBoard::create([
                 'product_id' => $visionBoard->product_id,
                 'name' => $visionBoard->name . "-copy",
                 'vision' => $visionBoard->vision,
@@ -180,12 +195,12 @@ class VisionBoardController extends Controller
                 'competitors' => $visionBoard->competitors,
             ]);
 
-
-            Log::info('New Vision Board created:', $newVisionBoard->toArray());
+            DB::commit();
 
             return redirect()->route('products.show', $product->id )->with('success', 'Berhasil duplikasi.');
         } catch (\Exception $e) {
             Log::error('Error duplicate Vision Board: ' . $e->getMessage());
+            DB::rollBack();
             return Redirect::to(route('products.show', $product->id ))->with('error', 'Gagal duplikasi.');
         }
     }
