@@ -80,7 +80,7 @@
                     <i class="ki-duotone ki-users"></i>
                     <label class="form-label flex items-center gap-1 max-w-48">Nama Pengguna</label>
                     <input id="backlogApplicant" name="applicant" class="input"></input>
-                </div>
+                </div> 
             </div>
 
             <div class="w-full">

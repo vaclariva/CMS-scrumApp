@@ -204,4 +204,22 @@ class VisionBoardController extends Controller
             return Redirect::to(route('products.show', $product->id ))->with('error', 'Gagal duplikasi.');
         }
     }
+
+    public function Competitors($visionBoard)
+    {
+        // Cari item berdasarkan ID
+        $vision_boards = VisionBoard::find($visionBoard);
+        
+        if ($vision_boards) {
+            // Kosongkan kolom competitors
+            $vision_boards->competitors = null;
+            $vision_boards->save();
+
+            // Mengembalikan response sukses
+            return response()->json(['message' => 'Competitors (Pesaing) telah dihapus!']);
+        }
+
+        // Jika vision_boards tidak dvision_boardsukan
+        return response()->json(['message' => 'vision_boards tidak ditemukan!'], 404);
+    }
 }
