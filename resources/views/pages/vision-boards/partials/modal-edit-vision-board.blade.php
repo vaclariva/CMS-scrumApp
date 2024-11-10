@@ -28,6 +28,8 @@
                 @method('PUT')
 
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <input type="hidden" id="vision-board-id" value="{{ $item->id }}">
+
 
                 <div class="mb-4">
                     <input id="name-vision" name="name" class="custom-input" type="text" placeholder="Enter title" value="{!! $item->name !!}" />
@@ -75,8 +77,10 @@
                     <textarea id="editor5" name="competitors" class="editor" placeholder="Competitors" value="{!! $item->competitors !!}" rows="4"></textarea>
                 </div>
 
+
                 <div class="modal-footer justify-center items-center">
                     <div class="flex items-center  justify-center">
+                        
                         <button type="button" id="removeCompetitorsBtn" class="btn btn-link btn-sm text-danger items-center hidden" onclick="toggleCompetitorsForm(false)" hidden>
                             Hapus Form Competitors (Pesaing)
                         </button>
@@ -89,24 +93,9 @@
                     <button type="submit" class="btn btn-primary rounded-full">Simpan</button>
                 </div>
             </form>
+            @include('pages.vision-boards.partials.confirm-delete')
         </div>
     </div>
 </div>
 
-<script>
-    function toggleCompetitorsForm(show) {
-        const competitorsSection = document.getElementById('competitors-section');
-        const addBtn = document.getElementById('addCompetitorsBtn');
-        const removeBtn = document.getElementById('removeCompetitorsBtn');
-    
-        if (show) {
-            competitorsSection.removeAttribute('hidden'); 
-            addBtn.classList.add('hidden'); 
-            removeBtn.classList.remove('hidden'); 
-        } else {
-            competitorsSection.setAttribute('hidden', true);
-            addBtn.classList.remove('hidden'); 
-            removeBtn.classList.add('hidden'); 
-        }
-    }
-</script>
+

@@ -13,7 +13,7 @@
                             @endphp
 
                             @if ($sprint && !empty($sprint->name))
-                                <div class="card mb-3">
+                                <div class="card mb-3" id="sprint-{{ $sprint->id }}">
                                     <div class="card-header">
                                         <h3 class="text-md font-bold">
                                             <span class="font-bold">{{ $sprint->name }} </span>

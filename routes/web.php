@@ -55,6 +55,7 @@ Route::middleware([
     Route::put('product/{product}/vision_board/{visionBoard}', [VisionBoardController::class, 'update'])->name('visionBoard.update');
     Route::delete('/product/{product}/vision_board/{visionBoard}', [VisionBoardController::class, 'destroy'])->name('visionBoard.destroy');
     Route::post('/product/{product}/vision_board/{visionBoard}/duplicate', [VisionBoardController::class, 'duplicate'])->name('visionBoard.duplicate');
+    Route::delete('/vision-boards/{visionBoard}/competitors', [VisionBoardController::class, 'Competitors'])->name('vision-boards.remove-competitors');
 
     Route::post('product/{productId}/backlog', [BacklogController::class, 'store'])->name('backlog.store');
     Route::put('products/{product}/backlogs/{backlog}', [BacklogController::class, 'update'])->name('backlogs.update');
