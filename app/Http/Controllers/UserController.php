@@ -150,7 +150,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
 
         if(auth()->user()->role()->first()->name != 'Super Admin'){
@@ -159,8 +159,6 @@ class UserController extends Controller
 
         try {
             DB::beginTransaction();
-
-            $user = User::findOrFail($id);
 
             if ($user->image) {
                 $this->deleteFile($user->image);
