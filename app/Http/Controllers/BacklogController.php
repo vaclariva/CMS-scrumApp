@@ -7,6 +7,7 @@ use App\Models\Checklist;
 use App\Models\Product;
 use App\Models\Sprint;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -364,6 +365,15 @@ class BacklogController extends Controller
             'applicant' => $backlog->applicant,
             'backlog' => $backlog,
         ];
+
+        $pdf = new Dompdf([
+        'mode' => 'utf-8', 
+        'format' => 'A4',
+        'margin_top' => 20,
+        'margin_left' => 10,
+        'margin_right' => 10,
+        'margin_bottom' => 20,
+    ]);
 
         $pdf = Pdf::loadView('pages.backlogs.partials.download', $data);
 
