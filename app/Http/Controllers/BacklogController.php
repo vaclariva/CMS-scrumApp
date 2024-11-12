@@ -319,6 +319,10 @@ class BacklogController extends Controller
                 }
             }
 
+            $newBacklog->update([
+                'updated_at' => Carbon::parse(now())->addSecond()
+            ]);
+
             DB::commit();
 
             return redirect()->route('products.show', $product->id)

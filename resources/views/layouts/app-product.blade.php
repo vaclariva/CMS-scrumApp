@@ -35,6 +35,23 @@
             .toast-error .toast-title {
                 margin-left: 0.75rem; 
             }
+
+            .title-card-backlog {
+                display: block;
+                width: 100%;
+                line-height: 24px;
+                min-height: 24px;
+                resize: none;
+                -webkit-appearance: none;
+            }
+
+            textarea[dir="auto" i] {
+                unicode-bidi: plaintext;
+            }
+
+            textarea:focus-visible {
+                outline-offset: 0px;
+            }
         </style>
     </head>
     
