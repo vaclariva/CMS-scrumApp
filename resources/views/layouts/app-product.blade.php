@@ -46,13 +46,7 @@
                 overflow-y: auto;
             }
 
-            textarea[dir="auto" i] {
-                unicode-bidi: plaintext;
-            }
-
-            textarea:focus-visible {
-                outline-offset: 0px;
-            }
+            
         </style>
     </head>
     
