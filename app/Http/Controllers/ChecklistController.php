@@ -12,14 +12,14 @@ class ChecklistController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index($backlogId)
-    {
-        $backlog = Backlog::findOrFail($backlogId);
+    // public function index($backlogId)
+    // {
+    //     $backlog = Backlog::findOrFail($backlogId);
 
-        $checklists = Checklist::where('backlog_id', $backlogId)->get();
+    //     $checklists = Checklist::where('backlog_id', $backlogId)->get();
 
-        return view('pages.vision-boards.detail-product', compact('backlog', 'checklists'));
-    }
+    //     return view('pages.vision-boards.detail-product', compact('backlog', 'checklists'));
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -33,34 +33,48 @@ public function index($backlogId)
      * Store a newly created resource in storage.
      */
 
-     public function store(Request $request, $backlogId)
+    public function store(Request $request, $backlogId)
     {
-        $checklist = new Checklist();
-        $checklist->backlog_id = $backlogId;
-        $checklist->description = $request->input('description', 'untitled');
-        $checklist->status = 0; 
-        $checklist->save();
+        try{
 
-        
-        $backlog = Backlog::findOrFail($backlogId); 
+            DB::beginTransaction();
 
-        $checklists = $backlog->checklists; 
+            $checklist = new Checklist();
+            $checklist->backlog_id = $backlogId;
+            $checklist->description = $request->input('description', 'untitled');
+            $checklist->status = 0; 
+            $checklist->save();
 
-        $completedChecklists = $backlog->checklists()->where('status', '1')->count();
-        $totalChecklists = $backlog->checklists()->count();
+            
+            $backlog = Backlog::findOrFail($backlogId); 
 
-        $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
+            $checklists = $backlog->checklists; 
 
-        return response()->json([
-            'id' => $checklist->id,
-            'description' => $checklist->description,
-            'status' => $checklist->status,
-            'completedChecklists' => $completedChecklists,
-            'totalChecklists' => $totalChecklists,
-            'persentase' => number_format($persentase, 2),
-            'checklists' => $checklists,
-            'message' => 'Checklist berhasil ditambahkan.'
-        ]);
+            $completedChecklists = $backlog->checklists()->where('status', '1')->count();
+            $totalChecklists = $backlog->checklists()->count();
+
+            $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
+
+            DB::commit();
+
+            return response()->json([
+                'id' => $checklist->id,
+                'description' => $checklist->description,
+                'status' => $checklist->status,
+                'completedChecklists' => $completedChecklists,
+                'totalChecklists' => $totalChecklists,
+                'persentase' => number_format($persentase, 2),
+                'checklists' => $checklists,
+                'message' => 'Checklist berhasil ditambahkan.'
+            ]);
+
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Gagal disimpan.',
+            ], 500);
+        }        
 
     }
 
@@ -142,30 +156,43 @@ public function index($backlogId)
      */
     public function destroy(string $id, string $backlogId)
     {
-        $checklist = Checklist::findOrFail($id); 
+        try {
 
-        $checklist->delete(); 
+            DB::beginTransaction();
+            $checklist = Checklist::findOrFail($id); 
 
-        $backlog = $checklist->backlog;
+            $checklist->delete(); 
 
-        $backlog->update([
-            'updated_at' => now()
-        ]);
+            $backlog = $checklist->backlog;
+
+            $backlog->update([
+                'updated_at' => now()
+            ]);
 
 
-        $checklists = $backlog->checklists()->where('backlog_id', $backlogId)->get();
-        $completedChecklists = $backlog->checklists()->where('status', '1')->count();
-        $totalChecklists = $backlog->checklists()->count();
+            $checklists = $backlog->checklists()->where('backlog_id', $backlogId)->get();
+            $completedChecklists = $backlog->checklists()->where('status', '1')->count();
+            $totalChecklists = $backlog->checklists()->count();
 
-        $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
+            $persentase = $totalChecklists > 0 ? ($completedChecklists / $totalChecklists) * 100 : 0;
 
-        return response()->json([
-            'message' => 'Checklist deleted successfully.',
-            'completedChecklists' => $completedChecklists,
-            'totalChecklists' => $totalChecklists,
-            'checklists' => $checklists,
-            'persentase' => number_format($persentase),
-            'backlog' => $backlog,
-        ]);
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Checklist deleted successfully.',
+                'completedChecklists' => $completedChecklists,
+                'totalChecklists' => $totalChecklists,
+                'checklists' => $checklists,
+                'persentase' => number_format($persentase),
+                'backlog' => $backlog,
+            ]);
+
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Gagal didelete.',
+            ], 500);
+        }        
     }
 }

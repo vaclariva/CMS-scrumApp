@@ -14,18 +14,18 @@ class VisionBoardController extends Controller
     /**
      * Display a listing of the resource. 
      */
-    public function index($id)
-    {
-        try {
-            $product = Product::findOrFail($id);
-            $vision_boards = VisionBoard::with('product')->where('product_id', $id)->latest()->get();
+    // public function index($id)
+    // {
+    //     try {
+    //         $product = Product::findOrFail($id);
+    //         $vision_boards = VisionBoard::with('product')->where('product_id', $id)->latest()->get();
             
-            return view('pages.vision-boards.detail-product', compact('vision_boards', 'product'));
-        } catch (\Throwable $th) {
-            info($th);
-            abort(500);
-        }
-    }
+    //         return view('pages.vision-boards.detail-product', compact('vision_boards', 'product'));
+    //     } catch (\Throwable $th) {
+    //         info($th);
+    //         abort(500);
+    //     }
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -205,21 +205,26 @@ class VisionBoardController extends Controller
         }
     }
 
-    public function Competitors($visionBoard)
+    public function competitors(VisionBoard $visionBoard)
     {
-        // Cari item berdasarkan ID
-        $vision_boards = VisionBoard::find($visionBoard);
-        
-        if ($vision_boards) {
-            // Kosongkan kolom competitors
-            $vision_boards->competitors = null;
-            $vision_boards->save();
+        try {
 
-            // Mengembalikan response sukses
-            return response()->json(['message' => 'Competitors (Pesaing) telah dihapus!']);
+            // Cari item berdasarkan ID
+            
+            if ($visionBoard) {
+                // Kosongkan kolom competitors
+                $visionBoard->competitors = null;
+                $visionBoard->save();
+
+                // Mengembalikan response sukses
+                return response()->json(['message' => 'Competitors (Pesaing) telah dihapus!']);
+            }
+
+            // Jika vision_boards tidak dvision_boardsukan
+            return response()->json(['message' => 'vision_boards tidak ditemukan!'], 404);
+        } catch (\Throwable $th) {
+            info($th);
+            return response()->json(['message' => 'Competitors (Pesaing) gagal dihapus'], 500);
         }
-
-        // Jika vision_boards tidak dvision_boardsukan
-        return response()->json(['message' => 'vision_boards tidak ditemukan!'], 404);
     }
 }

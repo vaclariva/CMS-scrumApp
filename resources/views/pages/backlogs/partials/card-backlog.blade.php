@@ -1,6 +1,6 @@
 <div class="card mb-3 backlog-edit" data-backlog-id="{{$backlog->id}}">
     <div class="BacklogNameDisplay card-body title-backlog mb-0 flex justify-between items-center">
-        <textarea class="textarea cstm-textarea text-gray-900" id="name-backlog-{{ $backlog->id }}" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}">{{ $backlog->name }}</textarea>
+        <textarea class="textarea title-card-backlog cstm-textarea text-gray-900" id="name-backlog-{{ $backlog->id }}" data-product-id="{{ $product->id }}" data-id="{{ $backlog->id }}"  maxlength="16384" dir="auto">{{ $backlog->name }}</textarea>
         <div class="flex gap-2 items-center {{ $backlog->created_at == $backlog->updated_at ? '' : 'hidden' }}" id="backlog-action-{{ $backlog->id }}">
                 <a class="btn btn-icon" id="editBtn" data-product-id="{{ $product->id }}" data-backlog-id="{{ $backlog->id }}"
                     onclick="openDrawer({backlogId: {{ $backlog->id }}, url: '{{ route('backlogs.edit', ['product' => $product->id, 'backlog' => $backlog->id]) }}'})">

@@ -106,6 +106,30 @@
     <script>
         var productId = @json($product->id);
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.title-card-backlog').forEach(textarea => {
+                // Set initial height based on scrollHeight when the page loads
+                textarea.style.height = 'auto';
+                textarea.style.height = `${textarea.scrollHeight}px`;
+
+                // Add an event listener to adjust height on input
+                textarea.addEventListener('input', () => {
+                    textarea.style.height = 'auto';
+                    textarea.style.height = `${textarea.scrollHeight}px`;
+                });
+
+                // Add an event listener to disable Enter key
+                textarea.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault(); // Prevent Enter from creating a new line
+                    }
+                });
+            });
+        });
+    </script>
+
+
     <script src="{{ asset('assets/js/vision-boards/create.js') }}"></script>
     <script src="{{ asset('assets/js/vision-boards/card.js') }}"></script>
     <script src="{{ asset('assets/js/vision-boards/modal-edit.js') }}"></script>
