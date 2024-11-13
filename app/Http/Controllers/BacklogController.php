@@ -7,6 +7,7 @@ use App\Models\Checklist;
 use App\Models\Product;
 use App\Models\Sprint;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -154,6 +155,7 @@ class BacklogController extends Controller
 
             $groupedBacklogs = Backlog::with('product')
                 ->where('product_id', $productId)
+                ->whereNotNull('sprint_id')
                 ->latest()
                 ->get()
                 ->groupBy('sprint_id')
