@@ -41,8 +41,11 @@ class Backlog extends Model
     {
         return $this->checklists()->where('status', 'belum');
     }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    
 }

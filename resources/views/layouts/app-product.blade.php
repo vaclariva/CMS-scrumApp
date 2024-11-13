@@ -43,6 +43,7 @@
                 min-height: 24px;
                 resize: none;
                 -webkit-appearance: none;
+                overflow-y: auto;
             }
 
             textarea[dir="auto" i] {
