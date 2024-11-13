@@ -49,6 +49,7 @@
             100% { transform: rotate(360deg); }
         }
 
+       
     </style>
 </head>
 
@@ -64,7 +65,7 @@
                 themeMode = document.documentElement.getAttribute('data-theme-mode');
             } else {
                 themeMode = defaultThemeMode;
-            }
+        }
 
             if (themeMode === 'system') {
                 themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';

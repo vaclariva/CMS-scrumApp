@@ -1,11 +1,11 @@
 $(document).ready(function() {
     let cardTitle = $('.title-card-backlog');
-
+    
     $(cardTitle).on('keyup',this,debounce(function() {
         let backlogId = $(this).data('id');
         let productId = $(this).data('product-id');
         let value = $(this).val();
-
+        console.log(value);
         updateBacklog(value, backlogId, productId);
     }, 1000));
 

@@ -128,6 +128,12 @@ class ProductController extends Controller
             ->get();
 
             $groupedBacklogs = $product->backlogs()->with('product')
+                ->withCount([
+                    'checklists as jumlahChecklistSelesai' => function ($query) {
+                        $query->where('status', '1'); // Menghitung hanya checklist yang selesai
+                    },
+                    'checklists as jumlahChecklistTotal' // Menghitung total checklist tanpa syarat
+                ])
                 ->latest()
                 ->get()
                 ->groupBy('sprint_id');

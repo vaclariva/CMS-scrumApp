@@ -7,6 +7,7 @@ use App\Models\Checklist;
 use App\Models\Product;
 use App\Models\Sprint;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -120,6 +121,8 @@ class BacklogController extends Controller
                 'product_id' => $productId, 
             ]);
 
+            
+
             $request->validate([
                 'name' => 'required|string|max:255',
                 'description' => 'nullable|string',
@@ -131,6 +134,7 @@ class BacklogController extends Controller
                 'product_id' => 'required|exists:products,id',
             ]);
 
+            info($request);
             DB::beginTransaction();
 
             $backlog = Backlog::findOrFail($backlogId);
@@ -151,6 +155,7 @@ class BacklogController extends Controller
 
             $groupedBacklogs = Backlog::with('product')
                 ->where('product_id', $productId)
+                ->whereNotNull('sprint_id')
                 ->latest()
                 ->get()
                 ->groupBy('sprint_id')
@@ -223,7 +228,7 @@ class BacklogController extends Controller
     public function storeOrUpdateChecklist(Request $request, $backlog_id)
     {       
         try {
-            
+            info($request);
             DB::beginTransaction();
 
             $request->validate([
@@ -318,6 +323,10 @@ class BacklogController extends Controller
                     ]);
                 }
             }
+
+            $newBacklog->update([
+                'updated_at' => Carbon::parse(now())->addSecond()
+            ]);
 
             DB::commit();
 
