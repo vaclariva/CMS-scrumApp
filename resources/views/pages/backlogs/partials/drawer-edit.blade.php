@@ -219,7 +219,8 @@
                     $('#checklistCount').text(`Checklist ${response.completedChecklists}/${response.totalChecklists}`);
                     $('#progressBar').css('width', `${response.persentase}%`);
                     $('#progressPercentage').text(`${Math.round(response.persentase)}%`);
-                    updateBacklogChecklistDisplay(response.backlog, response.completedChecklists, response.totalChecklists);
+                    
+                    ChecklistDisplay(response.backlog, response.completedChecklists, response.totalChecklists);
 
                 },
                 error: function(xhr) {
