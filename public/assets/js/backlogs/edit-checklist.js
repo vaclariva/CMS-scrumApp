@@ -19,7 +19,6 @@ function openDrawer({ url, backlogId }) {
                 $('#backlogHours').val(response.backlog.hours);
                 $('#backlogApplicant').val(response.backlog.applicant);
                 $('#backlogStatus').prop('checked', response.backlog.status === '1');
-                $('#backlogSprint').val(response.backlog.sprint_id).trigger('change');
 
                 let sprintOptions = `
                     <option value="" ${response.backlog.sprint_id ? '' : 'selected'}>Pilih Sprint</option>
@@ -43,7 +42,7 @@ function openDrawer({ url, backlogId }) {
                 `).join('');
 
                 $('#checklistItems').html(checklistItems);
-
+                $('#backlogSprint').val(response.backlog.sprint_id).trigger('change');
 
                 $('#drawer_4').addClass('open');
                 $('#backdrop').css('display', 'block');

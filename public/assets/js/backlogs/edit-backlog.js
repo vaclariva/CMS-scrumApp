@@ -10,21 +10,25 @@ $(document).ready(function() {
     }, 1000));
 
     $('#backlogStatus').on('change', function() {
+        console.log('masuk 1');
         const isChecked = $(this).is(':checked');
         $('#backlogStatus').val(isChecked ? 1 : 0);
         saveBacklogChanges();
     });
 
     $('#backlogSprint, #backlogPriority').on('change', function() {
+        console.log('masuk 2');
         saveBacklogChanges();
     });
 
     $(document).on('keyup', '#BacklogName, #BacklogDescription, #backlogPriority, #backlogHours, #backlogApplicant', debounce(function() {
+        console.log('masuk 3');
         saveBacklogChanges();
     }, 1000));
 
     function saveBacklogChanges() {
         const formData = $('#editBacklogForm').serialize();
+        console.log(formData);
         
         $.ajax({
             url: $('#editBacklogForm').attr('action'),
